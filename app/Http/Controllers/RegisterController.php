@@ -18,12 +18,18 @@ class RegisterController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
+            'nik' => 'required|digits:16',
+            'phone' => 'required|digits_between:10,13',
+            'address' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
+            'nik' => $validated['nik'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
         ]);

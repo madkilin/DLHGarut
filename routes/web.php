@@ -39,6 +39,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 // end Email Verif
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', fn() => view('welcome'));
+    Route::get('/article', fn() => view('article'));
 });
 Route::post('/laporan', [ReportController::class, 'submitReport'])->middleware('auth')->name('laporan.submit');
+Route::get('/', fn() => view('welcome'));

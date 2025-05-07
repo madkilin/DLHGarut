@@ -19,27 +19,63 @@
                 <span class="text-2xl font-bold px-4">DLH Garut</span>
             </div>
             <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
+                <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Pengaduan</a>
+                <a href="/article" class="text-lg hover:text-[#F17025] transition-colors">Artikel</a>
+                <a href="#leaderboard" class="text-lg hover:text-[#F17025] transition-colors">Leaderboard</a>
+                <a href="#about" class="text-lg hover:text-[#F17025] transition-colors">Tentang Aplikasi</a>
+                <a href="#guide" class="text-lg hover:text-[#F17025] transition-colors">Panduan</a>
+                
+                @auth
+        <!-- Jika user sedang login -->
+    @php
+        $user = Auth::user();
+        $level = \App\Models\Level::where('level', $user->level)->first();
+        $maxExp = $level ? $level->required_exp : 0;
+        $progress = $maxExp > 0 ? ($user->exp / $maxExp) * 100 : 0;
+    @endphp
 
+    <div class="relative inline-block text-left">
+        <!-- Tombol Profil -->
+        <button id="profileDropdownButton" class="flex items-center space-x-2 focus:outline-none">
+            <img src="{{ asset('build/assets/channels4_profile.jpg') }}" alt="Profile" class="w-8 h-8 rounded-full">
+            <span class="text-lg text-white hover:text-[#F17025]">Hi, {{ $user->name }} ▾</span>
+        </button>
 
-
-                <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
-                <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Artikel</a>
-                <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Leaderboard</a>
-                <!-- Profile Dropdown -->
-                <div class="dropdown dropdown-center">
-                <div tabindex="0" role="button" class="text-lg">Click</div>
-                <ul tabindex="0" class="dropdown-content menu bg-white text-[#007546] rounded-box z-1 w-52 p-2 shadow-sm mt-3">
-                    <li class="font-bold border-b hover:bg-[#F0FDF4]"><a>Item 1</a></li>
-                    <li class="font-bold border-b"><a>Item 1</a></li>
-                    <li><a>Item 2</a></li>
-                </ul>
+        <!-- Dropdown Menu -->
+        <div id="profileDropdownMenu"
+            class="absolute right-0 mt-3 w-72 bg-white rounded-lg shadow-xl z-10 hidden">
+            <div class="flex items-start p-4 border-b">
+                <img src="{{ asset('build/assets/channels4_profile.jpg') }}" alt="Profile"
+                    class="w-14 h-14 rounded-full mr-3 mt-1">
+                <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
+                    <p class="text-xs text-gray-600">Level: {{ $user->level }} | Points: {{ $user->points }}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-1">{{ $user->exp }} / {{ $maxExp }} EXP</p>
                 </div>
-                <div class="md:flex items-center">
-                <a href="" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors mx-1">login</a>
-                <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">register</a>
-                </div>
-
             </div>
+
+            <a href="#" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
+            <a href="#" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Pengaturan</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit"
+                    class="w-full text-left px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Logout</button>
+            </form>
+        </div>
+    </div>
+@endauth
+
+@guest
+    <!-- Jika user belum login -->
+    <div class="md:flex items-center">
+        <a href="{{ route('login') }}"
+            class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors mx-1">Login</a>
+    </div>
+@endguest
 
             <!-- Mobile menu button -->
             <div class="md:hidden flex items-center">
@@ -56,17 +92,44 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu"
             class="hidden md:hidden bg-white backdrop-blur-md px-4 py-6 space-y-4 transition-all duration-500 text-center">
+            @auth
+            <div class="flex items-start p-4 border-b">
+                <img src="{{ asset('build/assets/channels4_profile.jpg') }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
+                <div class="flex-1 text-start">
+                    <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
+                    <p class="text-xs text-gray-600">Level: {{ $user->level }} | Points: {{ $user->points }}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-1">{{ $user->exp }} / {{ $maxExp }} EXP</p>
+                </div>
+            </div>
+            <div class="border-t border-[#007546]/90 my-4 pt-4">
+                <div class="mt-4 space-y-2">
+                    <a href="#" class="block text-sm text-[#007546] hover:text-[#F17025]">Lihat Profil</a>
+                    <a href="#" class="block text-sm text-[#007546] hover:text-[#F17025]">Pengaturan</a>
+                </div>
+            </div>
+            @endauth
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Artikel</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Leaderboard</a>
+            @auth
+            <form action="{{ route('logout') }}" method="POST" class="flex justify-center">
+                @csrf
+                <button type="submit"
+                    class="btn bg-[#F17025] text-lg text-white hover:text-[#007546] transition-colors px-6 py-2 rounded">
+                    Logout
+                </button>
+            </form>
+            @endauth
+            @guest
             <div class="border-t border-[#007546]/90 my-4"></div>
-                            <div class="md:flex items-center">
-                <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">login</a>
-                <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">register</a>
-                </div>
-            {{-- <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Lihat Profil</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Setting</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Logout</a> --}}
+            <div class="md:flex items-center">
+            <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">login</a>
+            </div>
+            @endguest
+
         </div>
 
     </nav>
@@ -75,7 +138,7 @@
     <main class="flex-1 mt-16">
 
         <!-- Section 1 -->
-        <section class="relative bg-gradient-to-br from-green-100 via-green-200 to-green-100 py-24 overflow-hidden">
+        <section id="home" class="relative bg-gradient-to-br from-green-100 via-green-200 to-green-100 py-24 overflow-hidden">
             <div class="container mx-auto flex flex-col-reverse md:flex-row items-center px-6 md:px-16">
 
                 <!-- Kiri: Deskripsi -->
@@ -225,7 +288,7 @@
         </section>
 
         <!-- Section 3 - Green -->
-        <section class="relative bg-gradient-to-b from-[#007948] to-[#00643d] text-white py-24 overflow-hidden">
+        <section id="leaderboard" class="relative bg-gradient-to-b from-[#007948] to-[#00643d] text-white py-24 overflow-hidden">
             <div class="absolute top-0 left-0 w-full overflow-hidden leading-none " style="height: 80px;">
                 <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80"
                     preserveAspectRatio="none">
@@ -366,10 +429,7 @@
                     </table>
                 </div>
             </div>
-
-            <!-- SVG Wave Transition Bottom -->
-            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180"
-                style="height: 80px;">
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180" style="height: 80px;">
                 <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80"
                     preserveAspectRatio="none">
                     <path fill="#bbf7d0"
@@ -380,9 +440,8 @@
         </section>
 
         <!-- Section 4 - White -->
-        <section class="relative bg-gradient-to-b from-white to-green-50 text-gray-800 py-24 overflow-hidden">
-            <!-- SVG Wave Top -->
-            <div class="absolute top-0 left-0 w-full overflow-hidden leading-none" style="height: 80px;">
+        <section id="about" class="relative bg-gradient-to-br from-green-100 via-green-200 to-green-100 py-24 overflow-hidden">
+            <div class="absolute top-0 left-0 w-full overflow-hidden leading-none " style="height: 80px;">
                 <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80"
                     preserveAspectRatio="none">
                     <path fill="#bbf7d0"
@@ -390,39 +449,28 @@
                     </path>
                 </svg>
             </div>
+            <div class="max-w-7xl mx-auto px-6 md:flex md:items-center gap-12">
+                <!-- Gambar Ilustrasi -->
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <img src="{{ asset('build/assets/ilstrasi aja.webp') }}" alt="Lingkungan" class="w-full h-auto rounded-xl shadow-md">
+                </div>
+        
+                <!-- Teks Tentang Kami -->
+                <div class="md:w-1/2 text-gray-800">
+                    <h2 class="text-4xl font-bold text-[#007948] mb-6">Tentang Aplikasi</h2>
+                    <p class="text-lg mb-4 leading-relaxed">
+                        Aplikasi ini hadir sebagai solusi untuk <strong>melaporkan masalah sampah</strong> di sekitar kita dan memberikan <strong>edukasi tentang lingkungan hidup</strong>. 
+                        Dibuat untuk mendorong partisipasi aktif masyarakat dalam menjaga kebersihan dan kelestarian bumi.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 mb-6 text-lg">
+                        <li>🗑️ Laporkan masalah sampah secara langsung</li>
+                        <li>📚 Akses artikel dan informasi edukatif</li>
+                        <li>🌱 Dapatkan poin dan naikkan level</li>
+                    </ul>
 
-            <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
-                <h2 class="text-4xl font-bold mb-6 text-[#007948]">Join Our Community</h2>
-                <p class="text-lg mb-8 text-gray-700">Bergabung bersama kami dan jadi bagian dari perubahan positif!
-                </p>
-                <a href="#"
-                    class="inline-block bg-[#F17025] hover:bg-[#e35f12] text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300">
-                    Gabung Sekarang
-                </a>
-                <form action="{{ route('laporan.submit') }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-success">Laporkan Sekarang</button>
-</form>
-                @php
-                $user = Auth::user();
-    $level = \App\Models\Level::where('level', $user->level)->first();
-    $maxExp = $level ? $level->required_exp : 0;
-    $progress = $maxExp > 0 ? ($user->exp / $maxExp) * 100 : 0;
-@endphp
-
-<p>nama: {{ $user->name }}</p>
-<p>Level: {{ $user->level }}</p>
-<p>Points: {{ $user->points }}</p>
-<div style="background: #eee; width: 100%; height: 20px;">
-    <div style="background: green; width: {{ $progress }}%; height: 100%;">
-        {{ $user->exp }} / {{ $maxExp }} EXP
-    </div>
-</div>
+                </div>
             </div>
-
-            <!-- SVG Wave Bottom -->
-            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180"
-                style="height: 80px;">
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180" style="height: 80px;">
                 <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80"
                     preserveAspectRatio="none">
                     <path fill="#bbf7d0"
@@ -431,6 +479,76 @@
                 </svg>
             </div>
         </section>
+        
+        <section id="guide" class="relative py-24 bg-green-50 text-gray-800 overflow-hidden">
+            <div class="absolute top-0 left-0 w-full overflow-hidden leading-none " style="height: 80px;">
+                <svg class="relative block w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80"
+                    preserveAspectRatio="none">
+                    <path fill="#bbf7d0"
+                        d="M0,32L60,48C120,64,240,64,360,48C480,32,600,0,720,0C840,0,960,32,1080,53.3C1200,75,1320,85,1380,90L1440,96V0H1380C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0H0Z">
+                    </path>
+                </svg>
+            </div>
+            <!-- Section Title -->
+            <div class="max-w-7xl mx-auto px-4 text-center mb-16 relative z-10">
+              <h2 class="text-4xl font-bold text-[#007948] mb-4">Panduan Penggunaan Aplikasi</h2>
+              <p class="text-lg text-gray-700">
+                Ikuti langkah-langkah berikut untuk menggunakan aplikasi pengaduan sampah dan edukasi lingkungan secara optimal.
+              </p>
+            </div>
+          
+            <!-- Steps Grid -->
+            <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+              <!-- Langkah 1 -->
+              <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#007948] flex items-start gap-4">
+                <i class="bi bi-person-plus-fill text-[#007948] text-3xl"></i>
+                <div>
+                  <h3 class="text-xl font-semibold">1. Registrasi atau Login</h3>
+                  <p>Daftarkan akun atau login untuk mengakses fitur pengaduan dan edukasi yang tersedia di aplikasi.</p>
+                </div>
+              </div>
+          
+              <!-- Langkah 2 -->
+              <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#F17025] flex items-start gap-4">
+                <i class="bi bi-megaphone-fill text-[#F17025] text-3xl"></i>
+                <div>
+                  <h3 class="text-xl font-semibold">2. Ajukan Pengaduan</h3>
+                  <p>Laporkan masalah sampah di lingkungan Anda dengan mengisi form pengaduan dan menyertakan lokasi serta foto.</p>
+                </div>
+              </div>
+          
+              <!-- Langkah 3 -->
+              <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#0f766e] flex items-start gap-4">
+                <i class="bi bi-bar-chart-line-fill text-[#0f766e] text-3xl"></i>
+                <div>
+                  <h3 class="text-xl font-semibold">3. Pantau Status Pengaduan</h3>
+                  <p>Lihat status penanganan pengaduan Anda secara real-time melalui dashboard pengguna.</p>
+                </div>
+              </div>
+          
+              <!-- Langkah 4 -->
+              <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#8b5cf6] flex items-start gap-4">
+                <i class="bi bi-book-half text-[#8b5cf6] text-3xl"></i>
+                <div>
+                  <h3 class="text-xl font-semibold">4. Akses Materi Edukasi</h3>
+                  <p>Pelajari berbagai materi tentang pengelolaan sampah dan lingkungan hijau dari fitur edukasi interaktif.</p>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Langkah 5 di Tengah -->
+            <div class="max-w-3xl mx-auto mt-10 px-4 relative z-10">
+              <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#dc2626] flex items-start gap-4">
+                <i class="bi bi-chat-dots-fill text-[#dc2626] text-3xl"></i>
+                <div>
+                  <h3 class="text-xl font-semibold">5. Berikan Umpan Balik</h3>
+                  <p>Sampaikan masukan atau saran Anda untuk membantu meningkatkan kualitas aplikasi dan layanan pengelolaan lingkungan.</p>
+                </div>
+              </div>
+            </div>
+        </section>
+          
+          
 
     </main>
 
@@ -461,6 +579,15 @@
 
     <!-- Scripts -->
     <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
         // Sticky Navbar Show/Hide + Transparent
         const navbar = document.getElementById('navbar');
 
@@ -510,7 +637,21 @@
                 menuPath.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
             }
         });
+// profile dropdown
+const profileDropdownButton = document.getElementById('profileDropdownButton');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
 
+    profileDropdownButton.addEventListener('click', () => {
+        profileDropdownMenu.classList.toggle('hidden');
+    });
+
+    // Tutup dropdown jika klik di luar
+    window.addEventListener('click', function (e) {
+        if (!profileDropdownButton.contains(e.target) && !profileDropdownMenu.contains(e.target)) {
+            profileDropdownMenu.classList.add('hidden');
+        }
+    });
+    // end profile dropdown
         // caraousel
         const carousel = document.getElementById('carousel');
         const prevBtn = document.getElementById('prevBtn');
