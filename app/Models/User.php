@@ -6,8 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Level;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -21,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'exp',
+        'level',
+        'points'
     ];
 
     /**
@@ -44,5 +50,28 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function currentLevel()
+    {
+        return $this->belongsTo(Level::class, 'level', 'level');
+    }
+
+    public function addExp(int $expGained)
+    {
+        $this->exp += $expGained;
+
+        while (true) {
+            $current = Level::where('level', $this->level)->first();
+
+            if (!$current || $this->exp < $current->required_exp) {
+                break;
+            }
+
+            $this->exp -= $current->required_exp;
+            $this->level += 1;
+            $this->points += 10; // Optional: reward per level-up
+        }
+
+        $this->save();
     }
 }

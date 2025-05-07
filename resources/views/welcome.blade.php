@@ -25,18 +25,20 @@
                 <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
                 <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Artikel</a>
                 <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Leaderboard</a>
-
                 <!-- Profile Dropdown -->
-                <div class="relative">
-                    <button id="profileButton" class="text-lg hover:text-[#F17025] focus:outline-none">Profile
-                        ▾</button>
-                    <div id="profileMenu"
-                        class="absolute hidden bg-white text-black mt-2 rounded-md shadow-lg right-0 min-w-[150px]">
-                        <a href="#" class="block px-4 py-2 text-[#007546] hover:bg-gray-100 rounded-lg">Lihat Profil</a>
-                        <a href="#" class="block px-4 py-2 text-[#007546] hover:bg-gray-100">Setting</a>
-                        <a href="#" class="block px-4 py-2 text-[#007546] hover:bg-gray-100">Logout</a>
-                    </div>
+                <div class="dropdown dropdown-center">
+                <div tabindex="0" role="button" class="text-lg">Click</div>
+                <ul tabindex="0" class="dropdown-content menu bg-white text-[#007546] rounded-box z-1 w-52 p-2 shadow-sm mt-3">
+                    <li class="font-bold border-b hover:bg-[#F0FDF4]"><a>Item 1</a></li>
+                    <li class="font-bold border-b"><a>Item 1</a></li>
+                    <li><a>Item 2</a></li>
+                </ul>
                 </div>
+                <div class="md:flex items-center">
+                <a href="" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors mx-1">login</a>
+                <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">register</a>
+                </div>
+
             </div>
 
             <!-- Mobile menu button -->
@@ -58,9 +60,13 @@
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Artikel</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Leaderboard</a>
             <div class="border-t border-[#007546]/90 my-4"></div>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Lihat Profil</a>
+                            <div class="md:flex items-center">
+                <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">login</a>
+                <a href="#" class="btn bg-[#F17025] text-lg hover:text-[#007546] transition-colors">register</a>
+                </div>
+            {{-- <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Lihat Profil</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Setting</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Logout</a>
+            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Logout</a> --}}
         </div>
 
     </nav>
@@ -393,6 +399,25 @@
                     class="inline-block bg-[#F17025] hover:bg-[#e35f12] text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300">
                     Gabung Sekarang
                 </a>
+                <form action="{{ route('laporan.submit') }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-success">Laporkan Sekarang</button>
+</form>
+                @php
+                $user = Auth::user();
+    $level = \App\Models\Level::where('level', $user->level)->first();
+    $maxExp = $level ? $level->required_exp : 0;
+    $progress = $maxExp > 0 ? ($user->exp / $maxExp) * 100 : 0;
+@endphp
+
+<p>nama: {{ $user->name }}</p>
+<p>Level: {{ $user->level }}</p>
+<p>Points: {{ $user->points }}</p>
+<div style="background: #eee; width: 100%; height: 20px;">
+    <div style="background: green; width: {{ $progress }}%; height: 100%;">
+        {{ $user->exp }} / {{ $maxExp }} EXP
+    </div>
+</div>
             </div>
 
             <!-- SVG Wave Bottom -->
@@ -454,21 +479,6 @@
 
         // Update saat scroll
         window.addEventListener('scroll', updateNavbar);
-
-
-        // Dropdown Profile
-        const profileButton = document.getElementById("profileButton");
-        const profileMenu = document.getElementById("profileMenu");
-
-        profileButton.addEventListener("click", function(e) {
-            e.stopPropagation();
-            profileMenu.classList.toggle("hidden");
-        });
-        document.addEventListener("click", function(e) {
-            if (!profileMenu.contains(e.target) && !profileButton.contains(e.target)) {
-                profileMenu.classList.add("hidden");
-            }
-        });
 
         // Mobile Menu Toggle + Hamburger Animasi
         const menuButton = document.getElementById("menu-button");
