@@ -42,4 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/article', fn() => view('article'));
 });
 Route::post('/laporan', [ReportController::class, 'submitReport'])->middleware('auth')->name('laporan.submit');
-Route::get('/', fn() => view('welcome'));
+Route::get('/', fn() => view('landingPage'));
+Route::get('/profile', fn() => view('user.profile'));
+Route::get('/complaint', fn() => view('user.complaint'));
