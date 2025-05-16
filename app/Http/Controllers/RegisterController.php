@@ -33,7 +33,6 @@ class RegisterController extends Controller
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
         ]);
-
         // Login langsung (opsional)
         Auth::login($user);
 

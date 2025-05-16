@@ -1,4 +1,5 @@
 @extends('layout.app')
+
 @section('style')
     {{-- Leaflet --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -10,22 +11,35 @@
     {{-- reCAPTCHA --}}
     {{-- {!! NoCaptcha::renderJs() !!} --}}
 @endsection
+
 @section('content')
     <section class="bg-gradient-to-br from-green-100 via-green-200 to-green-100 py-16 min-h-screen">
+        @if(session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-4xl mx-auto mt-4" role="alert">
+        <strong class="font-bold">Error!</strong>
+        <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+@endif
+@if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative max-w-4xl mx-auto mt-4" role="alert">
+        <strong class="font-bold">Sukses!</strong>
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+@endif
         <div class="container mx-auto px-6 md:px-12 max-w-5xl bg-white text-black py-10 rounded-3xl">
             <h2 class="text-4xl font-bold text-center text-[#F17025] mb-10">Form Pengaduan</h2>
 
-            <form method="POST" action="#" enctype="multipart/form-data" id="pengaduanForm">
+            <form method="POST" action="{{ route('complaint.store') }}" enctype="multipart/form-data" id="pengaduanForm">
                 @csrf
 
                 <div class="mb-6">
                     <label class="block font-semibold mb-2">Judul Pengaduan</label>
-                    <input type="text" name="judul" class="w-full p-3 rounded border border-gray-300" required>
+                    <input type="text" name="title" class="w-full p-3 rounded border border-gray-300" required>
                 </div>
 
                 <div class="mb-6">
                     <label class="block font-semibold mb-2">Deskripsi Pengaduan</label>
-                    <textarea name="deskripsi" id="deskripsi" class="w-full p-3 border border-gray-300 z-0"></textarea>
+                    <textarea name="description" id="description" class="w-full p-3 border border-gray-300 z-0"></textarea>
                 </div>
 
                 <div class="mb-6">
@@ -40,7 +54,7 @@
                 <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block mb-2 font-semibold">Kabupaten</label>
-                        <input type="text" value="Garut"
+                        <input type="text" name="kabupaten" value="Garut"
                             class="w-full p-3 rounded border bg-gray-100 cursor-not-allowed" disabled>
                     </div>
                     <div>
@@ -53,13 +67,15 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="mb-6">
-                    <label class="block mb-2 font-semibold">alamat Lengkap</label>
-                    <input type="text" class="w-full p-3 rounded border">
+                    <label class="block mb-2 font-semibold">Alamat Lengkap</label>
+                    <input type="text" name="full_address" class="w-full p-3 rounded border">
                 </div>
+
                 <div class="mb-6">
                     <label class="block mb-2 font-semibold">Upload Foto (Min. 1, Maks. 5)</label>
-                    <input type="file" name="foto[]" id="fotoInput" accept="image/*" multiple required class="hidden">
+                    <input type="file" name="photos[]" id="fotoInput" accept="image/*" multiple required class="hidden">
                     <label for="fotoInput"
                         class="inline-block bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600">Pilih
                         Gambar</label>
@@ -114,132 +130,117 @@
         </div>
     </section>
 @endsection
+
 @section('script')
     <script>
-        CKEDITOR.replace('deskripsi');
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize CKEditor
+            CKEDITOR.replace('description');
 
-        var map = L.map('map').setView([-7.2, 107.9], 13);
-        var marker;
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; CARTO'
-        }).addTo(map);
+            // Initialize map
+            var map = L.map('map').setView([-7.2, 107.9], 13);
+            var marker;
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; CARTO'
+            }).addTo(map);
 
-        map.on('click', function(e) {
-            const {
-                lat,
-                lng
-            } = e.latlng;
-            if (marker) map.removeLayer(marker);
-            marker = L.marker([lat, lng]).addTo(map);
-            document.getElementById('latitude').value = lat;
-            document.getElementById('longitude').value = lng;
-        });
-
-        document.getElementById('locateBtn').addEventListener('click', () => {
-            if (!navigator.geolocation) return alert("Geolocation tidak didukung browser Anda.");
-            navigator.geolocation.getCurrentPosition(pos => {
-                const {
-                    latitude,
-                    longitude
-                } = pos.coords;
-                map.setView([latitude, longitude], 16);
+            // Map click event
+            map.on('click', function(e) {
+                const { lat, lng } = e.latlng;
                 if (marker) map.removeLayer(marker);
-                marker = L.marker([latitude, longitude]).addTo(map);
-                document.getElementById('latitude').value = latitude;
-                document.getElementById('longitude').value = longitude;
-            });
-        });
-
-        document.getElementById('agreeCheckbox').addEventListener('change', function() {
-            document.getElementById('submitBtn').disabled = !this.checked;
-        });
-
-        document.querySelector('[data-modal-target]').addEventListener('click', () => {
-            document.getElementById('termModal').classList.remove('hidden');
-        });
-
-        // Foto preview dan hapus
-        const fotoInput = document.getElementById('fotoInput');
-        const previewContainer = document.getElementById('previewContainer');
-        let storedFiles = [];
-
-        fotoInput.addEventListener('change', function() {
-            const files = Array.from(fotoInput.files);
-
-            files.forEach(file => {
-                if (!file.type.startsWith('image/')) return;
-
-                storedFiles.push(file);
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = "h-24 w-24 object-cover rounded shadow cursor-pointer";
-                    img.title = "Klik untuk menghapus";
-
-                    img.addEventListener('click', () => {
-                        const index = storedFiles.indexOf(file);
-                        if (index > -1) storedFiles.splice(index, 1);
-                        updateInputFiles();
-                        img.remove();
-                    });
-
-                    previewContainer.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+                marker = L.marker([lat, lng]).addTo(map);
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
             });
 
-            updateInputFiles();
-        });
+            // Locate button event
+            document.getElementById('locateBtn').addEventListener('click', () => {
+                if (!navigator.geolocation) return alert("Geolocation tidak didukung browser Anda.");
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const { latitude, longitude } = pos.coords;
+                    map.setView([latitude, longitude], 16);
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker([latitude, longitude]).addTo(map);
+                    document.getElementById('latitude').value = latitude;
+                    document.getElementById('longitude').value = longitude;
+                });
+            });
 
-        function updateInputFiles() {
-            const dt = new DataTransfer();
-            storedFiles.forEach(file => dt.items.add(file));
-            fotoInput.files = dt.files;
-        }
+            // Agree checkbox change event
+            document.getElementById('agreeCheckbox').addEventListener('change', function() {
+                document.getElementById('submitBtn').disabled = !this.checked;
+            });
 
-        const videoInput = document.getElementById('videoInput');
-        const videoPreview = document.getElementById('videoPreview');
-
-        videoInput.addEventListener('change', function() {
-            const file = videoInput.files[0];
-            videoPreview.innerHTML = ''; // Clear previous preview
-            if (file && file.type.startsWith('video/')) {
-                const video = document.createElement('video');
-                video.src = URL.createObjectURL(file);
-                video.controls = true;
-                video.className = "w-full max-w-md rounded shadow";
-                videoPreview.appendChild(video);
+            // Modal button click event
+            const modalTarget = document.querySelector('[data-modal-target]');
+            if (modalTarget) {
+                modalTarget.addEventListener('click', () => {
+                    document.getElementById('termModal').classList.remove('hidden');
+                });
             }
-        });
 
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            // Sinkronisasi CKEditor ke textarea
-            CKEDITOR.instances.deskripsi.updateElement();
+            // Foto preview dan hapus
+            const fotoInput = document.getElementById('fotoInput');
+            const previewContainer = document.getElementById('previewContainer');
+            let storedFiles = [];
 
-            const form = document.getElementById('pengaduanForm');
-            const formData = new FormData(form);
-            const jsonData = {};
+            fotoInput.addEventListener('change', function() {
+                const files = Array.from(fotoInput.files);
 
-            for (let [key, value] of formData.entries()) {
-                if (value instanceof File) {
-                    if (!jsonData[key]) {
-                        jsonData[key] = value.name;
-                    } else {
-                        if (!Array.isArray(jsonData[key])) {
-                            jsonData[key] = [jsonData[key]];
-                        }
-                        jsonData[key].push(value.name);
-                    }
-                } else {
-                    jsonData[key] = value;
+                files.forEach(file => {
+                    if (!file.type.startsWith('image/')) return;
+
+                    storedFiles.push(file);
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = "h-24 w-24 object-cover rounded shadow cursor-pointer";
+                        img.title = "Klik untuk menghapus";
+
+                        img.addEventListener('click', () => {
+                            const index = storedFiles.indexOf(file);
+                            if (index > -1) storedFiles.splice(index, 1);
+                            updateInputFiles();
+                            img.remove();
+                        });
+
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                updateInputFiles();
+            });
+
+            function updateInputFiles() {
+                const dt = new DataTransfer();
+                storedFiles.forEach(file => dt.items.add(file));
+                fotoInput.files = dt.files;
+            }
+
+            const videoInput = document.getElementById('videoInput');
+            const videoPreview = document.getElementById('videoPreview');
+
+            videoInput.addEventListener('change', function() {
+                const file = videoInput.files[0];
+                videoPreview.innerHTML = ''; // Clear previous preview
+                if (file && file.type.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.src = URL.createObjectURL(file);
+                    video.controls = true;
+                    video.className = "w-full max-w-md rounded shadow";
+                    videoPreview.appendChild(video);
                 }
-            }
+            });
 
-            alert("Data yang akan dikirim:\n" + JSON.stringify(jsonData, null, 2));
-
-            // form.submit(); // uncomment jika ingin langsung kirim setelah alert
+            // Handle form submission
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                if (document.getElementById('agreeCheckbox').checked) {
+                    document.getElementById('pengaduanForm').submit();
+                }
+            });
         });
     </script>
 @endsection

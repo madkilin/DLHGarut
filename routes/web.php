@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\User\ComplaintController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,8 +43,18 @@ Route::post('/email/verification-notification', function (Request $request) {
 // end Email Verif
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/article', fn() => view('article'));
+    Route::get('/profile', fn() => view('user.profile'))->name('user.profile');
+    Route::get('/complaint', fn() => view('user.complaint'));
+    // Untuk POST
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/complaint', [ComplaintController::class, 'store'])->name('complaint.store');
+    // routes/web.php
+    Route::get('complaints/history', [ComplaintController::class, 'history'])->name('complaints.history');
+    Route::get('complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');
 });
 Route::post('/laporan', [ReportController::class, 'submitReport'])->middleware('auth')->name('laporan.submit');
 Route::get('/', fn() => view('landingPage'));
-Route::get('/profile', fn() => view('user.profile'));
-Route::get('/complaint', fn() => view('user.complaint'));
+Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+Route::get('/', fn() => view('landingPage'));
+Route::resource('/admin/users', UserController::class);
+Route::post('/admin/users/{id}/updateStatus', [UserController::class, 'updateStatus'])->name('users.updateStatus');

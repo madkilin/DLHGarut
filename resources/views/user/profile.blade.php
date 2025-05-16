@@ -41,18 +41,30 @@
     @endphp
 
     <section class="py-20 bg-gradient-to-br from-green-100 via-green-200 to-green-100 min-h-screen">
+        @if(session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-4xl mx-auto mt-4" role="alert">
+        <strong class="font-bold">Error!</strong>
+        <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+@endif
+@if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative max-w-4xl mx-auto mt-4" role="alert">
+        <strong class="font-bold">Sukses!</strong>
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+@endif
         <div class="container mx-auto px-4">
             <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl p-8">
                 <!-- Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
-                    <img src="https://i.pravatar.cc/150?img=3" alt="User Profile"
+                    <img src="{{ asset('storage/profile_photos/' . $user->profile_photo ?? 'default_image/default_profile.jpg') }}" alt="User Profile"
                         class="w-28 h-28 rounded-full shadow-md border-4 border-green-200 mx-auto sm:mx-0">
-                    <div class="text-center sm:text-left">
+                    <div class="text-center mx-3 sm:text-left">
                         <h2 class="text-3xl font-bold text-[#F17025]">{{ $user->name }}</h2>
                         <p class="text-gray-600 text-sm">{{ $user->email }}</p>
                         <p class="text-sm text-gray-500 mt-1">Anggota sejak Januari 2023</p>
                     </div>
-                    <div class="flex-1">
+                    <div class="flex-1 mx-auto">
                         <p class="text-xs text-gray-600 text-center sm:text-left">Level: {{ $user->level }} | Points:
                             {{ $user->points }}
                             <a href="javascript:void(0);" onclick="openModal('swapPointsModal')"
@@ -138,20 +150,21 @@
                 <h2 class="text-2xl font-bold mb-4 text-[#F17025]">Edit Profil</h2>
 
                 <!-- Form Edit -->
-                <form id="editProfileForm" class="text-black">
+                <form id="editProfileForm" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="text-black">
+                    @csrf
                     <div class="mb-4">
                         <label class="block text-black">Nama</label>
-                        <input type="text" name="name" class="w-full border border-gray-300 rounded p-2" required>
+                        <input type="text" name="name" class="w-full border border-gray-300 rounded p-2" value="{{ old('name', Auth::user()->name) }}" required>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-black">Email</label>
-                        <input type="email" name="email" class="w-full border border-gray-300 rounded p-2" required>
+                        <input type="email" name="email" class="w-full border border-gray-300 rounded p-2" value="{{ old('email', Auth::user()->email) }}" required>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-black">Password</label>
-                        <input type="password" name="password" class="w-full border border-gray-300 rounded p-2">
+                        <input type="password" name="password" class="w-full border border-gray-300 rounded p-2" placeholder="Biarkan kosong jika tidak ingin mengubah password">
                     </div>
 
                     <div class="mb-4">
@@ -167,7 +180,7 @@
                                 class="w-24 h-24 rounded-full object-cover border mb-2 hidden" />
 
                             <!-- Input -->
-                            <input type="file" accept="image/*" id="profileImageInput" class="text-center" />
+                            <input type="file" accept="image/*" id="profileImageInput" class="text-center" name="profile_photo"/>
                         </div>
                     </div>
 
@@ -288,13 +301,6 @@
                     .attr('src', '')
                     .addClass('hidden');
             }
-        });
-
-        // Form submit dummy
-        $('#editProfileForm').on('submit', function(e) {
-            e.preventDefault();
-            alert('Data berhasil disimpan (dummy)');
-            closeModal();
         });
     </script>
 @endsection

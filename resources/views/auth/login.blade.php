@@ -26,7 +26,16 @@
 
         <form method="POST" action="{{ route('login') }}" class="space-y-5">
           @csrf
-
+@if($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md mx-auto mt-4" role="alert">
+        <strong class="font-bold">Login gagal!</strong>
+        <ul class="mt-2 list-disc list-inside text-sm">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input type="email" id="email" name="email" required

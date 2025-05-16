@@ -26,7 +26,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'exp',
         'level',
-        'points'
+        'points',
+        'nik',
+        'phone',
+        'address',
+        'profile_photo',
+        'status',
+        'role_id',
     ];
 
     /**
@@ -50,6 +56,11 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
     public function currentLevel()
     {
