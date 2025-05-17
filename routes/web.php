@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ComplaintController as AdminComplaintController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -58,3 +59,9 @@ Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.das
 Route::get('/', fn() => view('landingPage'));
 Route::resource('/admin/users', UserController::class);
 Route::post('/admin/users/{id}/updateStatus', [UserController::class, 'updateStatus'])->name('users.updateStatus');
+ Route::get('/complaints', [AdminComplaintController::class, 'index'])->name('admin.complaints.index');
+Route::put('/complaints/{id}/status', [AdminComplaintController::class, 'updateStatus'])->name('admin.complaints.updateStatus');
+Route::put('/admin/complaints/{id}/assign', [AdminComplaintController::class, 'assignTask'])->name('admin.complaints.assign');
+Route::get('/proof/{id}/create', [\App\Http\Controllers\User\ProofController::class, 'create'])->name('proof.create');
+    Route::post('/proof/{id}', [\App\Http\Controllers\User\ProofController::class, 'store'])->name('proof.store');
+    Route::post('/complaints/{id}/assign-task', [AdminComplaintController::class, 'assignTask'])->name('admin.complaints.assignTask');

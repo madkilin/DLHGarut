@@ -18,6 +18,7 @@ class Complaint extends Model
         'kabupaten',
         'full_address',
         'photos',
+        'note',
         'video'
     ];
 
@@ -29,4 +30,12 @@ class Complaint extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function assignedUser()
+{
+    return $this->belongsTo(User::class, 'assigned_to');
+}
+public function proof()
+{
+    return $this->hasOne(Proof::class);
+}
 }
