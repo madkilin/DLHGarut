@@ -63,7 +63,7 @@
             <div class="label">Foto Bukti Pengiriman:</div>
             <div class="photo-container">
                 @foreach ($complaint->proof->photos as $photo)
-                    <img src="{{ storage_path('app/public/' . $photo) }}" alt="Foto Bukti">
+                    <img src="{{ asset('storage/' . $photo) }}" alt="Foto Bukti">
                 @endforeach
             </div>
         </div>

@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\ComplaintController as AdminComplaintController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PetugasComplaintController;
+use App\Http\Controllers\Petugas\ComplaintController as PetugasComplaintController;
+use App\Http\Controllers\Petugas\ProofController as PetugasProofController;
+use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\User\ComplaintController;
@@ -54,25 +57,44 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('complaints/history', [ComplaintController::class, 'history'])->name('complaints.history');
     Route::get('complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');
 });
+// Laporan Pengguna
 Route::post('/laporan', [ReportController::class, 'submitReport'])->middleware('auth')->name('laporan.submit');
+
+// Landing Page
 Route::get('/', fn() => view('landingPage'));
-Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
-Route::get('/', fn() => view('landingPage'));
+
+// Admin Dashboard
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+// Admin: Manajemen User
 Route::resource('/admin/users', UserController::class);
-Route::put('/admin/users/{id}/updateStatus', [UserController::class, 'updateStatus'])->name('users.updateStatus');
-Route::get('/complaints', [AdminComplaintController::class, 'index'])->name('admin.complaints.index');
-Route::get('/complaints/{id}/show', [AdminComplaintController::class, 'show'])->name('admin.complaints.show');
-Route::put('/complaints/{id}/status', [AdminComplaintController::class, 'updateStatus'])->name('admin.complaints.updateStatus');
+Route::put('/admin/users/{id}/update-status', [UserController::class, 'updateStatus'])->name('users.updateStatus');
+
+// Admin: Complaint Management
+Route::get('/admin/complaints', [AdminComplaintController::class, 'index'])->name('admin.complaints.index');
+Route::get('/admin/complaints/{id}/show', [AdminComplaintController::class, 'show'])->name('admin.complaints.show');
+Route::put('/admin/complaints/{id}/status', [AdminComplaintController::class, 'updateStatus'])->name('admin.complaints.updateStatus');
 Route::put('/admin/complaints/{id}/assign', [AdminComplaintController::class, 'assignTask'])->name('admin.complaints.assign');
-Route::post('/complaints/{id}/assign-task', [AdminComplaintController::class, 'assignTask'])->name('admin.complaints.assignTask');
+Route::post('/admin/complaints/{id}/assign-task', [AdminComplaintController::class, 'assignTask'])->name('admin.complaints.assignTask');
+
+// Admin: Print Surat
 Route::get('/admin/complaints/{id}/print', [AdminComplaintController::class, 'print'])->name('admin.complaints.print');
-// complaint petugas
+Route::get('/admin/complaints/{id}/print-complete', [AdminComplaintController::class, 'printComplete'])->name('admin.complaints.print.complete');
+Route::get('/admin/complaints/{id}/print-proof', [AdminComplaintController::class, 'printProof'])->name('admin.complaints.print.proof');
+Route::get('/admin/complaints/{id}/print-assignment', [AdminComplaintController::class, 'printAssigmentLetter'])->name('admin.complaints.print.assigments');
+
+// Admin: Lihat Bukti
+Route::get('/admin/complaints/{id}/show-proof', [AdminComplaintController::class, 'showProof'])->name('admin.complaints.show.proof');
+
+// Petugas Dashboard
+Route::get('/petugas/dashboard', [PetugasDashboardController::class, 'index'])->name('petugas.dashboard');
+
+// Petugas: Complaint
 Route::get('/petugas/complaints', [PetugasComplaintController::class, 'index'])->name('petugas.complaints.index');
 Route::get('/petugas/complaints/{id}', [PetugasComplaintController::class, 'show'])->name('petugas.complaints.show');
-
 Route::get('/petugas/complaints/{id}/proof', [PetugasComplaintController::class, 'proof'])->name('petugas.complaints.proof');
-Route::get('/petugas/complaints/proof/{id}', [\App\Http\Controllers\User\ProofController::class, 'create'])->name('petugas.proof.create');
-Route::post('/petugas/complaints/proof/{id}', [\App\Http\Controllers\User\ProofController::class, 'store'])->name('petugas.proof.store');
-Route::get('/petugas/proofs/{id}', [\App\Http\Controllers\User\ProofController::class, 'show'])->name('petugas.proof.show');
-Route::get('/admin/complaints/print/complete/{id}', [AdminComplaintController::class, 'printComplete'])->name('admin.complaints.print.complete');
-Route::get('/admin/complaints/print/proof/{id}', [AdminComplaintController::class, 'printProof'])->name('admin.complaints.print.proof');
+
+// Petugas: Proof
+Route::get('/petugas/proofs/{id}/create', [PetugasProofController::class, 'create'])->name('petugas.proof.create');
+Route::post('/petugas/proofs/{id}', [PetugasProofController::class, 'store'])->name('petugas.proof.store');
+Route::get('/petugas/proofs/{id}', [PetugasProofController::class, 'show'])->name('petugas.proof.show');

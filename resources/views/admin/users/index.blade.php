@@ -1,92 +1,176 @@
 @extends('layout.app')
 
 @section('style')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <style>
-        table.dataTable,
-        table.dataTable td,
+        body, table.dataTable, table.dataTable td,
         .dataTables_wrapper .dataTables_info,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_paginate {
-            color: #000 !important;
+            color: #1a202c !important;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem; /* kecilkan font secara global */
         }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 6px 12px;
-            margin-left: 4px;
-            border-radius: 6px;
-            background-color: #F17025 !important;
+        /* Table */
+        table.dataTable {
+            border-collapse: separate !important;
+            border-spacing: 0 6px !important; /* spasi antar baris lebih kecil */
+        }
+
+        table.dataTable thead th {
+            background-color: #22c55e;
             color: white !important;
+            font-weight: 600;
+            border-radius: 6px 6px 0 0;
+            padding: 8px 12px !important; /* padding dikurangi */
+            font-size: 0.85rem;
+        }
+
+        table.dataTable tbody tr {
+            background-color: #ecfdf5;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgb(34 197 94 / 0.15);
+            transition: background-color 0.3s ease;
+        }
+
+        table.dataTable tbody tr:hover {
+            background-color: #bbf7d0;
+            box-shadow: 0 3px 8px rgb(34 197 94 / 0.25);
+        }
+
+        table.dataTable tbody td {
+            padding: 8px 12px !important; /* padding dikurangi */
+            vertical-align: middle;
+            border: none !important;
+            font-size: 0.85rem;
+        }
+
+        /* Pagination Buttons */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 6px 10px;
+            margin-left: 4px;
+            border-radius: 8px;
+            background-color: #10b981 !important;
+            color: white !important;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background-color 0.3s ease;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background-color: #007546 !important;
+            background-color: #047857 !important;
             color: white !important;
+            box-shadow: 0 0 6px #047857;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) {
+            background-color: #059669 !important;
+        }
+
+        /* Search input */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 2px solid #22c55e;
+            border-radius: 6px;
+            padding: 4px 10px;
+            width: 180px; /* lebih kecil */
+            font-size: 0.85rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            outline: none;
+            border-color: #16a34a;
+            box-shadow: 0 0 6px #16a34a;
+        }
+
+        
+        /* Modal */
+        .custom-modal > div {
+            max-width: 400px; /* modal lebih kecil */
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        /* Form inputs */
+        select, input[type="text"] {
+            border: 2px solid #22c55e;
+            border-radius: 6px;
+            padding: 6px 10px;
+            width: 100%;
+            font-size: 0.85rem;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #16a34a;
+            box-shadow: 0 0 6px #16a34a;
         }
     </style>
 @endsection
 
+
 @section('content')
-    <section class="py-20 bg-gradient-to-br from-green-100 via-green-200 to-green-100 min-h-screen">
+    <section class="py-20 bg-gradient-to-br from-green-50 via-green-100 to-green-50 min-h-screen">
         <div class="container mx-auto px-4">
-            <div class="max-w-8xl mx-auto bg-white shadow-lg rounded-3xl p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-[#F17025]">Manajemen User</h2>
-                    <a href="{{ route('users.create') }}"
-                        class="bg-[#007546] hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold">+
-                        Tambah User</a>
+            <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                    <h2 class="text-3xl font-extrabold text-green-700">Manajemen User</h2>
+                    <a href="{{ route('users.create') }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">
+                        + Tambah User
+                    </a>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table id="userTable" class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-[#007546] text-white">
+                <div class="overflow-x-auto rounded-lg">
+                    <table id="userTable" class="min-w-full">
+                        <thead>
                             <tr>
-                                <th class="px-4 py-2 text-left text-sm font-semibold">Nama</th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold">Email</th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold">Status</th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold">Aksi</th>
+                                <th class="text-left text-sm font-semibold">Nama</th>
+                                <th class="text-left text-sm font-semibold">Email</th>
+                                <th class="text-left text-sm font-semibold">Status</th>
+                                <th class="text-left text-sm font-semibold">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="px-4 py-2 text-sm text-gray-700">{{ $user->name }}</td>
-                                    <td class="px-4 py-2 text-sm text-gray-700">{{ $user->email }}</td>
-                                    <td class="px-4 py-2 text-sm">
+                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $user->name }}</td>
+                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $user->email }}</td>
+                                    <td class="px-4 py-4 text-sm">
                                         <button onclick="openModal('modal-status-{{ $user->id }}')"
                                             class="focus:outline-none">
                                             @switch($user->status)
                                                 @case('active')
                                                     <span
-                                                        class="bg-green-500 text-white px-3 py-1 text-xs rounded-full">Aktif</span>
-                                                @break
+                                                        class="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">Aktif</span>
+                                                    @break
 
                                                 @case('nonactive')
                                                     <span
-                                                        class="bg-gray-400 text-white px-3 py-1 text-xs rounded-full">Nonaktif</span>
-                                                @break
+                                                        class="inline-block bg-gray-400 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">Nonaktif</span>
+                                                    @break
 
                                                 @case('belum diverifikasi')
-                                                    <span class="bg-yellow-400 text-black px-3 py-1 text-xs rounded-full">Belum
+                                                    <span
+                                                        class="inline-block bg-yellow-400 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">Belum
                                                         Diverifikasi</span>
-                                                @break
+                                                    @break
                                             @endswitch
                                         </button>
                                     </td>
-                                    <td class="px-4 py-2">
-                                        <a href="{{ route('users.show', $user->id) }}"
-                                            class="text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-md">Lihat</a>
-                                        <a href="{{ route('users.edit', $user->id) }}"
-                                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-full">Edit</a>
+                                    <td class="px-4 py-4 space-x-2">
+                                        <a href="{{ route('users.show', $user->id) }}" class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">Lihat</a>
+                                        <a href="{{ route('users.edit', $user->id) }}" class="btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-300 w-20">Edit</a>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST"
                                             class="inline-block"
                                             onsubmit="return confirm('Yakin ingin menghapus user ini?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button
-                                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-full"
-                                                type="submit">Hapus</button>
+                                            <button type="submit" class="btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300 w-20">
+                                                Hapus
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -96,49 +180,29 @@
                 </div>
             </div>
         </div>
+
         @foreach ($users as $user)
             <!-- Modal untuk edit status -->
             <div id="modal-status-{{ $user->id }}"
                 class="custom-modal fixed inset-0 flex items-center justify-center hidden z-50">
-                <div class="bg-white rounded-xl p-6 w-full max-w-md text-black">
-                    <h3 class="text-xl font-semibold mb-4">Ubah Status: {{ $user->name }}</h3>
+                <div class="bg-white rounded-xl max-w-md w-full p-8 relative">
+                    <button onclick="closeModal('modal-status-{{ $user->id }}')"
+                        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 focus:outline-none text-2xl">&times;</button>
+                    <h3 class="text-lg font-bold mb-4">Ubah Status User</h3>
                     <form action="{{ route('users.updateStatus', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="mb-4 text-black">
-                            <label for="status-{{ $user->id }}" class="block font-semibold mb-1">Status</label>
-                            <select name="status" id="status-{{ $user->id }}"
-                                onchange="handleStatusChange(this, 'desc-field-{{ $user->id }}')"
-                                class="w-full px-3 py-2 border rounded-lg">
-                                <option value="active" {{ $user->status === 'active' ? 'selected' : '' }}>Aktif</option>
-                                <option value="nonactive" {{ $user->status === 'nonactive' ? 'selected' : '' }}>Nonaktif
-                                </option>
-                                <option value="belum diverifikasi"
-                                    {{ $user->status === 'belum diverifikasi' ? 'selected' : '' }}>Belum Diverifikasi
-                                </option>
-                            </select>
-                        </div>
+                        <label for="status-{{ $user->id }}" class="block mb-2 font-semibold">Status</label>
+                        <select name="status" id="status-{{ $user->id }}" required>
+                            <option value="active" @if ($user->status == 'active') selected @endif>Aktif</option>
+                            <option value="nonactive" @if ($user->status == 'nonactive') selected @endif>Nonaktif</option>
+                            <option value="belum diverifikasi" @if ($user->status == 'belum diverifikasi') selected @endif>Belum Diverifikasi</option>
+                        </select>
 
-                        <div id="desc-field-{{ $user->id }}"
-                            class="mb-4 {{ $user->status !== 'nonactive' ? 'hidden' : '' }}">
-                            <label for="desc" class="block font-semibold mb-1">Keterangan</label>
-                            <select name="keterangan" id="keterangan-{{ $user->id }}"
-                                onchange="handleKeteranganChange(this, 'keterangan-manual-{{ $user->id }}')"
-                                class="w-full px-3 py-2 border rounded-lg mb-2">
-                                <option value="">-- Pilih Alasan --</option>
-                                <option value="Anda melanggar ketentuan kami">Anda melanggar ketentuan kami</option>
-                                <option value="manual">Tulis Manual</option>
-                            </select>
-                            <input type="text" name="keterangan_manual" id="keterangan-manual-{{ $user->id }}"
-                                placeholder="Tulis alasan manual..."
-                                class="w-full px-3 py-2 border rounded-lg mt-2 hidden" />
-                        </div>
-
-                        <div class="flex justify-end gap-2">
+                        <div class="mt-6 flex justify-end space-x-4">
                             <button type="button" onclick="closeModal('modal-status-{{ $user->id }}')"
                                 class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                            <button type="submit"
-                                class="px-4 py-2 bg-[#007546] text-white rounded hover:bg-green-700">Simpan</button>
+                            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -148,15 +212,18 @@
 @endsection
 
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#userTable').DataTable({
-                pageLength: 5,
-                language: {
+                "pageLength": 10,
+                "lengthChange": true,
+                "lengthMenu": [ [10, 25, 100], [10, 25, 100] ], // opsi jumlah data yang bisa dipilih
+                "language": {
                     search: "Cari:",
-                    lengthMenu: "Tampilkan _MENU_ data",
+                    lengthMenu: "Tampilkan _MENU_",
                     info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
                     paginate: {
                         first: "Awal",
@@ -165,44 +232,16 @@
                         previous: "←"
                     },
                     zeroRecords: "Tidak ada data yang ditemukan",
-                }
+                },
             });
         });
-        // modal
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('hidden');
-            }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function handleStatusChange(selectElem, inputId) {
-            const selectedValue = selectElem.value;
-            const descriptionField = document.getElementById(inputId);
-
-            if (selectedValue === 'nonactive') {
-                descriptionField.classList.remove('hidden');
-            } else {
-                descriptionField.classList.add('hidden');
-            }
-        }
-
-        function handleKeteranganChange(selectElem, inputId) {
-            const selectedValue = selectElem.value;
-            const manualInput = document.getElementById(inputId);
-
-            if (selectedValue === 'manual') {
-                manualInput.classList.remove('hidden');
-            } else {
-                manualInput.classList.add('hidden');
-            }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
         }
     </script>
 @endsection

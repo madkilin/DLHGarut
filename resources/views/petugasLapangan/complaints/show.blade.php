@@ -83,14 +83,10 @@
             </div>
 
             <div class="text-center mt-6 flex justify-center gap-4">
-                <a href="{{ route('admin.complaints.index') }}"
+                <a href="{{ route('petugas.complaints.index') }}"
                     class="bg-[#F17025] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#d95f1e]">
                     Kembali ke Daftar Pengaduan
                 </a>
-                <button onclick="window.open('{{ route('admin.complaints.print', $complaint->id) }}','_blank')"
-                    class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-blue-700">
-                    Print Surat
-                </button>
             </div>
         </div>
     </section>

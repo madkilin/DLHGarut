@@ -10,7 +10,16 @@
 
 <body class="flex flex-col min-h-screen">
     {{-- navbar --}}
-    @include('layout.admin.navbar')
+    @php
+        $user = Auth::user();
+    @endphp
+    @if ($user->role_id == 1)
+            @include('layout.admin.navbar')
+    @elseif ($user->role_id == 2)
+            @include('layout.petugas.navbar')
+    @else
+            @include('layout.navbar')
+    @endif
     {{-- content --}}
     <main class="flex-1 mt-16">
         @yield('content')

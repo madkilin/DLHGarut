@@ -9,9 +9,8 @@
 
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
-            <a href="{{ route('admin.dashboard') }}" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
-            <a href="{{route('users.index')}}" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Pengguna</a>
-            <a href="{{route('admin.complaints.index')}}" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Pengaduan</a>
+            <a href="{{ route('petugas.dashboard') }}" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
+            <a href="{{route('petugas.complaints.index')}}" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Pengaduan</a>
             <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Artikel</a>
 
             @auth
@@ -73,9 +72,8 @@
         @endauth
 
         <div class="border-t border-[#007546]/90 my-4 pt-4 space-y-4">
-            <a href="{{ route('admin.dashboard') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengguna</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengaduan</a>
+            <a href="{{ route('petugas.dashboard') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
+            <a href="{{route('petugas.complaints.index')}}" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengaduan</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Artikel</a>
         </div>
 

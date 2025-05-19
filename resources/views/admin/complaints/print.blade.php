@@ -93,8 +93,8 @@
             <div class="label">Foto Pengaduan:</div>
             <div class="photo-container">
                 @foreach (json_decode($complaint->photos) as $photo)
-                    <img src="{{ storage_path('app/public/' . $photo) }}" alt="Foto Pengaduan">
-                @endforeach
+                            <img src="{{ Storage::url($photo) }}" class="h-24 w-24 object-cover rounded shadow">
+                                            @endforeach
             </div>
         </div>
     @endif

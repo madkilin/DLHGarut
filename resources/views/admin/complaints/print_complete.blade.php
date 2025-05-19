@@ -75,7 +75,7 @@
             <div class="label">Foto Pengaduan:</div>
             <div class="photo-container">
                 @foreach ($photos as $photo)
-                    <img src="{{ storage_path('app/public/' . $photo) }}" alt="Foto Pengaduan">
+                    <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pengaduan">
                 @endforeach
             </div>
         </div>
@@ -107,7 +107,7 @@
                 <div class="label">Foto Bukti Pengiriman:</div>
                 <div class="photo-container">
                     @foreach ($proofPhotos as $photo)
-                        <img src="{{ storage_path('app/public/' . $photo) }}" alt="Foto Bukti">
+                        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Bukti">
                     @endforeach
                 </div>
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
+use App\Models\Proof;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,11 @@ class ComplaintController extends Controller
         $complaint = Complaint::with('user', 'assignedUser')->findOrFail($id);
         return view('admin.complaints.show', compact('complaint'));
     }
+     public function showProof($id)
+    {
+         $proof = Proof::with('complaint.user')->findOrFail($id);
+        return view('admin.complaints.show_proof', compact('proof'));
+    }
     public function print($id)
     {
         $complaint = Complaint::with('user')->findOrFail($id);
@@ -70,5 +76,10 @@ class ComplaintController extends Controller
         $complaint = Complaint::with('user', 'proof')->findOrFail($id);
 
         return view('admin.complaints.print_complete', compact('complaint'));
+    }
+    public function printAssigmentLetter($id)
+    {
+        $complaint = Complaint::with('user', 'assignedUser')->findOrFail($id);
+        return view('admin.complaints.print_assignment_letter', compact('complaint'));
     }
 }

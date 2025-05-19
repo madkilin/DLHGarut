@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Petugas;
 
+use App\Http\Controllers\Controller;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
-class PetugasComplaintController extends Controller
+class ComplaintController extends Controller
 {
     public function index()
     {
