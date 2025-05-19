@@ -9,12 +9,16 @@ use Illuminate\Http\Request;
 
 class ProofController extends Controller
 {
-        public function create($id)
+    public function create($id)
     {
         $complaint = Complaint::findOrFail($id);
-        return view('user.proof.create', compact('complaint'));
+        return view('petugasLapangan.proof.create', compact('complaint'));
     }
-
+    public function show($id)
+    {
+        $proof = Proof::with('complaint.user')->findOrFail($id);
+        return view('petugasLapangan.proof.show', compact('proof'));
+    }
     public function store(Request $request, $id)
     {
         $request->validate([
@@ -42,6 +46,6 @@ class ProofController extends Controller
             'photos' => $photoPaths,
         ]);
 
-        return redirect()->route('complaints.history')->with('success', 'Bukti berhasil dikirim.');
+        return redirect()->route('petugas.complaints.index')->with('success', 'Bukti berhasil dikirim.');
     }
 }

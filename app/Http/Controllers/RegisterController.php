@@ -31,6 +31,7 @@ class RegisterController extends Controller
             'phone' => $validated['phone'],
             'address' => $validated['address'],
             'email' => $validated['email'],
+            'role_id' => 2,
             'password' => bcrypt($validated['password']),
         ]);
         // Login langsung (opsional)

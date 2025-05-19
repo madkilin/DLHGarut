@@ -11,39 +11,64 @@ class ComplaintController extends Controller
 {
     public function index()
     {
-    $complaints = Complaint::with('user', 'assignedUser')->latest()->get();
-    $availableStaff = User::where('role_id', 2)->get(); // user dengan role 2
-    return view('admin.complaints.index', compact('complaints', 'availableStaff'));
+        $complaints = Complaint::with('user', 'assignedUser', 'proof')->latest()->get();
+        $availableStaff = User::where('role_id', 2)->get(); // user dengan role 2
+        return view('admin.complaints.index', compact('complaints', 'availableStaff'));
     }
 
-   public function updateStatus(Request $request, $id)
-{
-    $request->validate([
-        'status' => 'required|in:diproses,ditolak,selesai,diterima',
-        'note' => function ($attribute, $value, $fail) use ($request) {
-            if (in_array($request->status, ['diproses', 'selesai', 'ditolak']) && empty($value)) {
-                $fail('Catatan harus diisi jika status adalah diproses, selesai, atau ditolak.');
-            }
-        },
-    ]);
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:diproses,ditolak,selesai,diterima',
+            'note' => function ($attribute, $value, $fail) use ($request) {
+                if (in_array($request->status, ['diproses', 'ditolak']) && empty($value)) {
+                    $fail('Catatan harus diisi jika status adalah diproses, selesai, atau ditolak.');
+                }
+            },
+        ]);
 
-    $complaint = Complaint::findOrFail($id);
-    $complaint->status = $request->status;
-    $complaint->note = $request->note ?? null;
-    $complaint->save();
+        $complaint = Complaint::findOrFail($id);
+        $complaint->status = $request->status;
+        $complaint->note = $request->note ?? null;
+        $complaint->save();
 
-    return redirect()->back()->with('success', 'Status pengaduan berhasil diperbarui.');
-}
+        return redirect()->back()->with('success', 'Status pengaduan berhasil diperbarui.');
+    }
     public function assignTask(Request $request, $id)
-{
-    $request->validate([
-        'assigned_to' => 'required|exists:users,id',
-    ]);
+    {
+        $request->validate([
+            'assigned_to' => 'required|exists:users,id',
+        ]);
 
-    $complaint = Complaint::findOrFail($id);
-    $complaint->assigned_to = $request->assigned_to;
-    $complaint->save();
+        $complaint = Complaint::findOrFail($id);
+        $complaint->assigned_to = $request->assigned_to;
+        $complaint->save();
 
-    return redirect()->back()->with('success', 'Tugas berhasil dikirim ke staff.');
-}
+        return redirect()->back()->with('success', 'Tugas berhasil dikirim ke staff.');
+    }
+    public function show($id)
+    {
+        $complaint = Complaint::with('user', 'assignedUser')->findOrFail($id);
+        return view('admin.complaints.show', compact('complaint'));
+    }
+    public function print($id)
+    {
+        $complaint = Complaint::with('user')->findOrFail($id);
+        return view('admin.complaints.print', compact('complaint'));
+    }
+    // Cetak bukti pengiriman
+    public function printProof($id)
+    {
+        $complaint = Complaint::with('user', 'proof')->findOrFail($id);
+
+        return view('admin.complaints.print_proof', compact('complaint'));
+    }
+
+    // Cetak semua data lengkap
+    public function printComplete($id)
+    {
+        $complaint = Complaint::with('user', 'proof')->findOrFail($id);
+
+        return view('admin.complaints.print_complete', compact('complaint'));
+    }
 }
