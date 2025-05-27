@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ComplaintController as AdminComplaintController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Petugas\ComplaintController as PetugasComplaintController;
 use App\Http\Controllers\Petugas\ProofController as PetugasProofController;
@@ -98,3 +99,7 @@ Route::get('/petugas/complaints/{id}/proof', [PetugasComplaintController::class,
 Route::get('/petugas/proofs/{id}/create', [PetugasProofController::class, 'create'])->name('petugas.proof.create');
 Route::post('/petugas/proofs/{id}', [PetugasProofController::class, 'store'])->name('petugas.proof.store');
 Route::get('/petugas/proofs/{id}', [PetugasProofController::class, 'show'])->name('petugas.proof.show');
+// end Petugas
+// artikel
+Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel.index');
+Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('artikel.show');
