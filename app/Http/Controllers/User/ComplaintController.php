@@ -55,7 +55,7 @@ class ComplaintController extends Controller
             'full_address'  => $request->full_address,
             'photos'        => json_encode($photoPaths), // Menyimpan path dalam format JSON
             'video'         => $videoPath,
-            'status' => 'Terkirim', // Status default
+            'status' => 'terkirim', // Status default
 
         ]);
 
@@ -72,10 +72,14 @@ class ComplaintController extends Controller
     public function show($id)
     {
         $complaint = Complaint::findOrFail($id);
+        if (!$complaint->read_by_user) {
+            $complaint->update(['read_by_user' => true]);
+        }
         return view('user.show', compact('complaint'));
     }
     public function history()
     {
+
         $user = Auth::user();
         $complaints = Complaint::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')

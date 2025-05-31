@@ -45,7 +45,11 @@ class ProofController extends Controller
             'unit' => $request->unit,
             'photos' => $photoPaths,
         ]);
-
+        // Update notifikasi petugas: sudah dibaca
+        $complaint = Complaint::findOrFail($id);
+        $complaint->read_by_assigned_user = true;
+        $complaint->read_by_admin = false;
+        $complaint->save();
         return redirect()->route('petugas.complaints.index')->with('success', 'Bukti berhasil dikirim.');
     }
 }

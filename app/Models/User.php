@@ -33,7 +33,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo',
         'status',
         'role_id',
-        'note'
+        'note',
+        'is_read_by_admin'
     ];
 
     /**
@@ -59,6 +60,12 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function readArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_user_read')
+            ->withPivot('read_at')
+            ->withTimestamps();
+    }
     public function role()
     {
         return $this->belongsTo(Role::class);

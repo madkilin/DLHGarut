@@ -1,5 +1,4 @@
 <!-- resources/views/layouts/navbar.blade.php -->
-
 <nav id="navbar"
     class="fixed w-full z-50 bg-[#007546]/90 backdrop-blur-md text-white transition-all duration-300 shadow-md">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
@@ -30,7 +29,13 @@
                 <div class="relative inline-block text-left">
                     <button id="profileDropdownButton" class="flex items-center space-x-2 focus:outline-none">
                         <img src="{{ asset('storage/profile_photos/' . $user->profile_photo ?? 'default_image/default_profile.jpg') }}"
-                            alt="Profile" class="w-8 h-8 rounded-full">
+                            alt="Profile" class="relative w-8 h-8 rounded-full">
+                        @if ($newComplaintsUserCount > 0)
+                            <span
+                                class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                                {{ $newComplaintsUserCount }}
+                            </span>
+                        @endif
                         <span class="text-lg text-white hover:text-[#F17025]">Hi, {{ $user->name }} ▾</span>
                     </button>
 
@@ -39,6 +44,7 @@
                         <div class="flex items-start p-4 border-b">
                             <img src="{{ asset('storage/profile_photos/' . $user->profile_photo ?? 'default_image/default_profile.jpg') }}"
                                 alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
+
                             <div class="flex-1">
                                 <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
                                 <p class="text-xs text-gray-600">Level: {{ $user->level }} | Points: {{ $user->points }}
@@ -52,7 +58,14 @@
                         <a href="{{ route('user.profile') }}"
                             class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
                         <a href="{{ route('complaints.history') }}"
-                            class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat</a>
+                            class="relative block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat
+                            @if ($newComplaintsUserCount > 0)
+                                <span
+                                    class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                                    {{ $newComplaintsUserCount }}
+                                </span>
+                            @endif
+                        </a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit"

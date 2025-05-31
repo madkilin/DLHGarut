@@ -13,12 +13,18 @@
     @php
         $user = Auth::user();
     @endphp
-    @if ($user->role_id == 1)
+
+    @if (Auth::check())
+        @if ($user->role_id == 1)
             @include('layout.admin.navbar')
-    @elseif ($user->role_id == 2)
-            @include('layout.petugas.navbar')
-    @else
+        @elseif ($user->role_id == 2)
+            @include('layout.admin.navbar')
+        @else
             @include('layout.navbar')
+        @endif
+    @else
+        {{-- User belum login --}}
+        @include('layout.navbar')
     @endif
     {{-- content --}}
     <main class="flex-1 mt-16">

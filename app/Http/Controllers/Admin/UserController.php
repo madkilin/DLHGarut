@@ -117,6 +117,7 @@ class UserController extends Controller
         } else {
             $user->note = null; // Kosongkan jika bukan nonactive
         }
+        $user->is_read_by_admin = true;
 
         $user->save();
 

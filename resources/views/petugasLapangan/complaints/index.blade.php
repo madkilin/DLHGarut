@@ -3,20 +3,24 @@
 @section('style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <style>
-        body, table.dataTable, table.dataTable td,
+        body,
+        table.dataTable,
+        table.dataTable td,
         .dataTables_wrapper .dataTables_info,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_paginate {
             color: #1a202c !important;
             font-family: 'Inter', sans-serif;
-            font-size: 0.85rem; /* kecilkan font secara global */
+            font-size: 0.85rem;
+            /* kecilkan font secara global */
         }
 
         /* Table */
         table.dataTable {
             border-collapse: separate !important;
-            border-spacing: 0 6px !important; /* spasi antar baris lebih kecil */
+            border-spacing: 0 6px !important;
+            /* spasi antar baris lebih kecil */
         }
 
         table.dataTable thead th {
@@ -24,7 +28,8 @@
             color: white !important;
             font-weight: 600;
             border-radius: 6px 6px 0 0;
-            padding: 8px 12px !important; /* padding dikurangi */
+            padding: 8px 12px !important;
+            /* padding dikurangi */
             font-size: 0.85rem;
         }
 
@@ -41,7 +46,8 @@
         }
 
         table.dataTable tbody td {
-            padding: 8px 12px !important; /* padding dikurangi */
+            padding: 8px 12px !important;
+            /* padding dikurangi */
             vertical-align: middle;
             border: none !important;
             font-size: 0.85rem;
@@ -74,7 +80,8 @@
             border: 2px solid #22c55e;
             border-radius: 6px;
             padding: 4px 10px;
-            width: 180px; /* lebih kecil */
+            width: 180px;
+            /* lebih kecil */
             font-size: 0.85rem;
             transition: border-color 0.3s ease;
         }
@@ -86,14 +93,16 @@
         }
 
         /* Modal */
-        .custom-modal > div {
-            max-width: 400px; /* modal lebih kecil */
+        .custom-modal>div {
+            max-width: 400px;
+            /* modal lebih kecil */
             padding: 20px;
             border-radius: 12px;
         }
 
         /* Form inputs */
-        select, input[type="text"] {
+        select,
+        input[type="text"] {
             border: 2px solid #22c55e;
             border-radius: 6px;
             padding: 6px 10px;
@@ -102,7 +111,8 @@
             transition: border-color 0.3s ease;
         }
 
-        select:focus, input[type="text"]:focus {
+        select:focus,
+        input[type="text"]:focus {
             outline: none;
             border-color: #16a34a;
             box-shadow: 0 0 6px #16a34a;
@@ -134,8 +144,8 @@
                                         {{ $complaint->created_at->format('d-m-Y') }}</td>
                                     <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->user->name }}</td>
                                     <td class="px-4 py-2 text-sm text-blue-600 underline">
-                                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}" class="text-blue-600 underline"
-                                            target="_blank">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}"
+                                            class="text-blue-600 underline" target="_blank">
                                             {{ $complaint->latitude }}, {{ $complaint->longitude }}
                                         </a>
                                     </td>
@@ -145,24 +155,31 @@
                                             class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">
                                             Detail
                                         </a>
-                                       @if ($complaint->proof === null)
+                                        @if ($complaint->proof === null)
                                             <a href="{{ route('petugas.proof.create', $complaint->id) }}"
-                                            class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
-                                            Kirim Bukti
-                                        </a>
-                                       @endif
-                                       @if ($complaint->status === 'ditolak')
+                                                class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
+                                                Kirim Bukti
+                                                @if (!$complaint->read_by_assigned_user)
+                                                    <span
+                                                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                                        !
+                                                    </span>
+                                                @endif
+                                            </a>
+                                        @endif
+                                        @if ($complaint->status === 'ditolak')
                                             <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}"
-                                            class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20" disabled>
-                                            Lihat Bukti
-                                        </a>
+                                                class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20"
+                                                disabled>
+                                                Lihat Bukti
+                                            </a>
                                         @else
-                                        <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}"
-                                            class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20">
-                                            Lihat Bukti
-                                        </a>
-                                       @endif
-                                       
+                                            <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}"
+                                                class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20">
+                                                Lihat Bukti
+                                            </a>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

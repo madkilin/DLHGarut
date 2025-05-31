@@ -23,7 +23,7 @@ class ComplaintController extends Controller
             'status' => 'required|in:diproses,ditolak,selesai,diterima',
             'note' => function ($attribute, $value, $fail) use ($request) {
                 if (in_array($request->status, ['diproses', 'ditolak']) && empty($value)) {
-                    $fail('Catatan harus diisi jika status adalah diproses, selesai, atau ditolak.');
+                    $fail('Catatan harus diisi jika status adalah diproses atau ditolak.');
                 }
             },
         ]);
@@ -31,10 +31,42 @@ class ComplaintController extends Controller
         $complaint = Complaint::findOrFail($id);
         $complaint->status = $request->status;
         $complaint->note = $request->note ?? null;
+
+        // Default: semua notifikasi dianggap sudah dibaca
+        $complaint->read_by_admin = true;
+        $complaint->read_by_user = true;
+        $complaint->read_by_assigned_user = true;
+
+        // Status-based notifications
+        switch ($request->status) {
+            case 'terkirim':
+                $complaint->read_by_admin = false;
+                break;
+            case 'diterima':
+            case 'ditolak':
+                $complaint->read_by_user = false;
+                break;
+            case 'diproses':
+                if ($complaint->assigned_to) {
+                    $complaint->read_by_assigned_user = false;
+                } else {
+                    $complaint->read_by_user = false;
+                }
+
+                if ($complaint->proof) {
+                    $complaint->read_by_admin = false;
+                }
+                break;
+            case 'selesai':
+                $complaint->read_by_user = false;
+                break;
+        }
+
         $complaint->save();
 
         return redirect()->back()->with('success', 'Status pengaduan berhasil diperbarui.');
     }
+
     public function assignTask(Request $request, $id)
     {
         $request->validate([
@@ -52,9 +84,9 @@ class ComplaintController extends Controller
         $complaint = Complaint::with('user', 'assignedUser')->findOrFail($id);
         return view('admin.complaints.show', compact('complaint'));
     }
-     public function showProof($id)
+    public function showProof($id)
     {
-         $proof = Proof::with('complaint.user')->findOrFail($id);
+        $proof = Proof::with('complaint.user')->findOrFail($id);
         return view('admin.complaints.show_proof', compact('proof'));
     }
     public function print($id)

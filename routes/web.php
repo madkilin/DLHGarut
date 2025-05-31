@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ComplaintController as AdminComplaintController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ArticleController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Petugas\ComplaintController as PetugasComplaintController;
 use App\Http\Controllers\Petugas\ProofController as PetugasProofController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
+use App\Http\Controllers\Petugas\ArticleController as PetugasArticleController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\User\ComplaintController;
@@ -103,3 +105,21 @@ Route::get('/petugas/proofs/{id}', [PetugasProofController::class, 'show'])->nam
 // artikel
 Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel.index');
 Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('artikel.show');
+Route::post('/artikel/{article}/reward', [ArticleController::class, 'reward'])->middleware('auth')->name('artikel.reward');
+Route::middleware('auth')->group(function () {
+    Route::get('/artikel/{article}/reward/check', [ArticleController::class, 'checkRewardStatus'])->name('artikel.reward.check');
+    Route::post('/artikel/{article}/reward/claim', [ArticleController::class, 'claimReward'])->name('artikel.reward.claim');
+});
+// Route untuk Admin
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::resource('articles', AdminArticleController::class);
+    });
+
+// Route untuk Petugas
+Route::prefix('petugas')
+    ->as('petugas.')
+    ->group(function () {
+        Route::resource('articles', PetugasArticleController::class);
+    });

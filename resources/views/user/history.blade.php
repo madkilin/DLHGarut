@@ -89,8 +89,14 @@
                                             {{ $complaint->created_at->format('d M Y H:i') }}</td>
                                         <td class="px-4 py-2">
                                             <a href="{{ route('complaints.show', $complaint->id) }}"
-                                                class="inline-block bg-[#F17025] hover:bg-orange-600 text-white text-xs font-semibold px-4 py-2 rounded-full transition-all duration-300">
+                                                class="relative inline-block bg-[#F17025] hover:bg-orange-600 text-white text-xs font-semibold px-4 py-2 rounded-full transition-all duration-300">
                                                 Lihat
+                                                @if (!$complaint->read_by_user)
+                                                    <span
+                                                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                                        !
+                                                    </span>
+                                                @endif
                                             </a>
                                         </td>
                                     </tr>

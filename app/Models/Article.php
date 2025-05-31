@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-      use HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'title',
@@ -15,6 +15,7 @@ class Article extends Model
         'banner',
         'description',
         'user_id',
+        'is_read_by_admin'
     ];
 
     /**
@@ -35,5 +36,9 @@ class Article extends Model
                 $article->slug = \Str::slug($article->title);
             }
         });
+    }
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

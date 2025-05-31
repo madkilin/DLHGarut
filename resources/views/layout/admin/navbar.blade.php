@@ -10,9 +10,39 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
             <a href="{{ route('admin.dashboard') }}" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
-            <a href="{{route('users.index')}}" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Pengguna</a>
-            <a href="{{route('admin.complaints.index')}}" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Pengaduan</a>
-            <a href="#" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Artikel</a>
+            <a href="{{ route('users.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+                Manajemen User
+
+                @if ($newUserCount > 0)
+                    <span
+                        class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                        {{ $newUserCount }}
+                    </span>
+                @endif
+            </a>
+            <a href="{{ route('admin.complaints.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+                Manajemen Pengaduan
+
+                @if ($newComplaintsCount > 0)
+                    <span
+                        class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                        {{ $newComplaintsCount }}
+                    </span>
+                @endif
+            </a>
+            <a href="{{ route('admin.articles.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+                Manajemen Artikel
+
+                @if ($newArticlesCount > 0)
+                    <span
+                        class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                        {{ $newArticlesCount }}
+                    </span>
+                @endif
+            </a>
 
             @auth
                 @php
@@ -76,7 +106,17 @@
             <a href="{{ route('admin.dashboard') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengguna</a>
             <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengaduan</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Artikel</a>
+            <a href="{{ route('admin.articles.index') }}"
+                class="relative block text-[#007546]/90 hover:text-[#F17025]">
+                Manajemen Artikel
+
+                @if ($newArticlesCount > 0)
+                    <span
+                        class="absolute -top-1 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {{ $newArticlesCount }}
+                    </span>
+                @endif
+            </a>
         </div>
 
         @auth
