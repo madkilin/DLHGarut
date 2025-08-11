@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExchangePointController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LoginController;
@@ -45,6 +46,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
     return redirect('/dashboard'); // Redirect setelah verifikasi
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
@@ -158,3 +161,5 @@ Route::prefix('/exchange-point')->middleware('auth')->group(function () {
     Route::get('/list', [ExchangePointController::class, 'list'])->name('exchange-point.list');
     Route::put('/{id}', [ExchangePointController::class, 'update'])->name('exchange-point.update');
 });
+
+Route::post('/reset-point', [UserController::class, 'reset'])->name('user.reset');

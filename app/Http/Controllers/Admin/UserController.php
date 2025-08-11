@@ -134,4 +134,16 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
+
+    public function reset()
+    {
+        User::where('role_id', 3)->update([
+            'exp' => 0,
+            'points' => 0,
+            'level' => 0
+        ]);
+
+        return redirect()->route('users.index')
+            ->with('success', 'Exp & Level berhasil di reset');
+    }
 }

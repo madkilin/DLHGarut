@@ -10,6 +10,7 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
             <a href="/" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
+            <a href="/dashboard" class="text-lg hover:text-[#F17025] transition-colors">Dashboard</a>
             <a href="/complaint" class="text-lg hover:text-[#F17025] transition-colors">Pengaduan</a>
             <a href="/article/list" class="text-lg hover:text-[#F17025] transition-colors">Artikel</a>
             <a href="#leaderboard" class="text-lg hover:text-[#F17025] transition-colors">Peringkat</a>
