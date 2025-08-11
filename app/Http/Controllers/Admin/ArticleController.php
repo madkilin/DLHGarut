@@ -38,10 +38,6 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        if (!$article->is_read_by_admin) {
-            $article->update(['is_read_by_admin' => true]);
-        }
-
         return view('admin.article.show', compact('article'));
     }
 

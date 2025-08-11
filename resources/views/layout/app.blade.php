@@ -6,7 +6,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @vite('resources/css/app.css')
     @yield('style')
+    <title>@yield('title', 'Laravel')</title>
+
 </head>
+<style>
+    /* =========================
+   Tier Besar (Profile Page)
+   ========================= */
+
+    /* Bronze */
+    .tier-bronze {
+        border: 4px solid #cd7f32;
+    }
+
+    /* Silver */
+    .tier-silver {
+        border: 4px solid #c0c0c0;
+    }
+
+    /* Gold Glow */
+    .tier-gold {
+        border: 4px solid #ffd700;
+        animation: goldGlow 2s infinite alternate;
+    }
+
+    @keyframes goldGlow {
+        from {
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        to {
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+        }
+    }
+
+    /* Diamond Glow + Shine */
+    .tier-diamond {
+        position: relative;
+        border: 4px solid #00eaff;
+        animation: diamondGlow 2s infinite alternate;
+        overflow: hidden;
+    }
+
+    .tier-diamond::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+        transform: rotate(25deg);
+        animation: diamondShine 3s linear infinite;
+    }
+
+    @keyframes diamondGlow {
+        from {
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
+        }
+
+        to {
+            box-shadow: 0 0 40px rgba(0, 234, 255, 1);
+        }
+    }
+
+    @keyframes diamondShine {
+        0% {
+            transform: rotate(25deg) translateX(-150%);
+        }
+
+        100% {
+            transform: rotate(25deg) translateX(150%);
+        }
+    }
+
+    /* =========================
+   Tier Kecil (Navbar)
+   ========================= */
+
+    /* Bronze */
+    .avatar-sm.tier-bronze {
+        border: 2px solid #cd7f32;
+    }
+
+    /* Silver */
+    .avatar-sm.tier-silver {
+        border: 2px solid #c0c0c0;
+    }
+
+    /* Gold Glow Small */
+    .avatar-sm.tier-gold {
+        border: 2px solid #ffd700;
+        animation: goldGlowSmall 2s infinite alternate;
+    }
+
+    @keyframes goldGlowSmall {
+        from {
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        to {
+            box-shadow: 0 0 10px rgba(255, 215, 0, 1);
+        }
+    }
+
+    /* Diamond Glow + Shine Small */
+    .avatar-sm.tier-diamond {
+        position: relative;
+        border: 2px solid #00eaff;
+        animation: diamondGlowSmall 2s infinite alternate;
+        overflow: hidden;
+    }
+
+    .avatar-sm.tier-diamond::after {
+        content: '';
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+        transform: rotate(25deg);
+        animation: diamondShineSmall 3s linear infinite;
+    }
+
+    @keyframes diamondGlowSmall {
+        from {
+            box-shadow: 0 0 5px rgba(0, 234, 255, 0.6);
+        }
+
+        to {
+            box-shadow: 0 0 10px rgba(0, 234, 255, 1);
+        }
+    }
+
+    @keyframes diamondShineSmall {
+        0% {
+            transform: rotate(25deg) translateX(-150%);
+        }
+
+        100% {
+            transform: rotate(25deg) translateX(150%);
+        }
+    }
+</style>
 
 <body class="flex flex-col min-h-screen">
     {{-- navbar --}}

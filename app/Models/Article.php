@@ -15,7 +15,8 @@ class Article extends Model
         'banner',
         'description',
         'user_id',
-        'is_read_by_admin'
+        'is_read_by_admin',
+        'video'
     ];
 
     /**
@@ -40,5 +41,10 @@ class Article extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function read()
+    {
+        return $this->hasMany(ArticleUserRead::class, 'article_id', 'id');
     }
 }

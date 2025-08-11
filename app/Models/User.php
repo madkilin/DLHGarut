@@ -37,6 +37,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_read_by_admin'
     ];
 
+    protected $appends = ['avatar','leadeboard'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -92,5 +94,80 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $this->save();
+    }
+
+    public function article()
+    {
+        return $this->hasMany(Article::class, 'user_id', 'id');
+    }
+
+    public function getCurrentLevelAttribute()
+    {
+        return Level::where('required_exp', '<=', $this->exp)
+            ->orderByDesc('required_exp')
+            ->value('level') ?? 1;
+    }
+
+    public function getTierAttribute()
+    {
+        $level = $this->current_level;
+
+        return match (true) {
+            $level >= 15 => 'diamond',
+            $level >= 10 => 'platinum',
+            $level >= 5  => 'gold',
+            $level >= 3  => 'silver',
+            default      => 'bronze',
+        };
+    }
+
+    public function getTierBorderClassAttribute()
+    {
+        return match ($this->tier) {
+            'bronze'   => 'tier-bronze',
+            'silver'   => 'tier-silver',
+            'gold'     => 'tier-gold',
+            'platinum' => 'tier-platinum',
+            'diamond'  => 'tier-diamond',
+        };
+    }
+
+    public function getTierIconAttribute()
+    {
+        return match ($this->tier) {
+            'bronze'   => '🥉',
+            'silver'   => '🥈',
+            'gold'     => '🥇',
+            'platinum' => '🏆',
+            'diamond'  => '💎',
+        };
+    }
+
+    public function readArticle()
+    {
+        return $this->hasMany(ArticleUserRead::class, 'user_id', 'id');
+    }
+
+    public function exchangPoint()
+    {
+        return $this->hasMany(ExchangePoint::class, 'user_id', 'id');
+    }
+
+    public function getAvatarAttribute()
+    {
+        if ($this->profile_photo !== null) {
+            return 'storage/profile_photos/' . $this->profile_photo;
+        } else {
+            return 'default_image/default_profile.png';
+        }
+    }
+
+    public function getLeaderboardAttribute(){
+        if($this->role_id == 3){
+            $ranking = User::where('role_id', 3)->orderByDesc('exp')->pluck('id')->toArray();
+            return array_search($this->id, $ranking) + 1;
+        }else{
+            return '#';
+        }
     }
 }

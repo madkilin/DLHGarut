@@ -4,12 +4,29 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
 class ComplaintController extends Controller
 {
+
+    public function index()
+    {
+        $complaints = Complaint::where('user_id', auth()->user()->id)->get();
+        $availableStaff = User::where('role_id', 2)->get();
+        return view('user.complaint.index', [
+            'complaints' => $complaints,
+            'availableStaff' => $availableStaff
+        ]);
+    }
+
+    public function create()
+    {
+        return view('user.complaint.create');
+    }
+
     public function store(Request $request)
     {
         $user = Auth::user();

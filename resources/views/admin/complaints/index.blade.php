@@ -1,5 +1,5 @@
 @extends('layout.app')
-
+@section('title','Pengaduan')
 @section('style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <style>
@@ -123,16 +123,16 @@
 @section('content')
     <section class="py-20 bg-gradient-to-br from-green-50 via-green-100 to-green-50 min-h-screen">
         <div class="container mx-auto px-4">
-            <div class="bg-white shadow-lg rounded-3xl p-8">
+            <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
                 <h2 class="text-3xl font-extrabold text-green-700 mb-6">Daftar Pengaduan</h2>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto ">
                     <table id="complaintTable" class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-[#007546] text-white">
                             <tr>
                                 <th class="px-4 py-2 text-left text-sm font-semibold">Tanggal</th>
                                 <th class="px-4 py-2 text-left text-sm font-semibold">Pengirim</th>
                                 <th class="px-4 py-2 text-left text-sm font-semibold">Judul</th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold">Titik Koordinat</th>
+                                {{-- <th class="px-4 py-2 text-left text-sm font-semibold">Titik Koordinat</th> --}}
                                 <th class="px-4 py-2 text-left text-sm font-semibold">Alamat</th>
                                 <th class="px-4 py-2 text-left text-sm font-semibold">Status</th>
                                 <th class="px-4 py-2 text-left text-sm font-semibold">Aksi</th>
@@ -146,12 +146,12 @@
                                     <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->user->name }}</td>
                                     <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->title }}</td>
 
-                                    <td class="px-4 py-2 text-sm text-blue-600 underline">
+                                    {{-- <td class="px-4 py-2 text-sm text-blue-600 underline">
                                         <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}"
                                             class="text-blue-600 underline" target="_blank">
                                             {{ $complaint->latitude }}, {{ $complaint->longitude }}
                                         </a>
-                                    </td>
+                                    </td> --}}
                                     <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->full_address }}</td>
 
                                     <td class="px-4 py-2 text-sm">
@@ -169,11 +169,16 @@
                                     <td class="px-4 py-2">
                                         <div class="flex flex-wrap gap-1 items-center justify-center">
                                             {{-- Detail --}}
+                                            <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}"
+                                                class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
+                                                Lihat Lokasi
+                                            </a>
+
                                             <a href="{{ route('admin.complaints.show', $complaint->id) }}"
                                                 class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">
                                                 Detail
                                             </a>
-
+                                            
                                             {{-- Ubah Status --}}
                                             @if ($complaint->status === 'ditolak' || $complaint->status === 'selesai')
                                                 <button onclick="openModal('modal-status-{{ $complaint->id }}')" disabled
@@ -349,7 +354,7 @@
     <script>
         $(document).ready(function() {
             $('#complaintTable').DataTable({
-                pageLength: 5,
+                pageLength: 10,
                 language: {
                     search: "Cari:",
                     lengthMenu: "Tampilkan _MENU_",
@@ -365,13 +370,13 @@
             });
         });
 
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
+            function openModal(id) {
+                document.getElementById(id).classList.remove('hidden');
+            }
 
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
+            function closeModal(id) {
+                document.getElementById(id).classList.add('hidden');
+            }
 
         function handleStatusChange(select, id) {
             const status = select.value;

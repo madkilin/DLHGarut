@@ -13,15 +13,12 @@
                     </video>
                 </div>
             @endif
+
             <p class="text-gray-700 text-base leading-relaxed whitespace-pre-line">
                 {!! $article->description !!}
             </p>
+            <p>Viewer : {{ $article->read->count() }}</p>
 
-            <div class="mt-12">
-                <a href="{{ route('artikel.index') }}" class="inline-block text-sm text-[#F17025] font-semibold hover:underline">
-                    ← Kembali ke Daftar Artikel
-                </a>
-            </div>
         </div>
     </section>
 @endsection

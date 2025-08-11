@@ -111,12 +111,12 @@ class UserController extends Controller
 
         $user->status = $request->status;
 
-        if ($request->status === 'nonactive') {
-            // Simpan deskripsi alasan jika ada
-            $user->note = $request->keterangan === 'manual' ? $request->keterangan_manual : $request->keterangan;
-        } else {
-            $user->note = null; // Kosongkan jika bukan nonactive
-        }
+        // if ($request->status === 'nonactive') {
+        //     // Simpan deskripsi alasan jika ada
+        //     // $user->note = $request->keterangan === 'manual' ? $request->keterangan_manual : $request->keterangan;
+        // } else {
+        //     // $user->note = null; // Kosongkan jika bukan nonactive
+        // }
         $user->is_read_by_admin = true;
 
         $user->save();

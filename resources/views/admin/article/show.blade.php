@@ -5,6 +5,13 @@
         <h2 class="text-3xl font-bold mb-4">{{ $article->title }}</h2>
         <p class="text-gray-500 mb-2">Ditulis oleh: <strong>{{ $article->user->name }}</strong></p>
         <img src="{{ asset('storage/' . $article->banner) }}" alt="Banner" class="w-full rounded shadow mb-6">
+        @if ($article->video)
+            <div class="flex justify-center">
+                <video class="w-[640px] h-[360px]" controls>
+                    <source src="{{ asset('storage/' . $article->video) }}" type="video/mp4">
+                </video>
+            </div>
+        @endif
         <div class="prose max-w-none">
             {!! $article->description !!}
         </div>

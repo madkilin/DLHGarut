@@ -24,7 +24,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-20">
             @foreach ($highlightArticles as $item)
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl hover:scale-[1.01] duration-300">
-                <img src="{{ asset($item->banner) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
+                <img src="{{ asset('storage/' . $item->banner) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-[#007546] mb-2">{{ $item->title }}</h3>
                     <p class="text-sm text-gray-500 mb-1">Oleh {{ $item->user->name }}</p>
@@ -51,7 +51,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         @foreach ($articles as $item)
             <div class="bg-white rounded-xl shadow-md overflow-hidden transition hover:shadow-lg hover:scale-[1.01] duration-300">
-                <img src="{{ asset($item->banner) }}" alt="{{ $item->title }}" class="w-full h-36 object-cover">
+                <img src="{{ asset('storage/' . $item->banner) }}" alt="{{ $item->title }}" class="w-full h-36 object-cover">
                 <div class="p-4">
                     <h4 class="text-lg font-semibold text-[#007546] mb-1">{{ $item->title }}</h4>
                     <p class="text-sm text-gray-500 mb-1">Oleh {{ $item->user->name }}</p>

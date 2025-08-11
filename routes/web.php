@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ExchangePointController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Petugas\ComplaintController as PetugasComplaintController;
 use App\Http\Controllers\Petugas\ProofController as PetugasProofController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardControll
 use App\Http\Controllers\Petugas\ArticleController as PetugasArticleController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\User\ComplaintController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -49,10 +52,11 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Link verifikasi telah dikirim!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 // end Email Verif
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/article', fn() => view('article'));
-    Route::get('/profile', fn() => view('user.profile'))->name('user.profile');
-    Route::get('/complaint', fn() => view('user.complaint'));
+    Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
+    // Route::get('/profile', fn() => view('user.profile'))->name('user.profile');
+    // Route::get('/complaint', fn() => view('user.complaint'));
     // Untuk POST
     Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('/complaint', [ComplaintController::class, 'store'])->name('complaint.store');
@@ -64,7 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::post('/laporan', [ReportController::class, 'submitReport'])->middleware('auth')->name('laporan.submit');
 
 // Landing Page
-Route::get('/', fn() => view('landingPage'));
+Route::get('/', [LandingPageController::class, 'index'])->name('landing-page.index');
 
 // Admin Dashboard
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -123,3 +127,34 @@ Route::prefix('petugas')
     ->group(function () {
         Route::resource('articles', PetugasArticleController::class);
     });
+Route::get('/article', [ArticleController::class, 'index'])->name('article.index');
+Route::get('/article/{slug}/detail', [ArticleController::class, 'detail'])->name('article.detail');
+
+Route::prefix('/article')->middleware('auth')->group(function () {
+    Route::get('/list', [ArticleController::class, 'list'])->name('article.list');
+    Route::get('/create', [ArticleController::class, 'create'])->name('article.create');
+    Route::post('/', [ArticleController::class, 'store'])->name('article.store');
+    Route::put('/{id}/update-status', [ArticleController::class, 'updateStatus'])->name('article.update-status');
+});
+
+Route::prefix('/complaint')->middleware('auth')->group(function () {
+    Route::get('/', [ComplaintController::class, 'index'])->name('complaint.index');
+    Route::get('/{id}/show', [ComplaintController::class, 'show'])->name('complaint.show');
+    Route::get('/create', [ComplaintController::class, 'create'])->name('complaint.create');
+});
+
+Route::prefix('/reward')->middleware('auth')->group(function () {
+    Route::get('/', [RewardController::class, 'index'])->name('reward.index');
+    Route::get('/create', [RewardController::class, 'create'])->name('reward.create');
+    Route::post('/', [RewardController::class, 'store'])->name('reward.store');
+    Route::get('/{id}/edit', [RewardController::class, 'edit'])->name('reward.edit');
+    Route::put('/{id}', [RewardController::class, 'update'])->name('reward.update');
+    Route::get('/{id}', [RewardController::class, 'show'])->name('reward.show');
+});
+
+Route::prefix('/exchange-point')->middleware('auth')->group(function () {
+    Route::get('/', [ExchangePointController::class, 'index'])->name('exchange-point.index');
+    Route::post('/', [ExchangePointController::class, 'store'])->name('exchange-point.store');
+    Route::get('/list', [ExchangePointController::class, 'list'])->name('exchange-point.list');
+    Route::put('/{id}', [ExchangePointController::class, 'update'])->name('exchange-point.update');
+});

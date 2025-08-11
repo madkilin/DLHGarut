@@ -1,5 +1,4 @@
 @extends('layout.app')
-@section('title','Artikel')
 @section('style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <style>
@@ -120,13 +119,15 @@
         }
     </style>
 @endsection
-
 @section('content')
     <section class="py-20 bg-gradient-to-br from-green-50 via-green-100 to-green-50 min-h-screen">
         <div class="container mx-auto px-4">
             <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <h2 class="text-3xl font-extrabold text-green-700">Manajemen Artikel</h2>
+                    <a href="{{ route('article.create') }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">
+                        + Tambah Artikel
+                    </a>
                 </div>
 
                 <div class="overflow-x-auto rounded-lg">
@@ -136,7 +137,6 @@
                                 <th class="text-left text-sm font-semibold">Judul</th>
                                 <th class="text-left text-sm font-semibold">Penulis</th>
                                 <th class="text-left text-sm font-semibold">Slug</th>
-                                <th class="text-left text-sm font-semibold">Status</th>
                                 <th class="text-left text-sm font-semibold">Aksi</th>
                             </tr>
                         </thead>
@@ -146,19 +146,13 @@
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->title }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->user->name }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->slug }}</td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">
-
-                                        <button onclick="openModal('modal-status-{{ $article->id }}')" class="focus:outline-none">
-                                            @if ($article->is_read_by_admin)
-                                                <span class="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">Konfirmasi</span>
-                                            @else
-                                                <span class="inline-block bg-yellow-500 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">Menunggu
-                                                </span>
-                                            @endif
-                                        </button>
-                                    </td>
                                     <td class="px-4 py-4 space-x-2">
                                         <a href="{{ route('admin.articles.show', $article) }}" class="relative btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">Lihat
+                                            @if (!$article->is_read_by_admin)
+                                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                                    !
+                                                </span>
+                                            @endif
                                         </a>
                                         <form action="{{ route('admin.articles.destroy', $article) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus artikel ini?');">
                                             @csrf
@@ -175,33 +169,8 @@
                 </div>
             </div>
         </div>
-        @foreach ($articles as $article)
-            <!-- Modal untuk edit status -->
-            <div id="modal-status-{{ $article->id }}" class="custom-modal fixed inset-0 flex items-center justify-center hidden z-50">
-                <div class="bg-white rounded-xl max-w-md w-full p-8 relative">
-                    <button onclick="closeModal('modal-status-{{ $article->id }}')" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 focus:outline-none text-2xl">&times;</button>
-                    <h3 class="text-lg font-bold mb-4">Ubah Status Artikel</h3>
-                    <form action="{{ route('article.update-status', $article->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <label for="status-{{ $article->id }}" class="block mb-2 font-semibold">Status</label>
-                        <select name="status" id="status-{{ $article->id }}" required>
-                            <option disabled selected>-- Pilih Status --</option>
-                            <option value="1" @if ($article->status == '1') selected @endif>Konfirmasi</option>
-                            <option value="0" @if ($article->status == '0') selected @endif>Menunggu</option>
-                        </select>
-
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button type="button" onclick="closeModal('modal-status-{{ $article->id }}')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        @endforeach
     </section>
 @endsection
-
 @section('script')
     <!-- jQuery dan DataTables JS CDN -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -230,13 +199,5 @@
                 },
             });
         });
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
     </script>
 @endsection

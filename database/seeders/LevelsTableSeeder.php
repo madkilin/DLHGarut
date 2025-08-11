@@ -14,13 +14,20 @@ class LevelsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('levels')->insert([
-            ['level' => 1, 'required_exp' => 100],
-            ['level' => 2, 'required_exp' => 250],
-            ['level' => 3, 'required_exp' => 375],
-            ['level' => 4, 'required_exp' => 500],
-            ['level' => 5, 'required_exp' => 700],
-            // Tambahkan lebih banyak sesuai kebutuhan
-        ]);
+        $levels = [];
+
+        $requiredExp = 0;
+        for ($level = 1; $level <= 21; $level++) {
+            $levels[] = [
+                'level' => $level,
+                'required_exp' => $requiredExp,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+
+            $requiredExp += 10; // setiap level naik 10 XP
+        }
+
+        DB::table('levels')->insert($levels);
     }
 }

@@ -32,7 +32,7 @@
                 <!-- Dropdown Profil -->
                 <div class="relative inline-block text-left">
                     <button id="profileDropdownButton" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="{{ asset('storage/profile_photos/' . ($user->profile_photo ?? 'default_image/default_profile.jpg')) }}"
+                        <img src="{{ asset($user->avatar) }}"
                             alt="Profile" class="w-8 h-8 rounded-full">
                         <span class="text-lg text-white hover:text-[#F17025]">Hi, {{ $user->name }} ▾</span>
                     </button>
@@ -40,7 +40,7 @@
                     <div id="profileDropdownMenu"
                         class="absolute right-0 mt-3 w-72 bg-white rounded-lg shadow-xl z-10 hidden">
                         <div class="flex items-start p-4 border-b">
-                            <img src="{{ asset('storage/profile_photos/' . ($user->profile_photo ?? 'default_image/default_profile.jpg')) }}"
+                            <img src="{{ asset($user->avatar) }}"
                                 alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
                             <div class="flex-1">
                                 <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
@@ -73,7 +73,7 @@
         class="hidden md:hidden absolute top-16 left-0 w-full bg-white text-[#007546] px-4 py-6 z-40 space-y-4 transition-all duration-300">
         @auth
             <div class="flex items-start p-4">
-                <img src="{{ asset('storage/profile_photos/' . ($user->profile_photo ?? 'default_image/default_profile.jpg')) }}"
+                <img src="{{ asset($user->avatar) }}"
                     alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
                 <div class="flex-1 text-start">
                     <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
