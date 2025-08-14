@@ -140,7 +140,7 @@ class UserController extends Controller
         User::where('role_id', 3)->update([
             'exp' => 0,
             'points' => 0,
-            'level' => 0
+            'level' => 1
         ]);
 
         return redirect()->route('users.index')

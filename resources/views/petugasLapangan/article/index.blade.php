@@ -127,10 +127,10 @@
             <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <h2 class="text-3xl font-extrabold text-green-700">Manajemen Artikel</h2>
-                    <a href="{{ route('petugas.articles.create') }}"
+                    {{-- <a href="{{ route('petugas.articles.create') }}"
                         class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">
                         + Tambah Artikel
-                    </a>
+                    </a> --}}
                 </div>
 
                 <div class="overflow-x-auto rounded-lg">

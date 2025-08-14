@@ -18,7 +18,7 @@ class ArticleController extends Controller
     {
         // Tandai semua artikel sebagai sudah dilihat
 
-        $articles = Article::latest()->get();
+        $articles = Article::orderBy('created_at','DESC')->get();
 
         return view('admin.article.index', compact('articles'));
     }
@@ -26,7 +26,18 @@ class ArticleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create() {
+        $users = [];
+
+        if (Auth::user()->role_id == 1) {
+            // Jika admin, tampilkan user dengan role_id 2 (kepala inventaris misalnya)
+            $users = User::where('id', '!=', Auth::id())
+                ->where('role_id', 2)
+                ->get();
+        }
+
+        return view('petugasLapangan.article.create', compact('users'));
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
-            <img src="{{ asset('build/assets/channels4_profile.jpg') }}" alt="Logo" class="w-10 h-10 rounded-full">
+            <img src="{{ asset('default_image/logo.jpg') }}" alt="Logo" class="w-10 h-10 rounded-full">
             <span class="text-2xl font-bold px-4">DLH Garut</span>
         </div>
 
@@ -37,19 +37,13 @@
                     </span>
                 @endif
             </a>
-            <a href="{{ route('reward.index') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+            {{-- <a href="{{ route('reward.index') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
                 Hadiah
-                {{-- @if ($newArticlesCount > 0)
-                    <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
-                        {{ $newArticlesCount }}
-                    </span>
-                @endif --}}
             </a>
 
             <a href="{{ route('exchange-point.list') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
                 Penukaran Poin
-            </a>
-
+            </a> --}}
             @auth
                 @php
                     $user = Auth::user();
@@ -104,11 +98,12 @@
         @endauth
 
         <div class="border-t border-[#007546]/90 my-4 pt-4 space-y-4">
-            <a href="{{ route('admin.dashboard') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengguna</a>
-            <a href="#" class="block text-[#007546]/90 hover:text-[#F17025]">Manajemen Pengaduan</a>
+            <a href="/" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
+            <a href="{{ route('admin.dashboard') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Dashboard</a>
+            <a href="{{ route('users.index') }}" class="block text-[#007546]/90 hover:text-[#F17025]">User</a>
+            <a href="{{ route('admin.complaints.index') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Pengaduan</a>
             <a href="{{ route('admin.articles.index') }}" class="relative block text-[#007546]/90 hover:text-[#F17025]">
-                Manajemen Artikel
+                Artikel
 
                 @if ($newArticlesCount > 0)
                     <span class="absolute -top-1 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">

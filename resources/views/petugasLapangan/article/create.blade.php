@@ -12,7 +12,7 @@
                 <input type="text" name="title" class="w-full border px-4 py-2 rounded" required>
             </div>
 
-            @if (auth()->user()->role_id == 1)
+            {{-- @if (auth()->user()->role_id == 1)
                 <div class="mb-4">
                     <label class="block mb-1 font-medium">Penulis</label>
                     <select name="user_id" class="w-full border px-4 py-2 rounded" required>
@@ -22,7 +22,7 @@
                         @endforeach
                     </select>
                 </div>
-            @endif
+            @endif --}}
 
             <div class="mb-4">
                 <label class="block mb-1 font-medium">Banner (minimal 800x400)</label>

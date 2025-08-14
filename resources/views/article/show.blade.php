@@ -69,12 +69,12 @@
                                     .then(result => {
                                         indicator.innerText = result.message;
                                         setTimeout(() => document.body.removeChild(indicator),
-                                            3000);
+                                            60000);
                                     })
                                     .catch(() => {
                                         indicator.innerText = 'Gagal klaim reward';
                                         setTimeout(() => document.body.removeChild(indicator),
-                                            3000);
+                                            60000);
                                     });
                             }
                         }, 1000);

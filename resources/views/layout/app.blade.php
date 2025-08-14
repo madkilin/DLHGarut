@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @vite('resources/css/app.css')
     @yield('style')
-    <title>@yield('title', 'Laravel')</title>
+    <title>@yield('title', 'DLH Garut')</title>
 
 </head>
 <style>
@@ -161,7 +161,7 @@
         @if ($user->role_id == 1)
             @include('layout.admin.navbar')
         @elseif ($user->role_id == 2)
-            @include('layout.admin.navbar')
+            @include('layout.petugas.navbar')
         @else
             @include('layout.navbar')
         @endif

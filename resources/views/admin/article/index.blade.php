@@ -127,12 +127,17 @@
             <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <h2 class="text-3xl font-extrabold text-green-700">Manajemen Artikel</h2>
+                    <a href="{{ route('admin.articles.create') }}"
+                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">
+                        + Tambah Artikel
+                    </a>
                 </div>
 
                 <div class="overflow-x-auto rounded-lg">
                     <table id="articleTable" class="min-w-full">
                         <thead>
                             <tr>
+                                <th class="text-left text-sm font-semibold">Waktu</th>
                                 <th class="text-left text-sm font-semibold">Judul</th>
                                 <th class="text-left text-sm font-semibold">Penulis</th>
                                 <th class="text-left text-sm font-semibold">Slug</th>
@@ -143,6 +148,7 @@
                         <tbody>
                             @foreach ($articles as $article)
                                 <tr>
+                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->created_at->format('d-m-Y') }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->title }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->user->name }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->slug }}</td>
@@ -212,6 +218,7 @@
             $('#articleTable').DataTable({
                 "pageLength": 10,
                 "lengthChange": true,
+                "order": [[0, "desc"]],
                 "lengthMenu": [
                     [10, 25, 100],
                     [10, 25, 100]

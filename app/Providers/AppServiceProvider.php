@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layout.admin.navbar', function ($view) {
             $newArticlesCount = Article::where('is_read_by_admin', false)->count();
             $newUserCount = User::where('is_read_by_admin', false)->count();
-            $newComplaintsCount = \App\Models\Complaint::where('read_by_admin', false)->count();
+            $newComplaintsCount = \App\Models\Complaint::whereNotIn('status',['selesai','ditolak'])->count();
             $newComplaintsPetugasCount = \App\Models\Complaint::where('read_by_assigned_user', false)->count();
             $newComplaintsUserCount = \App\Models\Complaint::where('read_by_user', false)->count();
 

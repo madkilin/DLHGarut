@@ -79,26 +79,30 @@
                         <p class="text-sm text-gray-500 mt-1">Anggota sejak Januari 2023</p>
                     </div>
                     <div class="flex-1 mx-auto">
-                        <div class="flex justify-between items-center text-xs text-gray-600">
-                            <span>Level: {{ $user->level }} | Points: {{ $user->points }}</span>
-                            <a href="javascript:void(0);" onclick="openModal('swapPointsModal')" class="bg-[#F17025] hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 shadow-md">
-                                Tukar Point
-                            </a>
-                        </div>
+                        @if (auth()->user()->role_id == 3)
+                            <div class="flex justify-between items-center text-xs text-gray-600">
+                                <span>Level: {{ $user->level }} | Points: {{ $user->points }}</span>
+                                <a href="javascript:void(0);" onclick="openModal('swapPointsModal')" class="bg-[#F17025] hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 shadow-md">
+                                    Tukar Point
+                                </a>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
+                            </div>
+                            <p class="text-[10px] text-gray-500 mt-1 text-center sm:text-left">{{ $user->exp }} / {{ $maxExp }} EXP</p>
+                        @endif
 
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                            <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
-                        </div>
-                        <p class="text-[10px] text-gray-500 mt-1 text-center sm:text-left">{{ $user->exp }} / {{ $maxExp }} EXP</p>
                     </div>
                 </div>
-                <div class="mt-5">
-                    <h3 class="text-lg font-semibold text-gray-700">Statistik</h3>
-                    <ul class="mt-2 text-gray-600">
-                        <li>- Total Artikel Dibaca: <strong>{{ $user->readArticle->count() }}</strong></li>
-                        <li>- Peringkat di Leaderboard: <strong>#{{ $user->leaderboard }}</strong></li>
-                    </ul>
-                </div>
+                @if(auth()->user()->role_id == 3)
+                    <div class="mt-5">
+                        <h3 class="text-lg font-semibold text-gray-700">Statistik</h3>
+                        <ul class="mt-2 text-gray-600">
+                            <li>- Total Artikel Dibaca: <strong>{{ $user->readArticle->count() }}</strong></li>
+                            <li>- Peringkat di Leaderboard: <strong>#{{ $user->leaderboard }}</strong></li>
+                        </ul>
+                    </div>
+                @endif
 
                 @php
                     $badges = [['name' => 'Badge Explorer', 'unlocked' => true, 'progress' => 100, 'points' => 0], ['name' => 'Top Contributor', 'unlocked' => false, 'progress' => 70, 'points' => 0], ['name' => 'Poin Enthusiast', 'unlocked' => false, 'progress' => 0, 'points' => 120], ['name' => 'Poin Enthusiast', 'unlocked' => false, 'progress' => 0, 'points' => 120], ['name' => 'Poin expert', 'unlocked' => false, 'progress' => 0, 'points' => 130], ['name' => 'Community Hero', 'unlocked' => true, 'progress' => 100, 'points' => 0]];

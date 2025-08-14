@@ -144,6 +144,7 @@
                             <tr>
                                 <th class="text-left text-sm font-semibold">Nama</th>
                                 <th class="text-left text-sm font-semibold">Email</th>
+                                <th class="text-left text-sm font-semibold">Role</th>
                                 <th class="text-left text-sm font-semibold">Status</th>
                                 <th class="text-left text-sm font-semibold">Aksi</th>
                             </tr>
@@ -153,6 +154,7 @@
                                 <tr>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $user->name }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $user->email }}</td>
+                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $user->role->name }}</td>
                                     <td class="px-4 py-4 text-sm">
                                         <button onclick="openModal('modal-status-{{ $user->id }}')" class="focus:outline-none">
                                             @switch($user->status)

@@ -20,7 +20,7 @@
 
             <!-- Kanan: Gambar Ilustrasi -->
             <div class="w-full md:w-1/2 flex justify-center md:justify-end relative py-4">
-                <img src="{{ asset('build/assets/ilstrasi aja.webp') }}" alt="Ilustrasi Website" class="max-w-full h-auto rounded-3xl shadow-2xl">
+                <img src="{{ asset('default_image/bg_dlh.png') }}" alt="Ilustrasi Website" class="max-w-full h-auto rounded-3xl shadow-2xl">
                 <!-- Floating decorative SVG -->
                 <svg class="absolute top-0 right-0 w-32 h-32 opacity-20 transform translate-x-12 -translate-y-12" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#86efac" d="M39.5,-56.9C52.8,-47.4,65.5,-39.2,72.1,-27.2C78.8,-15.1,79.3,0.9,71.9,13.5C64.5,26.1,49.2,35.2,35.7,46.6C22.1,58,11.1,71.8,-2.5,75.2C-16,78.5,-32.1,71.3,-45.8,60.4C-59.5,49.5,-70.9,35,-74.9,18.8C-78.8,2.7,-75.3,-15.1,-65.3,-29.2C-55.4,-43.4,-38.9,-53.9,-22.4,-61.7C-5.9,-69.5,10.5,-74.6,24.7,-70.8C38.9,-66.9,51.1,-54.4,39.5,-56.9Z" transform="translate(100 100)" />
@@ -177,7 +177,7 @@
         <div class="max-w-7xl mx-auto px-6 md:flex md:items-center gap-12">
             <!-- Gambar Ilustrasi -->
             <div class="md:w-1/2 mb-10 md:mb-0">
-                <img src="{{ asset('build/assets/ilstrasi aja.webp') }}" alt="Lingkungan" class="w-full h-auto rounded-xl shadow-md">
+                <img src="{{ asset('default_image/bg_dlh3.png') }}" alt="Lingkungan" class="w-full h-auto rounded-xl shadow-md">
             </div>
 
             <!-- Teks Tentang Kami -->
@@ -260,7 +260,7 @@
                 </div>
             </div>
         </div>
-
+{{-- 
         <!-- Langkah 5 di Tengah -->
         <div class="max-w-3xl mx-auto mt-10 px-4 relative z-10">
             <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#dc2626] flex items-start gap-4">
@@ -271,7 +271,7 @@
                         pengelolaan lingkungan.</p>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </section>
 @endsection
 @section('script')

@@ -46,7 +46,6 @@ class ArticleController extends Controller
             'title' => 'required|max:255',
             'banner' => 'required|image', //tambahkan ini untuk mengatur dimensi/ukuran yang diinginkan karena jika tidak sesuai dengan ukuran ini akan error-> |dimensions:min_width=800,min_height=400
             'description' => 'required',
-            'user_id' => 'nullable|exists:users,id',
         ], [
             'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
         ]);
@@ -58,10 +57,10 @@ class ArticleController extends Controller
             'slug' => Str::slug($request->title),
             'banner' => $path,
             'description' => $request->description,
-            'user_id' => Auth::user()->role_id == 1 ? $request->user_id : Auth::id(),
+            'user_id' => auth()->user()->id,
         ]);
 
-        return redirect()->route('petugas.articles.index')->with('success', 'Artikel berhasil dibuat.');
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dibuat.');
     }
 
     /**

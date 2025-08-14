@@ -128,7 +128,7 @@ Route::prefix('admin')
 Route::prefix('petugas')
     ->as('petugas.')
     ->group(function () {
-        Route::resource('articles', PetugasArticleController::class);
+        Route::resource('articles', PetugasArticleController::class)->except('create');
     });
 Route::get('/article', [ArticleController::class, 'index'])->name('article.index');
 Route::get('/article/{slug}/detail', [ArticleController::class, 'detail'])->name('article.detail');

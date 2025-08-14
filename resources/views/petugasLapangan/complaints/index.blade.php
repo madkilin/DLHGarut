@@ -144,40 +144,35 @@
                                         {{ $complaint->created_at->format('d-m-Y') }}</td>
                                     <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->user->name }}</td>
                                     <td class="px-4 py-2 text-sm text-blue-600 underline">
-                                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}"
-                                            class="text-blue-600 underline" target="_blank">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}" class="text-blue-600 underline" target="_blank">
                                             {{ $complaint->latitude }}, {{ $complaint->longitude }}
                                         </a>
                                     </td>
                                     <td class="px-4 py-2 text-sm text-gray-700">Perum Rabany Regency</td>
                                     <td class="px-4 py-2 flex gap-2">
-                                        <a href="{{ route('petugas.complaints.show', $complaint->id) }}"
-                                            class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">
+                                        <a href="{{ route('petugas.complaints.show', $complaint->id) }}" class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">
                                             Detail
                                         </a>
                                         @if ($complaint->proof === null)
-                                            <a href="{{ route('petugas.proof.create', $complaint->id) }}"
-                                                class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
+                                            <a href="{{ route('petugas.proof.create', $complaint->id) }}" class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
                                                 Kirim Bukti
                                                 @if (!$complaint->read_by_assigned_user)
-                                                    <span
-                                                        class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                                                         !
                                                     </span>
                                                 @endif
                                             </a>
                                         @endif
                                         @if ($complaint->status === 'ditolak')
-                                            <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}"
-                                                class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20"
-                                                disabled>
+                                            <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}" class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20" disabled>
                                                 Lihat Bukti
                                             </a>
                                         @else
-                                            <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}"
-                                                class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20">
-                                                Lihat Bukti
-                                            </a>
+                                            @if ($complaint->proof)
+                                                <a href="{{ route('petugas.proof.show', $complaint->proof->id ?? 0) }}" class="btn bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20">
+                                                    Lihat Bukti
+                                                </a>
+                                            @endif
                                         @endif
 
                                     </td>

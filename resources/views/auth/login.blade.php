@@ -13,7 +13,7 @@
 
     <!-- Gambar -->
     <div class="md:w-1/2 w-full h-64 md:h-auto">
-      <img src="{{ asset('build/assets/ilstrasi aja.webp') }}" alt="Login Image"
+      <img src="{{ asset('default_image/logo.jpg') }}" alt="Login Image"
         class="object-cover w-full h-full" />
     </div>
 
