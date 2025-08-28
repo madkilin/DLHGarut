@@ -14,6 +14,10 @@
    Tier Besar (Profile Page)
    ========================= */
 
+    .pointer {
+        cursor: pointer;
+    }
+
     /* Bronze */
     .tier-bronze {
         border: 4px solid #cd7f32;

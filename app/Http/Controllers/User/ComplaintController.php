@@ -76,13 +76,6 @@ class ComplaintController extends Controller
 
         ]);
 
-        // Menambahkan EXP dan POINT ke user
-        if ($user) {
-            $user->addExp(10); // Menambahkan EXP
-            $user->points += 10; // Menambahkan POINT
-            $user->save();
-        }
-
         // Menghapus dd() setelah pengujian, karena ini hanya untuk debugging
         return redirect()->back()->with('success', 'Pengaduan berhasil dikirim. Kamu mendapat 10 EXP dan 10 POINT!');
     }

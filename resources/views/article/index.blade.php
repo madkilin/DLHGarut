@@ -30,7 +30,7 @@
                     <p class="text-sm text-gray-500 mb-1">Oleh {{ $item->user->name }}</p>
 
 
-                    <p class="text-gray-700 text-sm mb-4">{{ Str::limit($item->description, 100) }}</p>
+                    <p class="text-gray-700 text-sm mb-4">{!! Str::limit($item->description, 100) !!}</p>
                     <a href="{{ route('artikel.show', $item->slug) }}" class="text-[#F17025] font-semibold hover:underline">Baca Selengkapnya →</a>
                 </div>
             </div>

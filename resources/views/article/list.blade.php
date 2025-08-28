@@ -137,6 +137,8 @@
                                 <th class="text-left text-sm font-semibold">Judul</th>
                                 <th class="text-left text-sm font-semibold">Penulis</th>
                                 <th class="text-left text-sm font-semibold">Slug</th>
+                                <th class="text-left text-sm font-semibold">Dibuat pada</th>
+                                <th class="text-left text-sm font-semibold">Dikonfirmasi pada</th>
                                 <th class="text-left text-sm font-semibold">Aksi</th>
                             </tr>
                         </thead>
@@ -146,6 +148,8 @@
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->title }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->user->name }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->slug }}</td>
+                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->created_at }}</td>
+                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->confirmed_at }}</td>
                                     <td class="px-4 py-4 space-x-2">
                                         <a href="{{ route('admin.articles.show', $article) }}" class="relative btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">Lihat
                                             @if (!$article->is_read_by_admin)

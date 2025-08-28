@@ -42,9 +42,9 @@
                     </button>
 
 
-                    <div id="profileDropdownMenu" class="absolute right-0 mt-3 w-72 bg-white rounded-lg shadow-xl z-10 hidden">
+                    <div id="profileDropdownMenu" class="absolute right-0 mt-3 w-72 bg-white rounded-lg shadow-xl z-10 hidden ">
                         <div class="flex items-start p-4 border-b">
-                            <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
+                            <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1  {{ $user->tier_border_class }}">
 
                             <div class="flex-1">
                                 <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
@@ -56,8 +56,8 @@
                                 <p class="text-[10px] text-gray-500 mt-1">{{ $user->exp }} / {{ $maxExp }} EXP</p>
                             </div>
                         </div>
-                        {{-- <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a> --}}
-                        {{-- <a href="{{ route('exchange-point.index') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat Penukaran</a> --}}
+                        <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
+                        <a href="{{ route('exchange-point.index') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat Penukaran</a>
                         {{-- <a href="{{ route('complaints.history') }}" class="relative block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat
                             @if ($newComplaintsUserCount > 0)
                                 <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">

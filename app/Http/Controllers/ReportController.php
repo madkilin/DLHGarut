@@ -17,8 +17,6 @@ class ReportController extends Controller
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $user->addExp(20); // Tambah EXP
-
         return redirect()->back()->with('success', 'Laporan berhasil! Kamu dapat 20 EXP!');
     }
 }

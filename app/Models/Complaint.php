@@ -20,7 +20,9 @@ class Complaint extends Model
         'photos',
         'note',
         'video',
-        'status'
+        'status',
+        'read_at',
+        'read_by_assigned_user'
     ];
 
     protected $casts = [

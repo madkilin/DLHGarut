@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,20 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email tidak terdaftar.',
+            ])->withInput();
+        }
+
+        if ($user->status !== 'active') {
+            return back()->withErrors([
+                'email' => 'Akun Anda tidak aktif. Silakan hubungi admin.',
+            ])->withInput();
+        }
+
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
@@ -30,6 +45,7 @@ class LoginController extends Controller
             'email' => 'Email atau password salah.',
         ])->withInput();
     }
+
 
     public function logout(Request $request)
     {

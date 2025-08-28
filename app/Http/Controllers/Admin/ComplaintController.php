@@ -35,7 +35,7 @@ class ComplaintController extends Controller
         // Default: semua notifikasi dianggap sudah dibaca
         $complaint->read_by_admin = true;
         $complaint->read_by_user = true;
-        $complaint->read_by_assigned_user = true;
+        $complaint->read_by_assigned_user = false;
 
         // Status-based notifications
         switch ($request->status) {

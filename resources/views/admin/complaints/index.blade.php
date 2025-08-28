@@ -234,13 +234,13 @@
                                             @endif
 
                                             {{-- Print Lengkap --}}
-                                            @if ($complaint->status === 'selesai')
+                                            {{-- @if ($complaint->status === 'selesai')
                                                 <a href="{{ route('admin.complaints.print.complete', $complaint->id) }}"
                                                     target="_blank"
                                                     class="btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300 w-30">
                                                     Print Seluruh Data
                                                 </a>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </td>
 
@@ -297,7 +297,7 @@
 
                                             <div id="note-container-{{ $complaint->id }}" class="mb-4 hidden">
                                                 <label class="block font-semibold mb-1">Catatan Manual</label>
-                                                <textarea name="note" id="note-{{ $complaint->id }}" rows="3" class="w-full px-3 py-2 border rounded-lg"></textarea>
+                                                <textarea name="note" id="note-{{ $complaint->id }}" rows="3" class="w-full px-3 py-2 border rounded-lg" required></textarea>
                                             </div>
 
                                             <div class="flex justify-end gap-2">

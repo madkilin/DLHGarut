@@ -44,6 +44,7 @@ class UserSeeder extends Seeder
             User::updateOrCreate([
                 'email' => $value['email']
             ],[
+                'password' => bcrypt('password'),
                 'name' => $value['name'],
                 'nik' => $value['nik'],
                 'phone' => $value['phone'],

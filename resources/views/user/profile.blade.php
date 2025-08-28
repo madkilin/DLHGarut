@@ -66,11 +66,12 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
 
                     <div class="relative w-28 h-28 mx-auto sm:mx-0">
-                        <img src="{{ asset($user->avatar) }}" alt="User Profile" class="w-28 h-28 rounded-full shadow-md {{ $user->tier_border_class }}">
-
-                        <div class="absolute -top-2 -right-2 bg-white rounded-full shadow-lg border-2 border-gray-200 w-7 h-7 flex items-center justify-center text-sm">
-                            {{ $user->tier_icon }}
-                        </div>
+                        <img src="{{ asset($user->avatar) }}" alt="User Profile" class="w-28 h-28 rounded-full shadow-md {{ $user->role_id == 3 ? $user->tier_border_class : '' }}">
+                        @if ($user->role_id == 3)
+                            <div class="absolute -top-2 -right-2 bg-white rounded-full shadow-lg border-2 border-gray-200 w-7 h-7 flex items-center justify-center text-sm">
+                                {{ $user->tier_icon }}
+                            </div>
+                        @endif
                     </div>
 
                     <div class="text-center mx-3 sm:text-left">
@@ -94,7 +95,7 @@
 
                     </div>
                 </div>
-                @if(auth()->user()->role_id == 3)
+                @if (auth()->user()->role_id == 3)
                     <div class="mt-5">
                         <h3 class="text-lg font-semibold text-gray-700">Statistik</h3>
                         <ul class="mt-2 text-gray-600">

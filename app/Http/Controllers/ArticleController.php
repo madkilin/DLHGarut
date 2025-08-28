@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -138,7 +139,7 @@ class ArticleController extends Controller
             'title' => 'required',
             'description' => 'required',
             'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video' => 'required|mimes:mp4,avi,mov,wmv|max:51200' // 50MB
+            'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200' // 50MB
         ]);
         $slug = Str::slug($request->title);
         if ($request->hasFile('banner')) {
@@ -157,24 +158,19 @@ class ArticleController extends Controller
             'video' => $videoPath ?? null,
         ]);
 
-        // Menambahkan EXP dan POINT ke user
-        if ($user) {
-            $user->addExp(1); // Menambahkan EXP
-            $user->points += 1; // Menambahkan POINT
-            $user->save();
-        }
-
         return redirect()->route('article.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     public function updateStatus(Request $request, $id)
     {
         // dd($request->all());
+        DB::beginTransaction();
         $article = Article::find($id);
         $user = User::where('id', $article->user_id)->first();
         $article->is_read_by_admin = $request->status;
-        $article->save();
+
         if ($request->status == 1) {
+            $article->confirmed_at = Carbon::now();
             if ($user) {
                 $user->addExp(10); // Menambahkan EXP
                 $user->points += 10; // Menambahkan POINT
@@ -182,7 +178,15 @@ class ArticleController extends Controller
             }
         }
 
-        return redirect('/admin/articles')->with('success', 'Artikel berhasil dikonfirmasi.');
+        $data = $article->save();
+        if($data){
+            DB::commit();
+            return redirect('/admin/articles')->with('success', 'Artikel berhasil dikonfirmasi.');
+        }else{
+            Db::rollBack();
+            return redirect('/admin/articles')->with('error', 'Artikel gagal dikonfirmasi.');
+        }
+
     }
 
     public function detail(string $slug)

@@ -16,7 +16,8 @@ class Article extends Model
         'description',
         'user_id',
         'is_read_by_admin',
-        'video'
+        'video',
+        'confirmed_at'
     ];
 
     /**
