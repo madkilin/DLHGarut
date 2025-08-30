@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_read_by_admin'
     ];
 
-    protected $appends = ['avatar','leadeboard'];
+    protected $appends = ['avatar', 'leadeboard'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -162,12 +162,18 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
-    public function getLeaderboardAttribute(){
-        if($this->role_id == 3){
+    public function getLeaderboardAttribute()
+    {
+        if ($this->role_id == 3) {
             $ranking = User::where('role_id', 3)->orderByDesc('exp')->pluck('id')->toArray();
             return array_search($this->id, $ranking) + 1;
-        }else{
+        } else {
             return '#';
         }
+    }
+
+    public function progressLog()
+    {
+        return $this->hasMany(ProgressLog::class, 'user_id', 'id');
     }
 }

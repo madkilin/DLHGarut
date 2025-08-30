@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('complains', function (Blueprint $table) {
-            $table->timestamp('read_at')->nullable()->after('created_at');
+        Schema::table('articles', function (Blueprint $table) {
+            $table->text('alasan_penolakan')->nullable()->after('description');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('complains', function (Blueprint $table) {
-            $table->dropColumn('read_at');
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropColumn('alasan_penolakan');
         });
     }
 };

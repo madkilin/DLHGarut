@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\ArticleUserRead;
+use App\Models\ProgressLog;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -67,7 +69,9 @@ class ArticleController extends Controller
 
         if (!$alreadyReadToday) {
             $user->addExp(10);
+            ProgressLog::action($user, 10, 'exp', 'Membaca Artikel');
             $user->points += 10;
+            ProgressLog::action($user, 10, 'point', 'Membaca Artikel');
             $user->save();
 
             $user->readArticles()->attach($article->id, ['read_at' => $today]);
@@ -106,7 +110,9 @@ class ArticleController extends Controller
 
         if (!$alreadyReadToday) {
             $user->addExp(10);
+            ProgressLog::action($user, 10, 'exp', 'Membaca Artikel');
             $user->points += 10;
+            ProgressLog::action($user, 10, 'point', 'Membaca Artikel');
             $user->save();
             $user->readArticles()->attach($article->id, ['read_at' => $today]);
 
@@ -120,7 +126,7 @@ class ArticleController extends Controller
     {
         $articles = Article::when(auth()->user(), function ($query) {
             $query->where('user_id', auth()->user()->id);
-        })->get();
+        })->orderBy('created_at', 'DESC')->get();
         return view('article.list', [
             'articles' => $articles
         ]);
@@ -158,7 +164,49 @@ class ArticleController extends Controller
             'video' => $videoPath ?? null,
         ]);
 
-        return redirect()->route('article.index')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('article.list')->with('success', 'Artikel berhasil ditambahkan.');
+    }
+
+    public function edit(int $id)
+    {
+        $article = Article::find($id);
+        return view('article.edit', [
+            'article' => $article
+        ]);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'title' => 'required|unique:articles,title,' . $id,
+            'description' => 'required',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200' // 50MB
+        ]);
+
+        $article = Article::where('id', $id)->first();
+        $slug = Str::slug($request->title);
+        $bannerPath = $article->banner;
+        $videoPath = $article->video;
+
+        if ($request->hasFile('banner')) {
+            $bannerPath = $request->file('banner')->store('banners', 'public');
+            Storage::delete($article->banner);
+        }
+
+        if ($request->hasFile('video')) {
+            $videoPath = $request->file('video')->store('videos', 'public');
+            Storage::delete($article->video);
+        }
+        $article->update([
+            'title' => $request->title,
+            'slug' => $slug,
+            'description' => $request->description,
+            'banner' => $bannerPath ?? null,
+            'video' => $videoPath ?? null,
+        ]);
+
+        return redirect()->route('article.list')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     public function updateStatus(Request $request, $id)
@@ -173,26 +221,31 @@ class ArticleController extends Controller
             $article->confirmed_at = Carbon::now();
             if ($user) {
                 $user->addExp(10); // Menambahkan EXP
+                ProgressLog::action($user, 10, 'exp', 'Artikel di terima');
                 $user->points += 10; // Menambahkan POINT
+                ProgressLog::action($user, 10, 'point', 'Artikel di terima');
                 $user->save();
             }
         }
 
+        if ($request->status == -1) {
+            $article->alasan_penolakan = $request->reason;
+        }
+
         $data = $article->save();
-        if($data){
+        if ($data) {
             DB::commit();
             return redirect('/admin/articles')->with('success', 'Artikel berhasil dikonfirmasi.');
-        }else{
+        } else {
             Db::rollBack();
             return redirect('/admin/articles')->with('error', 'Artikel gagal dikonfirmasi.');
         }
-
     }
 
     public function detail(string $slug)
     {
         $article = Article::whereSlug($slug)->first();
-        Log::info('article : ',['data' => $article]);
+        Log::info('article : ', ['data' => $article]);
         if (auth()->user()) {
             Log::info('in if auth');
             ArticleUserRead::updateOrCreate([
@@ -201,19 +254,23 @@ class ArticleController extends Controller
                 'user_id' => auth()->user()->id,
                 'read_at' => Carbon::now()
             ]);
-            $creator = User::where('id',$article->user_id)->first();
+            $creator = User::where('id', $article->user_id)->first();
             $reader = auth()->user();
-            Log::info('creator',['data' => $creator]);
+            Log::info('creator', ['data' => $creator]);
             if ($creator) {
                 $creator->addExp(1); // Menambahkan EXP
+                ProgressLog::action($creator, 1, 'exp', "Artikel dibaca oleh " . $reader->name);
                 $creator->points += 1; // Menambahkan POINT
+                ProgressLog::action($creator, 1, 'point', "Artikel dibaca oleh " . $reader->name);
                 $creator->save();
-                Log::info('update creator : ',['data' => $creator]);
+                Log::info('update creator : ', ['data' => $creator]);
                 
                 $reader->addExp(1); // Menambahkan EXP
+                ProgressLog::action($reader, 1, 'exp', "Membaca Artikel " . $creator->name);
                 $reader->points += 1; // Menambahkan POINT
+                ProgressLog::action($reader, 1, 'point', "Membaca Artikel " . $creator->name);
                 $reader->save();
-                Log::info('update reader : ',['data' => $creator]);
+                Log::info('update reader : ', ['data' => $creator]);
             }
         }
         return view('article-detail', [

@@ -58,6 +58,8 @@
                         </div>
                         <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
                         <a href="{{ route('exchange-point.index') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat Penukaran</a>
+                        <a href="{{ route('progress-log.index') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Progress Log</a>
+
                         {{-- <a href="{{ route('complaints.history') }}" class="relative block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat
                             @if ($newComplaintsUserCount > 0)
                                 <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">

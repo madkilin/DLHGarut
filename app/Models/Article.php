@@ -17,6 +17,7 @@ class Article extends Model
         'user_id',
         'is_read_by_admin',
         'video',
+        'alasan_penolakan',
         'confirmed_at'
     ];
 

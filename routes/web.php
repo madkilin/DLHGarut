@@ -13,6 +13,7 @@ use App\Http\Controllers\Petugas\ComplaintController as PetugasComplaintControll
 use App\Http\Controllers\Petugas\ProofController as PetugasProofController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Petugas\ArticleController as PetugasArticleController;
+use App\Http\Controllers\ProgressLogController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RewardController;
@@ -137,7 +138,17 @@ Route::prefix('/article')->middleware('auth')->group(function () {
     Route::get('/list', [ArticleController::class, 'list'])->name('article.list');
     Route::get('/create', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/', [ArticleController::class, 'store'])->name('article.store');
-    Route::put('/{id}/update-status', [ArticleController::class, 'updateStatus'])->name('article.update-status');
+    Route::put('/{id}', [ArticleController::class, 'update'])
+        ->whereNumber('id')
+        ->name('article.update');
+
+    Route::get('/{id}/edit', [ArticleController::class, 'edit'])
+        ->whereNumber('id')
+        ->name('article.edit');
+
+    Route::put('/{id}/update-status', [ArticleController::class, 'updateStatus'])
+        ->whereNumber('id')
+        ->name('article.update-status');
 });
 
 Route::prefix('/complaint')->middleware('auth')->group(function () {
@@ -163,3 +174,6 @@ Route::prefix('/exchange-point')->middleware('auth')->group(function () {
 });
 
 Route::post('/reset-point', [UserController::class, 'reset'])->name('user.reset');
+Route::prefix('/progress-log')->group(function () {
+    Route::get('/', [ProgressLogController::class, 'index'])->name('progress-log.index');
+});

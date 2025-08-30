@@ -24,7 +24,7 @@
             {{-- Widget: User Overview --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10 text-black">
                 @php
-                    $userWidgets = [['label' => 'Total User', 'value' => $totalUsers, 'icon' => 'users', 'color' => 'bg-green-100', 'text' => 'text-green-600'], ['label' => 'Total Petugas', 'value' => $totalPetugas, 'icon' => 'user-check', 'color' => 'bg-blue-100', 'text' => 'text-blue-600']];
+                    $userWidgets = [['label' => 'Total User', 'value' => $totalUsers, 'icon' => 'users', 'color' => 'bg-green-100', 'text' => 'text-green-600'], ['label' => 'Total Penukaran Reward', 'value' => $totalRewardHistories, 'icon' => 'award', 'color' => 'bg-blue-100', 'text' => 'text-blue-600']];
                 @endphp
 
                 @foreach ($userWidgets as $widget)
@@ -45,17 +45,17 @@
                 <div class="bg-yellow-100 p-6 rounded-xl shadow hover:shadow-lg transition-all duration-300">
                     <div class="flex items-center gap-4 mb-2">
                         <div class="text-yellow-600">
-                            <i data-feather="user" class="w-7 h-7"></i>
+                            <i data-feather="file" class="w-7 h-7"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-medium">Total Masyarakat</p>
-                            <p class="text-2xl font-bold">{{ $totalMasyarakat }}</p>
+                            <p class="text-sm font-medium">Total Artikel</p>
+                            <p class="text-2xl font-bold">{{ $totalArticles }}</p>
                         </div>
                     </div>
-                    <div class="text-sm text-gray-700 ml-11">
+                    {{-- <div class="text-sm text-gray-700 ml-11">
                         <p>Aktif: <span class="font-semibold">{{ $masyarakatAktif }}</span></p>
                         <p>Nonaktif: <span class="font-semibold">{{ $masyarakatNonaktif }}</span></p>
-                    </div>
+                    </div> --}}
                 </div>
 
                 {{-- Pie Chart --}}
@@ -144,7 +144,7 @@
         locations.forEach(function(loc) {
             L.marker([loc.lat, loc.lng])
                 .addTo(map)
-                .bindPopup(`<b>${loc.title}</b><br>Pelapor : ${loc.label}<br> Status : ${loc.status} <br>Lat: ${loc.lat}, Lng: ${loc.lng}`);
+                .bindPopup(`<b>${loc.title}</b><br>Pelapor : ${loc.label}<br> Status : ${loc.status} <br> Link : <a target="_blank" href="/admin/complaints/${loc.id}/show">Buka pengaduan</a> <br>Lat: ${loc.lat}, Lng: ${loc.lng}`);
         });
 
         new Chart(document.getElementById('userPieChart').getContext('2d'), {

@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title', 'Riwayat Penukaran Poin')
 @section('style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <style>
@@ -124,58 +125,25 @@
         <div class="container mx-auto px-4">
             <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                    <h2 class="text-3xl font-extrabold text-green-700">Manajemen Artikel</h2>
-                    <a href="{{ route('article.create') }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">
-                        + Tambah Artikel
-                    </a>
+                    <h2 class="text-3xl font-extrabold text-green-700">Progress Log</h2>
                 </div>
-
                 <div class="overflow-x-auto rounded-lg">
-                    <table id="articleTable" class="min-w-full">
+                    <table id="exchangePoint" class="min-w-full">
                         <thead>
                             <tr>
-                                <th class="text-left text-sm font-semibold">Judul</th>
-                                <th class="text-left text-sm font-semibold">Penulis</th>
-                                <th class="text-left text-sm font-semibold">Slug</th>
-                                <th class="text-left text-sm font-semibold">Status</th>
-                                <th class="text-left text-sm font-semibold">Dibuat pada</th>
-                                <th class="text-left text-sm font-semibold">Dikonfirmasi pada</th>
-                                <th class="text-left text-sm font-semibold">Aksi</th>
+                                <th class="text-left text-sm font-semibold" width="5%">No</th>
+                                <th class="text-left text-sm font-semibold" width="10%">Tipe</th>
+                                <th class="text-left text-sm font-semibold" width="10%">Value</th>
+                                <th class="text-left text-sm font-semibold">Deskripsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($articles as $article)
+                            @foreach ($logs as $key => $log)
                                 <tr>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->title }}</td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->user->name }}</td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->slug }}</td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">
-                                        @if ($article->is_read_by_admin == 1)
-                                            <span class="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-xs font-semibold">Konfirmasi</span>
-                                        @elseif($article->is_read_by_admin == -1)
-                                            <span class="inline-block bg-red-500 text-white px-4 py-1 rounded-full text-xs font-semibold">Tolak</span>
-                                        @else
-                                            <span class="inline-block bg-yellow-500 text-white px-4 py-1 rounded-full text-xs font-semibold">Menunggu</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->created_at }}</td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->confirmed_at }}</td>
-                                    <td class="px-4 py-4 space-x-2">
-
-                                        <a href="{{ route('admin.articles.show', $article) }}" class="relative btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">Lihat
-                                        </a>
-                                        @if (!$article->is_read_by_admin)
-                                            <a href="{{ route('article.edit', $article->id) }}" class="relative btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-300 w-20">Edit
-                                            </a>
-                                            <form action="{{ route('admin.articles.destroy', $article) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus artikel ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300 w-20">
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $log->type }}</td>
+                                    <td>{{ $log->value }}</td>
+                                    <td>{{ $log->description }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -189,10 +157,9 @@
     <!-- jQuery dan DataTables JS CDN -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
     <script>
         $(document).ready(function() {
-            $('#articleTable').DataTable({
+            $('#exchangePoint').DataTable({
                 "pageLength": 10,
                 "lengthChange": true,
                 "lengthMenu": [
@@ -213,5 +180,13 @@
                 },
             });
         });
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
     </script>
 @endsection
