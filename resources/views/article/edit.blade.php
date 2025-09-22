@@ -15,7 +15,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="banner" class="block text-sm font-semibold">Banner <span class="text-red-500">*</span></label>
-                    <input type="file" name="banner" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1" required>
+                    <input type="file" name="banner" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1">
                 </div>
 
                 <img src="{{ asset('storage/' . $article->banner) }}" alt="{{ $article->title }}" class="w-full h-80 object-cover rounded-xl shadow mb-8">
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="flex justify-end space-x-2">
-                    <a href="{{ route('users.index') }}" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-lg">Batal</a>
+                    <a href="{{ route('article.list') }}" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-lg">Batal</a>
                     <button type="submit" class="bg-[#007546] hover:bg-green-700 text-white px-4 py-2 rounded-lg pointer">Simpan Perubahan</button>
                 </div>
             </form>

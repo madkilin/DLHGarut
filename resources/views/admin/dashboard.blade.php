@@ -24,7 +24,7 @@
             {{-- Widget: User Overview --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10 text-black">
                 @php
-                    $userWidgets = [['label' => 'Total User', 'value' => $totalUsers, 'icon' => 'users', 'color' => 'bg-green-100', 'text' => 'text-green-600'], ['label' => 'Total Penukaran Reward', 'value' => $totalRewardHistories, 'icon' => 'award', 'color' => 'bg-blue-100', 'text' => 'text-blue-600']];
+                    $userWidgets = [['label' => 'Total User', 'value' => $totalUsers, 'icon' => 'users', 'color' => 'bg-green-100', 'text' => 'text-green-600'], ['label' => 'Total Penukaran Hadiah', 'value' => $totalRewardHistories, 'icon' => 'award', 'color' => 'bg-blue-100', 'text' => 'text-blue-600']];
                 @endphp
 
                 @foreach ($userWidgets as $widget)

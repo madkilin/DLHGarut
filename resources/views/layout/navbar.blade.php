@@ -12,7 +12,8 @@
             <a href="/" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
             <a href="/dashboard" class="text-lg hover:text-[#F17025] transition-colors">Dashboard</a>
             <a href="/complaint" class="text-lg hover:text-[#F17025] transition-colors">Pengaduan</a>
-            <a href="/article/list" class="text-lg hover:text-[#F17025] transition-colors">Artikel</a>
+            <a href="/articles" class="text-lg hover:text-[#F17025] transition-colors">Artikel</a>
+            <a href="/article/list" class="text-lg hover:text-[#F17025] transition-colors">Manajemen Artikel</a>
 
             @auth
                 @php
@@ -50,14 +51,10 @@
                                 <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
                                 <p class="text-xs text-gray-600">Level: {{ $user->level }} | Points: {{ $user->points }}
                                 </p>
-                                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                                    <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
-                                </div>
                                 <p class="text-[10px] text-gray-500 mt-1">{{ $user->exp }} / {{ $maxExp }} EXP</p>
                             </div>
                         </div>
                         <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
-                        <a href="{{ route('exchange-point.index') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat Penukaran</a>
                         <a href="{{ route('progress-log.index') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Progress Log</a>
 
                         {{-- <a href="{{ route('complaints.history') }}" class="relative block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Riwayat
@@ -106,7 +103,6 @@
                 <div class="mt-4 space-y-2">
                     <a href="{{ route('user.profile') }}" class="block text-sm text-[#007546] hover:text-[#F17025]">Lihat
                         Profil</a>
-                    <a href="{{ route('complaints.history') }}" class="block text-sm text-[#007546] hover:text-[#F17025]">Riwayat</a>
                 </div>
             </div>
         @endauth

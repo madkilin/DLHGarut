@@ -32,6 +32,10 @@ class ExchangePointController extends Controller
             'reward_id' => 'required',
             'point' => 'required'
         ]);
+        $check = ExchangePoint::where('user_id', auth()->user()->id)->where('reward_id', $request->reward_id)->first();
+        if ($check) {
+            return redirect()->route('user.profile')->with('error', 'Tidak bisa menukarkan dengan hadiah yang sama');
+        }
         ExchangePoint::create([
             'reward_id' => $request->reward_id,
             'user_id' => auth()->user()->id,
@@ -52,7 +56,7 @@ class ExchangePointController extends Controller
         $exchange->update([
             'status' => $request->status
         ]);
-        if($request->status == 'confirmed'){
+        if ($request->status == 'confirmed') {
             $user = User::where('id', $exchange->user_id)->first();
             $user->points -= $exchange->consume_point;
             $user->save();

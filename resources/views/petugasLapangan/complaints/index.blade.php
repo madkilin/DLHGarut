@@ -150,6 +150,7 @@
                                     </td>
                                     <td class="px-4 py-2 text-sm text-gray-700">Perum Rabany Regency</td>
                                     <td class="px-4 py-2 flex gap-2">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}" target="_blank" class="btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-300 w-20">Lihat Lokasi</a>
                                         <a href="{{ route('petugas.complaints.show', $complaint->id) }}" class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 w-20">
                                             Detail
                                         </a>

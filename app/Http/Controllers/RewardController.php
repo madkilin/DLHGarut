@@ -82,4 +82,9 @@ class RewardController extends Controller
 
         return redirect()->route('reward.index')->with('success', 'Hadiah berhasil diupdate.');
     }
+
+    function destroy(int $id) {
+        $reward = Reward::find($id)->delete();
+        return redirect()->route('reward.index')->with('success', 'Reward berhasil dihapus.');
+    }
 }

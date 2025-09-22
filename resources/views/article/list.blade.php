@@ -136,7 +136,6 @@
                             <tr>
                                 <th class="text-left text-sm font-semibold">Judul</th>
                                 <th class="text-left text-sm font-semibold">Penulis</th>
-                                <th class="text-left text-sm font-semibold">Slug</th>
                                 <th class="text-left text-sm font-semibold">Status</th>
                                 <th class="text-left text-sm font-semibold">Dibuat pada</th>
                                 <th class="text-left text-sm font-semibold">Dikonfirmasi pada</th>
@@ -148,7 +147,6 @@
                                 <tr>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->title }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->user->name }}</td>
-                                    <td class="text-gray-800 px-4 py-4 text-sm">{{ $article->slug }}</td>
                                     <td class="text-gray-800 px-4 py-4 text-sm">
                                         @if ($article->is_read_by_admin == 1)
                                             <span class="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-xs font-semibold">Konfirmasi</span>

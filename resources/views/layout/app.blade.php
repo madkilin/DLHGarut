@@ -47,7 +47,7 @@
     /* Diamond Glow + Shine */
     .tier-diamond {
         position: relative;
-        border: 4px solid #00eaff;
+        border: 4px solid #0040ff;
         animation: diamondGlow 2s infinite alternate;
         overflow: hidden;
     }
@@ -70,7 +70,7 @@
         }
 
         to {
-            box-shadow: 0 0 40px rgba(0, 234, 255, 1);
+            box-shadow: 0 0 40px #0040ff;
         }
     }
 
@@ -117,7 +117,7 @@
     /* Diamond Glow + Shine Small */
     .avatar-sm.tier-diamond {
         position: relative;
-        border: 2px solid #00eaff;
+        border: 2px solid #0040ff;
         animation: diamondGlowSmall 2s infinite alternate;
         overflow: hidden;
     }
@@ -140,7 +140,7 @@
         }
 
         to {
-            box-shadow: 0 0 10px rgba(0, 234, 255, 1);
+            box-shadow: 0 0 10px #0040ff;
         }
     }
 

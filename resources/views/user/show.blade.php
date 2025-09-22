@@ -80,7 +80,7 @@
             </div>
 
             <div class="text-center">
-                <a href="{{ route('complaints.history') }}"
+                <a href="{{ route('complaint.index') }}"
                     class="bg-[#F17025] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#d95f1e]">
                     Kembali ke Daftar Pengaduan
                 </a>

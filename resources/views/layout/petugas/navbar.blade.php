@@ -19,7 +19,8 @@
                     </span>
                 @endif
             </a>
-            <a href="{{ route('petugas.articles.index') }}" class="text-lg hover:text-[#F17025] transition-colors"> Artikel</a>
+            <a href="{{ route('articles') }}" class="text-lg hover:text-[#F17025] transition-colors"> Artikel</a>
+            <a href="{{ route('petugas.articles.index') }}" class="text-lg hover:text-[#F17025] transition-colors"> Manajemen Artikel</a>
 
             @auth
                 @php

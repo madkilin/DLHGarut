@@ -81,45 +81,51 @@ class ArticleController extends Controller
 
         return response()->json(['message' => 'Sudah dapat reward hari ini']);
     }
+
     // GET reward status
     public function checkRewardStatus(Article $article)
     {
         $user = Auth::user();
-        $today = Carbon::today()->toDateString();
+        if ($user) {
+            $today = Carbon::today()->toDateString();
 
-        $alreadyReadToday = $user->readArticles()
-            ->where('article_id', $article->id)
-            ->wherePivot('read_at', $today)
-            ->exists();
+            $alreadyReadToday = $user->readArticles()
+                ->where('article_id', $article->id)
+                ->wherePivot('read_at', $today)
+                ->exists();
 
-        return response()->json([
-            'claimed' => $alreadyReadToday,
-        ]);
+            return response()->json([
+                'claimed' => $alreadyReadToday,
+            ]);
+        }
     }
 
     // POST reward klaim
     public function claimReward(Article $article)
     {
+        dd('ppp');
         $user = Auth::user();
-        $today = Carbon::today()->toDateString();
+        if ($user) {
+            $today = Carbon::today()->toDateString();
 
-        $alreadyReadToday = $user->readArticles()
-            ->where('article_id', $article->id)
-            ->wherePivot('read_at', $today)
-            ->exists();
+            $alreadyReadToday = $user->readArticles()
+                ->where('article_id', $article->id)
+                ->wherePivot('read_at', $today)
+                ->exists();
 
-        if (!$alreadyReadToday) {
-            $user->addExp(10);
-            ProgressLog::action($user, 10, 'exp', 'Membaca Artikel');
-            $user->points += 10;
-            ProgressLog::action($user, 10, 'point', 'Membaca Artikel');
-            $user->save();
-            $user->readArticles()->attach($article->id, ['read_at' => $today]);
+            if (!$alreadyReadToday) {
+                $user->addExp(10);
+                ProgressLog::action($user, 10, 'exp', 'Membaca Artikel');
+                $user->points += 10;
+                ProgressLog::action($user, 10, 'point', 'Membaca Artikel');
+                $user->save();
+                $user->readArticles()->attach($article->id, ['read_at' => $today]);
 
-            return response()->json(['message' => 'Reward diberikan']);
+                return response()->json(['message' => 'Reward diberikan']);
+            }
+
+            return response()->json(['message' => 'Sudah dapat reward hari ini']);
         }
-
-        return response()->json(['message' => 'Sudah dapat reward hari ini']);
     }
 
     public function list()
@@ -264,7 +270,7 @@ class ArticleController extends Controller
                 ProgressLog::action($creator, 1, 'point', "Artikel dibaca oleh " . $reader->name);
                 $creator->save();
                 Log::info('update creator : ', ['data' => $creator]);
-                
+
                 $reader->addExp(1); // Menambahkan EXP
                 ProgressLog::action($reader, 1, 'exp', "Membaca Artikel " . $creator->name);
                 $reader->points += 1; // Menambahkan POINT
@@ -275,6 +281,14 @@ class ArticleController extends Controller
         }
         return view('article-detail', [
             'article' => $article
+        ]);
+    }
+
+    public function listData()
+    {
+        $articles = Article::latest()->get();
+        return view('article.list-data', [
+            'articles' => $articles
         ]);
     }
 }

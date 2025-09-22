@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Complaint;
+use App\Models\ExchangePoint;
 use App\Models\RewardHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class DashboardController extends Controller
         $users = User::where('role_id', '!=', 1);
         $totalUsers = $users->count();
         $totalArticles = Article::count();
-        $totalRewardHistories = RewardHistory::count();
+        $totalRewardHistories = ExchangePoint::count();
         $totalPetugas = (clone $users)->where('role_id', 2)->count();
         $totalMasyarakat = (clone $users)->where('role_id', 3)->count();
 

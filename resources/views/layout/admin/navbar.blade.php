@@ -1,4 +1,5 @@
-<nav id="navbar" class="fixed w-full z-50 bg-[#007546]/90 backdrop-blur-md text-white transition-all duration-300 shadow-md">
+<nav id="navbar"
+    class="fixed w-full z-50 bg-[#007546]/90 backdrop-blur-md text-white transition-all duration-300 shadow-md">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
@@ -9,69 +10,81 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
             <a href="/" class="text-lg hover:text-[#F17025] transition-colors">Home</a>
-            <a href="{{ route('admin.dashboard') }}" class="text-lg hover:text-[#F17025] transition-colors">Dashboard</a>
-            <a href="{{ route('users.index') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+            <a href="{{ route('admin.dashboard') }}"
+                class="text-lg hover:text-[#F17025] transition-colors">Dashboard</a>
+            <a href="{{ route('users.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
                 User
 
                 @if ($newUserCount > 0)
-                    <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
-                        {{ $newUserCount }}
-                    </span>
+                <span
+                    class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                    {{ $newUserCount }}
+                </span>
                 @endif
             </a>
-            <a href="{{ route('admin.complaints.index') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+            <a href="{{ route('admin.complaints.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
                 Pengaduan
 
                 @if ($newComplaintsCount > 0)
-                    <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
-                        {{ $newComplaintsCount }}
-                    </span>
+                <span
+                    class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                    {{ $newComplaintsCount }}
+                </span>
                 @endif
             </a>
-            <a href="{{ route('admin.articles.index') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
-                Artikel
+            <a href="{{ route('admin.articles.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+                Manajemen Artikel
 
                 @if ($newArticlesCount > 0)
-                    <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
-                        {{ $newArticlesCount }}
-                    </span>
+                <span
+                    class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                    {{ $newArticlesCount }}
+                </span>
                 @endif
             </a>
-            {{-- <a href="{{ route('reward.index') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+            <a href="{{ route('reward.index') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
                 Hadiah
             </a>
 
-            <a href="{{ route('exchange-point.list') }}" class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
+            <a href="{{ route('exchange-point.list') }}"
+                class="relative inline-block text-lg hover:text-[#F17025] transition-colors">
                 Penukaran Poin
-            </a> --}}
+            </a>
             @auth
-                @php
-                    $user = Auth::user();
-                @endphp
+            @php
+            $user = Auth::user();
+            @endphp
 
-                <!-- Dropdown Profil -->
-                <div class="relative inline-block text-left">
-                    <button id="profileDropdownButton" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="text-lg text-white hover:text-[#F17025]">Hi, {{ $user->name }} ▾</span>
-                    </button>
+            <!-- Dropdown Profil -->
+            <div class="relative inline-block text-left">
+                <button id="profileDropdownButton" class="flex items-center space-x-2 focus:outline-none">
+                    <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-8 h-8 rounded-full">
+                    <span class="text-lg text-white hover:text-[#F17025]">Hi, {{ $user->name }} ▾</span>
+                </button>
 
-                    <div id="profileDropdownMenu" class="absolute right-0 mt-3 w-72 bg-white rounded-lg shadow-xl z-10 hidden">
-                        <div class="flex items-start p-4 border-b">
-                            <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
-                            <div class="flex-1">
-                                <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
-                                <p class="text-xs text-gray-600">Admin</p>
-                            </div>
+                <div id="profileDropdownMenu"
+                    class="absolute right-0 mt-3 w-72 bg-white rounded-lg shadow-xl z-10 hidden">
+                    <div class="flex items-start p-4 border-b">
+                        <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
+                        <div class="flex-1">
+                            <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
+                            <p class="text-xs text-gray-600">Admin</p>
                         </div>
-                        <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
-
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Logout</button>
-                        </form>
                     </div>
+                    <a href="{{ route('user.profile') }}"
+                        class="block px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Lihat Profil</a>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-sm text-[#007546] hover:bg-[#F0FDF4]">Logout</button>
+                    </form>
                 </div>
+            </div>
             @endauth
         </div>
 
@@ -79,47 +92,58 @@
         <div class="md:hidden flex items-center">
             <button id="menu-button" class="focus:outline-none">
                 <svg id="menu-icon" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="menu-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path id="menu-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white text-[#007546] px-4 py-6 z-40 space-y-4 transition-all duration-300">
+    <div id="mobile-menu"
+        class="hidden md:hidden absolute top-16 left-0 w-full bg-white text-[#007546] px-4 py-6 z-40 space-y-4 transition-all duration-300">
         @auth
-            <div class="flex items-start p-4">
-                <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
-                <div class="flex-1 text-start">
-                    <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
-                    <p class="text-xs text-gray-600">Admin</p>
-                </div>
+        <div class="flex items-start p-4">
+            <img src="{{ asset($user->avatar) }}" alt="Profile" class="w-14 h-14 rounded-full mr-3 mt-1">
+            <div class="flex-1 text-start">
+                <p class="text-sm font-semibold text-gray-800">{{ $user->name }}</p>
+                <p class="text-xs text-gray-600">Admin</p>
             </div>
+        </div>
         @endauth
 
         <div class="border-t border-[#007546]/90 my-4 pt-4 space-y-4">
             <a href="/" class="block text-[#007546]/90 hover:text-[#F17025]">Home</a>
             <a href="{{ route('admin.dashboard') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Dashboard</a>
             <a href="{{ route('users.index') }}" class="block text-[#007546]/90 hover:text-[#F17025]">User</a>
-            <a href="{{ route('admin.complaints.index') }}" class="block text-[#007546]/90 hover:text-[#F17025]">Pengaduan</a>
+            <a href="{{ route('admin.complaints.index') }}"
+                class="block text-[#007546]/90 hover:text-[#F17025]">Pengaduan</a>
             <a href="{{ route('admin.articles.index') }}" class="relative block text-[#007546]/90 hover:text-[#F17025]">
                 Artikel
 
                 @if ($newArticlesCount > 0)
-                    <span class="absolute -top-1 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                        {{ $newArticlesCount }}
-                    </span>
+                <span
+                    class="absolute -top-1 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {{ $newArticlesCount }}
+                </span>
                 @endif
             </a>
+            <a href="{{ route('reward.index') }}"
+                class="block text-[#007546]/90 hover:text-[#F17025]">Hadiah</a>
+            <a href="{{ route('exchange-point.list') }}"
+                class="block text-[#007546]/90 hover:text-[#F17025]">Penukaran Point</a>
+            <a href="{{ route('user.profile') }}"
+                class="block text-[#007546]/90 hover:text-[#F17025]">Edit Profil</a>
         </div>
 
         @auth
-            <form action="{{ route('logout') }}" method="POST" class="flex justify-center mt-4">
-                @csrf
-                <button type="submit" class="btn bg-[#F17025] text-lg text-white hover:text-[#007546] transition-colors px-6 py-2 rounded">
-                    Logout
-                </button>
-            </form>
+        <form action="{{ route('logout') }}" method="POST" class="flex justify-center mt-4">
+            @csrf
+            <button type="submit"
+                class="btn bg-[#F17025] text-lg text-white hover:text-[#007546] transition-colors px-6 py-2 rounded">
+                Logout
+            </button>
+        </form>
         @endauth
     </div>
 </nav>

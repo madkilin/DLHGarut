@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_read_by_admin'
     ];
 
-    protected $appends = ['avatar', 'leadeboard'];
+    protected $appends = ['avatar', 'leaderboard'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -139,7 +139,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'silver'   => '🥈',
             'gold'     => '🥇',
             'platinum' => '🏆',
-            'diamond'  => '💎',
+            'diamond'  => '💠',
         };
     }
 

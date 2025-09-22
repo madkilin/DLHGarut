@@ -204,11 +204,6 @@
                                                     class="btn bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
                                                     Berikan Tugas
                                                 </button>
-                                            @elseif ($complaint->status === 'diproses' && $complaint->assigned_to !== null && $complaint->proof === null)
-                                                <a href="{{ route('admin.complaints.print.assigments', $complaint->id ?? 0) }}"
-                                                    class="btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300 w-20">
-                                                    Print Surat Tugas
-                                                </a>
                                             @endif
 
                                             {{-- Lihat Bukti & Print Bukti --}}

@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="banner" class="block text-sm font-semibold">Banner</label>
-                    <input type="file" name="banner" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1" required>
+                    <input type="file" name="banner" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1">
                     @error('banner')
                         <div class="text-red-500">
                             {{ $message }}

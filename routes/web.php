@@ -164,6 +164,7 @@ Route::prefix('/reward')->middleware('auth')->group(function () {
     Route::get('/{id}/edit', [RewardController::class, 'edit'])->name('reward.edit');
     Route::put('/{id}', [RewardController::class, 'update'])->name('reward.update');
     Route::get('/{id}', [RewardController::class, 'show'])->name('reward.show');
+    Route::delete('/{id}', [RewardController::class, 'destroy'])->name('reward.destroy');
 });
 
 Route::prefix('/exchange-point')->middleware('auth')->group(function () {
@@ -177,3 +178,5 @@ Route::post('/reset-point', [UserController::class, 'reset'])->name('user.reset'
 Route::prefix('/progress-log')->group(function () {
     Route::get('/', [ProgressLogController::class, 'index'])->name('progress-log.index');
 });
+
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles');

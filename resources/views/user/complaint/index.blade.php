@@ -128,7 +128,7 @@
                     <h2 class="text-3xl font-extrabold text-green-700 mb-6">Daftar Pengaduan</h2>
                     <a href="{{ route('complaint.create') }}"
                         class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">
-                        + Tambah Pengaaduan
+                        + Tambah Pengaduan
                     </a>
                 </div>
 
