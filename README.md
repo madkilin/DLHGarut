@@ -1,61 +1,165 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://dlhkabgarut.org/" target="_blank"><img src="https://dlhkabgarut.org/assets/main/img/logo2.png" width="400" alt="DLH Kabupaten Garut Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Rancang Bangun Web Pengaduan Masalah Sampah dan Edukasi Berbasis Gamifikasi Struktural di Dinas Lingkungan Hidup Kabupaten Garut
 
-## About Laravel
+_Aplikasi Penelitian – Dinas Lingkungan Hidup Kabupaten Garut_
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Deskripsi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Proyek ini merupakan hasil penelitian dengan judul **"Rancang Bangun Web Pengaduan Masalah Sampah dan Edukasi Berbasis Gamifikasi Struktural di Dinas Lingkungan Hidup Kabupaten Garut"**.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aplikasi ini dibangun menggunakan **Laravel Framework** untuk menyediakan wadah pengaduan masyarakat, edukasi lingkungan, serta penerapan **elemen gamifikasi** guna meningkatkan partisipasi masyarakat.
 
-## Learning Laravel
+Aplikasi dikembangkan dengan pendekatan **MVC (Model-View-Controller)** dan ditujukan untuk membantu **Dinas Lingkungan Hidup Kabupaten Garut** dalam mengelola pengaduan sampah sekaligus memberikan edukasi kepada masyarakat.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🚀 Fitur Utama
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Pengaduan Masyarakat**
 
-## Laravel Sponsors
+    -   Form pengaduan dengan lokasi, lampiran foto, dan video.
+    -   Status pengaduan: _terkirim, diterima, diproses, selesai, ditolak_.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   **Manajemen Pengaduan (Admin & Petugas)**
 
-### Premium Partners
+    -   Validasi dan distribusi tugas.
+    -   Upload bukti penyelesaian oleh petugas.
+    -   Monitoring progress pengaduan.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+-   **Edukasi Lingkungan**
 
-## Contributing
+    -   Artikel & materi edukasi tentang pengelolaan sampah.
+    -   Sistem informasi ramah lingkungan.
+    -   Dsb.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **Gamifikasi Struktural**
 
-## Code of Conduct
+    -   Sistem poin berdasarkan aktivitas.
+    -   Level pengguna sesuai akumulasi EXP.
+    -   Badge (Bronze, Silver, Gold, Platinum, Diamond).
+    -   Fitur reward claim untuk masyarakat yang aktif.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🛠️ Teknologi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **Backend**: Laravel 12.10.2, PHP 8.2.12
+-   **Frontend**: Blade Template Engine, TailwindCSS
+-   **Database**: MySQL/MariaDB
+-   **Library**:
+    -   [Leaflet.js](https://leafletjs.com/) → Peta lokasi pengaduan
+    -   [Chart.js](https://www.chartjs.org/) → Visualisasi data statistik
+-   **Build Tools**: Composer, NPM, Vite
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📂 Struktur Direktori
+
+```bash
+├── app/ # Model, Controller, Middleware
+├── bootstrap/
+├── config/
+├── database/ # Migration & Seeder
+├── public/ # Aset publik
+├── resources/
+│ ├── views/ # Blade template
+│ └── css, js # Asset frontend
+├── routes/ # web.php & api.php
+├── storage/
+├── tests/
+└── vendor/
+```
+
+---
+
+## ⚙️ Instalasi & Setup
+
+###### _Kode Sumber Web atau Proyek Web_
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/madkilin/DLHGarut.git
+cd DLHGarut
+```
+
+### 2. Install Dependency
+
+```bash
+composer install
+npm install && npm run build
+```
+
+### 3. Konfigurasi Environment
+
+```bash
+cp .env.example .env
+php artisan key:generate
+php artisan storage:link
+```
+
+Atur koneksi database di file .env:
+
+```makefile
+APP_DEBUG=true
+DB_DATABASE=dlhgarut
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 4. Migrasi Database
+
+```bash
+php artisan migrate --seed
+php artisan optimize
+```
+
+### 5. Jalankan Aplikasi
+
+```bash
+php artisan serve
+npm run dev
+```
+
+Akses aplikasi melalui:
+👉 http://127.0.0.1:8000
+
+---
+
+## 👥 Autentikasi & Role Management
+
+-   Admin: mengelola data, memvalidasi, menugaskan, dan menyelesaikan pengaduan.
+-   Petugas: menindaklanjuti pengaduan dan mengunggah bukti penyelesaian.
+-   Masyarakat: membuat pengaduan, membuat artikel, membaca artikel dan mendapatkan reward.
+
+---
+
+## 📊 Skema Gamifikasi
+
+-   Poin dan EXP: Diberikan sesuai aktivitas (membuat artikel, membaca artikel, dll).
+-   Level: Meningkat berdasarkan akumulasi EXP.
+-   Badge: Bronze → Silver → Gold → Platinum → Diamond.
+-   Reward: Masyarakat dapat menukar poin dengan hadiah sesuai ketentuan.
+
+---
+
+## 📖 User Manual / Panduan Penggunaan Aplikasi Web
+
+Panduan lengkap penggunaan aplikasi dapat diakses melalui tautan berikut:
+
+🔗 [Lihat User Manual di Google Drive](https://drive.google.com/drive/folders/1O92e92y8vXNRtmTklsOBLR2ppxXUFMjh?usp=sharing)
+
+---
+
+## 📜 Lisensi
+
+Proyek ini dikembangkan untuk kepentingan penelitian dan digunakan secara terbatas di Dinas Lingkungan Hidup Kabupaten Garut.
+
+---
+
+## ✨ Penulis
+
+Mochammad Agus D.K.  
+Skripsi 2025 – Institut Teknologi Garut  
+Judul: Rancang Bangun Web Pengaduan Masalah Sampah dan Edukasi Berbasis Gamifikasi Struktural di Dinas Lingkungan Hidup Kabupaten Garut.
