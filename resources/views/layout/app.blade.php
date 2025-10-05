@@ -7,6 +7,8 @@
     @vite('resources/css/app.css')
     @yield('style')
     <title>@yield('title', 'DLH Garut')</title>
+    <link rel="icon" href="{{ asset('default_image/logo.jpg') }}">
+
 
 </head>
 <style>
@@ -45,9 +47,49 @@
     }
 
     /* Diamond Glow + Shine */
-    .tier-diamond {
+    .tier-platinum {
         position: relative;
         border: 4px solid #0040ff;
+        animation: platinumGlow 2s infinite alternate;
+        overflow: hidden;
+    }
+
+    .tier-platinum::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+        transform: rotate(25deg);
+        animation: platinumShine 3s linear infinite;
+    }
+
+    @keyframes platinumGlow {
+        from {
+            box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
+        }
+
+        to {
+            box-shadow: 0 0 40px #0040ff;
+        }
+    }
+
+    @keyframes platinumShine {
+        0% {
+            transform: rotate(25deg) translateX(-150%);
+        }
+
+        100% {
+            transform: rotate(25deg) translateX(150%);
+        }
+    }
+
+    /* Diamond Glow + Shine */
+    .tier-diamond {
+        position: relative;
+        border: 4px solid skyblue;
         animation: diamondGlow 2s infinite alternate;
         overflow: hidden;
     }
@@ -70,7 +112,7 @@
         }
 
         to {
-            box-shadow: 0 0 40px #0040ff;
+            box-shadow: 0 0 40px skyblue;
         }
     }
 
@@ -114,10 +156,50 @@
         }
     }
 
+    /* Platinum Glow + Shine Small */
+    .avatar-sm.tier-platinum {
+        position: relative;
+        border: 2px solid #0040ff;
+        animation: platinumGlowSmall 2s infinite alternate;
+        overflow: hidden;
+    }
+
+    .avatar-sm.tier-platinum::after {
+        content: '';
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+        transform: rotate(25deg);
+        animation: platinumShineSmall 3s linear infinite;
+    }
+
+    @keyframes platinumGlowSmall {
+        from {
+            box-shadow: 0 0 5px rgba(0, 234, 255, 0.6);
+        }
+
+        to {
+            box-shadow: 0 0 10px #0040ff;
+        }
+    }
+
+    @keyframes platinumShineSmall {
+        0% {
+            transform: rotate(25deg) translateX(-150%);
+        }
+
+        100% {
+            transform: rotate(25deg) translateX(150%);
+        }
+    }
+
     /* Diamond Glow + Shine Small */
     .avatar-sm.tier-diamond {
         position: relative;
-        border: 2px solid #0040ff;
+        border: 2px solid skyblue;
         animation: diamondGlowSmall 2s infinite alternate;
         overflow: hidden;
     }
@@ -140,7 +222,7 @@
         }
 
         to {
-            box-shadow: 0 0 10px #0040ff;
+            box-shadow: 0 0 10px skyblue;
         }
     }
 
@@ -158,20 +240,20 @@
 <body class="flex flex-col min-h-screen">
     {{-- navbar --}}
     @php
-        $user = Auth::user();
+    $user = Auth::user();
     @endphp
 
     @if (Auth::check())
-        @if ($user->role_id == 1)
-            @include('layout.admin.navbar')
-        @elseif ($user->role_id == 2)
-            @include('layout.petugas.navbar')
-        @else
-            @include('layout.navbar')
-        @endif
+    @if ($user->role_id == 1)
+    @include('layout.admin.navbar')
+    @elseif ($user->role_id == 2)
+    @include('layout.petugas.navbar')
     @else
-        {{-- User belum login --}}
-        @include('layout.navbar')
+    @include('layout.navbar')
+    @endif
+    @else
+    {{-- User belum login --}}
+    @include('layout.navbar')
     @endif
     {{-- content --}}
     <main class="flex-1 mt-16">

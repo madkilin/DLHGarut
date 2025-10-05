@@ -21,7 +21,8 @@ class ComplaintController extends Controller
     {
         $request->validate([
             'status' => 'required|in:diproses,ditolak,selesai,diterima',
-            'note' => function ($attribute, $value, $fail) use ($request) {
+            'note' =>
+            function ($attribute, $value, $fail) use ($request) {
                 if (in_array($request->status, ['diproses', 'ditolak']) && empty($value)) {
                     $fail('Catatan harus diisi jika status adalah diproses atau ditolak.');
                 }

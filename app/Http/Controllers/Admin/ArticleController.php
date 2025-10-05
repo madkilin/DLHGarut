@@ -18,7 +18,7 @@ class ArticleController extends Controller
     {
         // Tandai semua artikel sebagai sudah dilihat
 
-        $articles = Article::orderBy('created_at','DESC')->get();
+        $articles = Article::orderBy('created_at', 'DESC')->get();
 
         return view('admin.article.index', compact('articles'));
     }
@@ -26,14 +26,13 @@ class ArticleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create()
+    {
         $users = [];
 
         if (Auth::user()->role_id == 1) {
             // Jika admin, tampilkan user dengan role_id 2 (kepala inventaris misalnya)
-            $users = User::where('id', '!=', Auth::id())
-                ->where('role_id', 2)
-                ->get();
+            $users = User::where('id', '!=', Auth::id())->get();
         }
 
         return view('petugasLapangan.article.create', compact('users'));
@@ -42,7 +41,28 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+            'banner' => 'required|image', //tambahkan ini untuk mengatur dimensi/ukuran yang diinginkan karena jika tidak sesuai dengan ukuran ini akan error-> |dimensions:min_width=800,min_height=400
+            'description' => 'required',
+        ], [
+            'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
+        ]);
+
+        $path = $request->file('banner')->store('banners', 'public');
+
+        Article::create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'banner' => $path,
+            'description' => $request->description,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dibuat.');
+    }
 
     /**
      * Display the specified resource.
@@ -55,12 +75,50 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $article) {}
+    public function edit(Article $article)
+    {
+        $users = [];
+
+        if (Auth::user()->role_id == 1) {
+            $users = User::where('id', '!=', Auth::id())
+                ->get();
+        }
+
+        return view('admin.article.edit', compact('article', 'users'));
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article) {}
+    public function update(Request $request, Article $article)
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+            'banner' => 'nullable|image|dimensions:min_width=800,min_height=400',
+            'description' => 'required',
+        ], [
+            'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
+        ]);
+
+        $data = [
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+        ];
+        // Reset notifikasi admin jika petugas yang update
+        if (Auth::user()->role_id != 1) {
+            $data['is_read_by_admin'] = false;
+        }
+
+        // Perbarui gambar jika ada
+        if ($request->hasFile('banner')) {
+            $data['banner'] = $request->file('banner')->store('banners', 'public');
+        }
+
+        $article->update($data);
+
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diperbarui.');
+    }
 
     /**
      * Remove the specified resource from storage.

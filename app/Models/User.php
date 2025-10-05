@@ -110,7 +110,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getTierAttribute()
     {
-        $level = $this->current_level;
+        $level = $this->level;
 
         return match (true) {
             $level >= 15 => 'diamond',
@@ -138,8 +138,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'bronze'   => '🥉',
             'silver'   => '🥈',
             'gold'     => '🥇',
-            'platinum' => '🏆',
-            'diamond'  => '💠',
+            'platinum' => '💠',
+            'diamond'  => '💎',
         };
     }
 

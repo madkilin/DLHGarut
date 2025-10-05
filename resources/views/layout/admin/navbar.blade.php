@@ -119,7 +119,7 @@
             <a href="{{ route('admin.complaints.index') }}"
                 class="block text-[#007546]/90 hover:text-[#F17025]">Pengaduan</a>
             <a href="{{ route('admin.articles.index') }}" class="relative block text-[#007546]/90 hover:text-[#F17025]">
-                Artikel
+                Manajemen Artikel
 
                 @if ($newArticlesCount > 0)
                 <span
@@ -133,7 +133,7 @@
             <a href="{{ route('exchange-point.list') }}"
                 class="block text-[#007546]/90 hover:text-[#F17025]">Penukaran Point</a>
             <a href="{{ route('user.profile') }}"
-                class="block text-[#007546]/90 hover:text-[#F17025]">Edit Profil</a>
+                class="block text-[#007546]/90 hover:text-[#F17025]">Lihat Profil</a>
         </div>
 
         @auth

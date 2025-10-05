@@ -10,50 +10,56 @@
 
 @section('content')
     <section class="bg-gradient-to-br from-green-100 via-green-200 to-green-100 py-16 min-h-screen">
-        <div class="container mx-auto px-6 md:px-12 max-w-5xl bg-white text-black py-10 rounded-3xl">
+        <div
+            class="container mx-auto px-6 md:px-12 max-w-5xl bg-white text-black py-10 rounded-3xl shadow-xl border space-y-6">
             <h2 class="text-4xl font-bold text-center text-[#F17025] mb-10">Detail Pengaduan</h2>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Status</label>
                 <p class="text-red-600 text-6xl font-bold">{{ $complaint->status }}</p>
             </div>
-            <div class="mb-6">
-                <label class="block font-semibold mb-2">Pengirim</label>
-                <p>{{ $complaint->user->name }}</p>
-            </div>
-            <div class="mb-6">
+            <div class="space-y-2">
+            <label class="block font-semibold mb-2">Pengirim</label>
+            <ul class="list-disc list-inside text-gray-700">
+                <li><strong>Nama:</strong> {{ $complaint->user->name }}</li>
+                <li><strong>Telepon:</strong> {{ $complaint->user->phone }}</li>
+            </ul>
+        </div>
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Judul Pengaduan</label>
                 <p>{{ $complaint->title }}</p>
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Deskripsi Pengaduan</label>
                 <p>{!! $complaint->description !!}</p>
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Lokasi Kejadian</label>
-                <p>Latitude: {{ $complaint->latitude }}</p>
-                <p>Longitude: {{ $complaint->longitude }}</p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}"
+                    target="_blank" class=" text-blue-600 underline">
+                    {{ $complaint->latitude }}, {{ $complaint->longitude }}
+                </a>
                 <div id="map" class="w-full h-80 rounded shadow mb-3 z-0"></div>
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Kabupaten</label>
                 <p>{{ $complaint->kabupaten }}</p>
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Kecamatan</label>
                 <p>{{ $complaint->kecamatan }}</p>
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block font-semibold mb-2">Alamat Lengkap</label>
                 <p>{{ $complaint->full_address }}</p>
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block mb-2 font-semibold">Foto Pengaduan</label>
                 @if ($complaint->photos && count(json_decode($complaint->photos)) > 0)
                     <div class="mt-3 flex gap-3 flex-wrap">
@@ -67,7 +73,7 @@
                 @endif
             </div>
 
-            <div class="mb-6">
+            <div class="space-y-2">
                 <label class="block mb-2 font-semibold">Video Pengaduan</label>
                 @if ($complaint->video)
                     <video controls class="w-full max-w-md rounded shadow">
@@ -79,8 +85,8 @@
                 @endif
             </div>
 
-            <div class="text-center">
-                <a href="{{ route('complaint.index') }}"
+            <div class="text-center mt-6 flex justify-center gap-4">
+                <a href="/complaint"
                     class="bg-[#F17025] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#d95f1e]">
                     Kembali ke Daftar Pengaduan
                 </a>

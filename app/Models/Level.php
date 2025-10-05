@@ -24,8 +24,8 @@ class Level extends Model
         return match (true) {
             $level >= 15 => 'diamond',
             $level >= 10 => 'platinum',
-            $level >= 5 => 'gold',
-            $level >= 3 => 'silver',
+            $level >= 5  => 'gold',
+            $level >= 3  => 'silver',
             default      => 'bronze',
         };
     }
@@ -47,7 +47,7 @@ class Level extends Model
             'bronze'   => '🥉',
             'silver'   => '🥈',
             'gold'     => '🥇',
-            'platinum' => '🏆',
+            'platinum' => '💠',
             'diamond'  => '💎',
         };
     }

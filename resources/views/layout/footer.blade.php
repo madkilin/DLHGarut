@@ -13,9 +13,9 @@
             <div class="md:w-1/3">
                 <h3 class="text-xl font-bold text-white mb-6">Hubungi Kami</h3>
                 <ul class="space-y-3 text-white">
-                    <li>Email: dinaslhkp.garut@yahoo.com</li>
+                    <li>Email: admin@dlhkabgarut.org</li>
                     <li>Instagram: @dlh_garut</li>
-                    <li>Phone: +62 821-1936-8097</li>
+                    <li>Phone: +62 812-8102-5376</li>
                 </ul>
             </div>
         </div>

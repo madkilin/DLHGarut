@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="mb-6">
-                    <label class="block font-semibold mb-2">Petugas Tambahan</label>
+                    <label class="block font-semibold mb-2">Petugas</label>
                     <div id="officerContainer" class="space-y-2">
                         <div class="flex items-center gap-2">
                             <input type="text" name="officers[]" placeholder="Nama Petugas"

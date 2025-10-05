@@ -77,7 +77,7 @@ class ComplaintController extends Controller
         ]);
 
         // Menghapus dd() setelah pengujian, karena ini hanya untuk debugging
-        return redirect()->back()->with('success', 'Pengaduan berhasil dikirim. Kamu mendapat 10 EXP dan 10 POINT!');
+        return redirect()->back()->with('Success');
     }
     public function show($id)
     {

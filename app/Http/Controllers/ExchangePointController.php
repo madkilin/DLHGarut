@@ -32,9 +32,13 @@ class ExchangePointController extends Controller
             'reward_id' => 'required',
             'point' => 'required'
         ]);
-        $check = ExchangePoint::where('user_id', auth()->user()->id)->where('reward_id', $request->reward_id)->first();
+        $check = ExchangePoint::where('user_id', auth()->id())
+            ->where('reward_id', $request->reward_id)
+            ->first();
+
         if ($check) {
-            return redirect()->route('user.profile')->with('error', 'Tidak bisa menukarkan dengan hadiah yang sama');
+            return redirect()->route('user.profile')
+                ->with('error', 'Tidak bisa menukarkan dengan hadiah yang sama');
         }
         ExchangePoint::create([
             'reward_id' => $request->reward_id,
@@ -43,7 +47,6 @@ class ExchangePointController extends Controller
             'status' => 'wait',
             'date' => Carbon::now()
         ]);
-
         return redirect()->route('user.profile')->with('success', 'Berhasil menukar poin');
     }
 

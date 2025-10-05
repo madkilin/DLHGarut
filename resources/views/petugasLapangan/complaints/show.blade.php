@@ -19,9 +19,12 @@
                 <p class="text-red-600 text-6xl font-bold">{{ $complaint->status }}</p>
             </div>
             <div class="space-y-2">
-                <label class="block font-semibold mb-2">Pengirim</label>
-                <p>{{ $complaint->user->name }}</p>
-            </div>
+            <label class="block font-semibold mb-2">Pengirim</label>
+            <ul class="list-disc list-inside text-gray-700">
+                <li><strong>Nama:</strong> {{ $complaint->user->name }}</li>
+                <li><strong>Telepon:</strong> {{ $complaint->user->phone }}</li>
+            </ul>
+        </div>
             <div class="space-y-2">
                 <label class="block font-semibold mb-2">Judul Pengaduan</label>
                 <p>{{ $complaint->title }}</p>

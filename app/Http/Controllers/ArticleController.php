@@ -42,7 +42,7 @@ class ArticleController extends Controller
             ->when($highlightArticles, function ($q) {
                 return $q->skip(4);
             })
-            ->paginate(9)
+            ->paginate(6)
             ->withQueryString();
 
         $users = User::all();
@@ -68,10 +68,10 @@ class ArticleController extends Controller
             ->exists();
 
         if (!$alreadyReadToday) {
-            $user->addExp(10);
-            ProgressLog::action($user, 10, 'exp', 'Membaca Artikel');
-            $user->points += 10;
-            ProgressLog::action($user, 10, 'point', 'Membaca Artikel');
+            $user->addExp(1);
+            ProgressLog::action($user, 1, 'exp', 'Membaca Artikel');
+            $user->points += 1;
+            ProgressLog::action($user, 1, 'point', 'Membaca Artikel');
             $user->save();
 
             $user->readArticles()->attach($article->id, ['read_at' => $today]);
@@ -103,7 +103,6 @@ class ArticleController extends Controller
     // POST reward klaim
     public function claimReward(Article $article)
     {
-        dd('ppp');
         $user = Auth::user();
         if ($user) {
             $today = Carbon::today()->toDateString();
@@ -114,18 +113,38 @@ class ArticleController extends Controller
                 ->exists();
 
             if (!$alreadyReadToday) {
-                $user->addExp(10);
-                ProgressLog::action($user, 10, 'exp', 'Membaca Artikel');
-                $user->points += 10;
-                ProgressLog::action($user, 10, 'point', 'Membaca Artikel');
+                // ✅ Reward for Reader
+                $user->addExp(1);
+                ProgressLog::action($user, 1, 'exp', 'Membaca Artikel');
+
+                $user->points += 1;
+                ProgressLog::action($user, 1, 'point', 'Membaca Artikel');
                 $user->save();
+
+                // ✅ Reward for Author (only if reader is not the author)
+                if ($article->user_id !== $user->id) {
+                    $author = $article->user;
+
+                    if ($author) {
+                        $author->addExp(1); // maybe smaller reward than reader
+                        ProgressLog::action($author, 1, 'exp', 'Artikelnya dibaca');
+
+                        $author->points += 1;
+                        ProgressLog::action($author, 1, 'point', 'Artikelnya dibaca');
+                        $author->save();
+                    }
+                }
+
+                // Save that user has read this article today
                 $user->readArticles()->attach($article->id, ['read_at' => $today]);
 
-                return response()->json(['message' => 'Reward diberikan']);
+                return response()->json(['message' => 'Reward diberikan ✅']);
             }
 
-            return response()->json(['message' => 'Sudah dapat reward hari ini']);
+            return response()->json(['message' => 'Sudah dapat reward hari ini ❌']);
         }
+
+        return response()->json(['message' => 'Harus login untuk klaim reward'], 401);
     }
 
     public function list()
@@ -170,49 +189,47 @@ class ArticleController extends Controller
             'video' => $videoPath ?? null,
         ]);
 
-        return redirect()->route('article.list')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
-    public function edit(int $id)
+    public function edit(Article $article)
     {
-        $article = Article::find($id);
         return view('article.edit', [
             'article' => $article
         ]);
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
+        $article = Article::findOrFail($id);
+
         $request->validate([
-            'title' => 'required|unique:articles,title,' . $id,
+            'title' => 'required|max:255',
+            'banner' => 'nullable|image|dimensions:min_width=800,min_height=400',
             'description' => 'required',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200' // 50MB
+            'user_id' => 'nullable|exists:users,id',
+        ], [
+            'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
         ]);
 
-        $article = Article::where('id', $id)->first();
-        $slug = Str::slug($request->title);
-        $bannerPath = $article->banner;
-        $videoPath = $article->video;
+        $data = [
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+            'user_id' => Auth::user()->role_id == 1 ? $request->user_id : Auth::id(),
+        ];
+
+        if (Auth::user()->role_id != 1) {
+            $data['is_read_by_admin'] = false;
+        }
 
         if ($request->hasFile('banner')) {
-            $bannerPath = $request->file('banner')->store('banners', 'public');
-            Storage::delete($article->banner);
+            $data['banner'] = $request->file('banner')->store('banners', 'public');
         }
 
-        if ($request->hasFile('video')) {
-            $videoPath = $request->file('video')->store('videos', 'public');
-            Storage::delete($article->video);
-        }
-        $article->update([
-            'title' => $request->title,
-            'slug' => $slug,
-            'description' => $request->description,
-            'banner' => $bannerPath ?? null,
-            'video' => $videoPath ?? null,
-        ]);
+        $article->update($data);
 
-        return redirect()->route('article.list')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('article.list')->with('success', 'Artikel berhasil diperbarui.');
     }
 
     public function updateStatus(Request $request, $id)
@@ -290,5 +307,10 @@ class ArticleController extends Controller
         return view('article.list-data', [
             'articles' => $articles
         ]);
+    }
+    public function destroy(Article $article)
+    {
+        $article->delete();
+        return redirect()->route('article.list')->with('success', 'Artikel berhasil dihapus.');
     }
 }

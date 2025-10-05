@@ -113,10 +113,10 @@ Route::get('/petugas/proofs/{id}', [PetugasProofController::class, 'show'])->nam
 // artikel
 Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel.index');
 Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('artikel.show');
-Route::post('/artikel/{article}/reward', [ArticleController::class, 'reward'])->middleware('auth')->name('artikel.reward');
+Route::post('/artikel/{article:slug}/reward', [ArticleController::class, 'reward'])->middleware('auth')->name('artikel.reward');
 Route::middleware('auth')->group(function () {
-    Route::get('/artikel/{article}/reward/check', [ArticleController::class, 'checkRewardStatus'])->name('artikel.reward.check');
-    Route::post('/artikel/{article}/reward/claim', [ArticleController::class, 'claimReward'])->name('artikel.reward.claim');
+    Route::get('/artikel/{article:slug}/reward/check', [ArticleController::class, 'checkRewardStatus'])->name('artikel.reward.check');
+    Route::post('/artikel/{article:slug}/reward/claim', [ArticleController::class, 'claimReward'])->name('artikel.reward.claim');
 });
 // Route untuk Admin
 Route::prefix('admin')
@@ -124,7 +124,11 @@ Route::prefix('admin')
     ->group(function () {
         Route::resource('articles', AdminArticleController::class);
     });
-
+Route::prefix('user')
+    ->as('user.')
+    ->group(function () {
+        Route::resource('articles', ArticleController::class);
+    });
 // Route untuk Petugas
 Route::prefix('petugas')
     ->as('petugas.')
@@ -180,3 +184,7 @@ Route::prefix('/progress-log')->group(function () {
 });
 
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
+// web.php
+Route::get('/forgot-password', function () {
+    return view('auth.forgotpassword');
+})->name('forgot.password');

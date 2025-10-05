@@ -10,31 +10,25 @@
 <body
     class="bg-gradient-to-br from-green-100 via-green-200 to-green-100 min-h-screen flex items-center justify-center px-4">
 
-    <div class="flex flex-col md:flex-row bg-[#007546]/90 shadow-xl rounded-2xl overflow-hidden w-full max-w-5xl my-4">
-
-        <!-- Gambar -->
-        <div class="md:w-1/3 w-full h-64 md:h-auto">
-            <img src="{{ asset('build/assets/ilstrasi aja.webp') }}" alt="Login Image"
-                class="object-cover w-full h-full" />
-        </div>
+    <div class="flex flex-col md:flex-row bg-[#007546]/90 shadow-xl rounded-2xl overflow-hidden w-full max-w-3xl my-4 justify-center p-[10px]">
 
         <!-- Form register -->
-        <div class="md:w-2/3 w-full p-6 md:p-8 flex flex-col justify-center">
+        <div class="md:w-3xl w-full p-6 md:p-8 flex flex-col justify-center">
             <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white text-center">Registrasi Akun Anda</h2>
             <div class="bg-white rounded-lg shadow-md p-6 text-black space-y-6">
 
                 <form method="POST" action="{{ route('register') }}" class="space-y-6">
                     @csrf
                     @if ($errors->any())
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md mx-auto mt-4"
-                            role="alert">
-                            <strong class="font-bold">Registrasi gagal!</strong>
-                            <ul class="mt-2 list-disc list-inside text-sm">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md mx-auto mt-4"
+                        role="alert">
+                        <strong class="font-bold">Registrasi gagal!</strong>
+                        <ul class="mt-2 list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                     <!-- Baris 1: Nama dan NIK -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
