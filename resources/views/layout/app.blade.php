@@ -327,6 +327,39 @@
                 profileDropdownMenu?.classList.add('hidden');
             }
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            const bar = document.querySelector('.bg-gradient-to-r');
+            if (!bar) return;
+
+            const targetWidth = bar.getAttribute('data-progress') + '%';
+
+            // mulai dari 0%
+            bar.style.width = '0%';
+
+            // kasih delay biar animasi sempat kebaca
+            setTimeout(() => {
+                bar.style.width = targetWidth;
+            }, 100);
+        });
+        // animasi isi progress bar dari 0 ke target
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.bg-gradient-to-r').forEach(bar => {
+                const targetWidth = bar.dataset.progress + '%';
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 100);
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                const targetWidth = bar.dataset.progress + '%';
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 100);
+            });
+        });
     </script>
 </body>
 

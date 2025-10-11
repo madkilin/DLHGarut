@@ -44,7 +44,7 @@ class ExchangePointController extends Controller
             'reward_id' => $request->reward_id,
             'user_id' => auth()->user()->id,
             'consume_point' => $request->point,
-            'status' => 'wait',
+            'status' => 'menunggu',
             'date' => Carbon::now()
         ]);
         return redirect()->route('user.profile')->with('success', 'Berhasil menukar poin');
@@ -59,7 +59,7 @@ class ExchangePointController extends Controller
         $exchange->update([
             'status' => $request->status
         ]);
-        if ($request->status == 'confirmed') {
+        if ($request->status == 'konfirmasi') {
             $user = User::where('id', $exchange->user_id)->first();
             $user->points -= $exchange->consume_point;
             $user->save();

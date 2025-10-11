@@ -19,8 +19,11 @@
             <p class="text-red-600 text-6xl font-bold">{{ $complaint->status }}</p>
 
             @if ($complaint->status == 'ditolak')
-            <label class="block font-semibold mb-2">Alasan penolakan</label>
+            <label class="block font-semibold mb-2">Alasan penolakan :</label>
             <p class="text-red-600 font-bold">{{ $complaint->note }}</p>
+            @else
+            <label class="block font-semibold mb-2">Pesan :</label>
+            <p class="text-black-600 font-bold">{{ $complaint->note }}</p>
             @endif
 
 

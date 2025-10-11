@@ -28,18 +28,33 @@
 
             <div class="mb-4">
                 <label class="block text-black">NIK</label>
-                <input type="text" name="nik" class="w-full border border-gray-300 rounded p-2"
-                    value="{{old('nik', Auth::user()->nik)}}" required>
+                <input type="text" name="nik" id="nik"
+                    class="w-full border border-gray-300 rounded p-2"
+                    value="{{ old('nik', Auth::user()->nik) }}"
+                    pattern="\d{16}"
+                    maxlength="16"
+                    title="NIK harus terdiri dari 16 angka"
+                    required>
+                <small class="text-gray-500 text-sm">Harus 16 digit angka.</small>
             </div>
+
             <div class="mb-4">
                 <label class="block text-black">No Telepon</label>
-                <input type="text" name="phone" class="w-full border border-gray-300 rounded p-2"
-                    value="{{old('phone', Auth::user()->phone)}}">
+                <input type="text" name="phone" id="phone"
+                    class="w-full border border-gray-300 rounded p-2"
+                    value="{{ old('phone', Auth::user()->phone) }}"
+                    pattern="\d{10,13}"
+                    minlength="10"
+                    maxlength="13"
+                    title="Nomor telepon harus 10–13 digit angka">
+                <small class="text-gray-500 text-sm">Gunakan angka saja, 10–13 digit.</small>
             </div>
 
             <div class="mb-4">
                 <label class="block text-black">Alamat</label>
-                <textarea name="address" class="w-full border border-gray-300 rounded p-2" rows="2"></textarea>
+                <input type="text" name="address" class="w-full border border-gray-300 rounded p-2"
+                    value="{{old('address', Auth::user()->address)}}" required>
+                <!-- <textarea name="address" class="w-full border border-gray-300 rounded p-2" rows="2"></textarea> -->
             </div>
 
             <div class="mb-4">

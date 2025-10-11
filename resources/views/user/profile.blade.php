@@ -39,11 +39,14 @@ $user = Auth::user();
 $currentLevel = \App\Models\Level::where('level', $user->level)->first();
 $nextLevel = \App\Models\Level::where('level', $user->level + 1)->first();
 
-$startExp = $currentLevel ? $currentLevel->required_exp : 0;
+$startExp = 0; // selalu mulai dari nol di setiap level
 $endExp = $nextLevel ? $nextLevel->required_exp : $startExp;
 
-$progress = $endExp > $startExp ? (($user->exp - $startExp) / ($endExp - $startExp)) * 100 : 100;
+$progress = $endExp > $startExp
+? (($user->exp - $startExp) / ($endExp - $startExp)) * 100
+: 100;
 
+$progress = max(0, min(100, $progress)); // jaga-jaga biar ga lewat 100%
 $maxExp = $endExp;
 @endphp
 
@@ -90,9 +93,13 @@ $maxExp = $endExp;
 
                     @if($user->level > 21)
                     {{-- Unlimited mode --}}
-                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                        <div class="bg-[#007546] h-2 rounded-full w-full"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 mt-2 overflow-hidden">
+                        <div
+                            class="progress-bar h-3 rounded-full transition-[width] duration-700 ease-out bg-[#007546]"
+                            data-progress="100">
+                        </div>
                     </div>
+
                     <p class="text-[10px] text-gray-500 mt-1 flex items-center gap-1">
                         {{-- Infinity symbol --}}
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -102,12 +109,17 @@ $maxExp = $endExp;
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M9 12c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zm-2 0c0-3 3-6 6-6s6 3 6 6-3 6-6 6-6-3-6-6z" />
                         </svg>
-                        <span class="text-[#007546] font-semibold">{{ $user->exp }} / ∞︎︎ Unlimited EXP</span>
+                        <span class="text-[#007546] font-semibold">
+                            {{ $user->exp }} / ∞ Unlimited EXP
+                        </span>
                     </p>
                     @else
                     {{-- Normal exp bar --}}
-                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                        <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 mt-2 overflow-hidden">
+                        <div
+                            class="progress-bar h-3 rounded-full transition-[width] duration-700 ease-out bg-gradient-to-r from-[#007546] to-[#00a96e]"
+                            data-progress="{{ $progress }}">
+                        </div>
                     </div>
                     <p class="text-[10px] text-gray-500 mt-1">
                         {{ $user->exp }} / {{ $maxExp }} EXP
@@ -118,11 +130,20 @@ $maxExp = $endExp;
                 </div>
             </div>
             @if (auth()->user()->role_id == 3)
-            <div class="mt-5">
+            <div class=" mt-5">
                 <h3 class="text-lg font-semibold text-gray-700">Statistik</h3>
                 <ul class="mt-2 text-gray-600">
                     <li>- Total Artikel Dibaca: <strong>{{ $user->readArticle->count() }}</strong></li>
                     <li>- Peringkat di Leaderboard: <strong>#{{ $user->leaderboard }}</strong></li>
+                </ul>
+            </div>
+            <div class="mt-5">
+                <h3 class="text-lg font-semibold text-gray-700">Data Profil</h3>
+                <ul class="mt-2 text-gray-600">
+                    <li>- NIK: <strong>{{ $user->nik }}</strong></li>
+                    <li>- No.Telepon: <strong>{{ $user->phone }}</strong></li>
+                    <li>- Alamat: <strong>{{ $user->address }}</strong></li>
+
                 </ul>
             </div>
             @endif

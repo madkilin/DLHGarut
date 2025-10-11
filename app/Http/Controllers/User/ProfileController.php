@@ -14,7 +14,7 @@ class ProfileController extends Controller
     public function index()
     {
         $rewards = Reward::where('quota', '>', 1)->latest()->get();
-        return view('user.profile',[
+        return view('user.profile', [
             'rewards' => $rewards
         ]);
     }
@@ -22,35 +22,39 @@ class ProfileController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
+
         $emailRules = ['nullable', 'email', 'max:255'];
         if ($request->email !== $user->email) {
             $emailRules[] = 'unique:users,email';
         }
+
+        // ✅ Tambahkan aturan validasi untuk nik dan phone
         $validated = $request->validate([
             'name' => 'nullable|string|max:255',
             'email' => $emailRules,
             'password' => 'nullable|min:6',
             'address' => 'nullable|string|max:255',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nik' => 'nullable|string|max:16|min:16',
+            'phone' => 'nullable|string|max:13|min:10',
         ]);
 
-        // Cek email diubah
         $emailChanged = $request->filled('email') && $request->email !== $user->email;
 
-        // Update data kalau diisi, kalau kosong biarkan
+        // ✅ Update data jika field diisi
         $user->name = $request->filled('name') ? $request->name : $user->name;
         $user->address = $request->filled('address') ? $request->address : $user->address;
+        $user->nik = $request->filled('nik') ? $request->nik : $user->nik;
+        $user->phone = $request->filled('phone') ? $request->phone : $user->phone;
 
         if ($emailChanged) {
             $user->email = $request->email;
-            $user->email_verified_at = null; // wajib verifikasi ulang
+            $user->email_verified_at = null;
         }
 
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }
 
-        // Handle upload foto
         if ($request->hasFile('profile_photo')) {
             if ($user->profile_photo) {
                 Storage::delete('public/profile_photos/' . $user->profile_photo);
@@ -63,11 +67,12 @@ class ProfileController extends Controller
         }
 
         $user->save();
-
         if ($emailChanged) {
             $user->sendEmailVerificationNotification();
             return redirect()->route('verification.notice')->with('status', 'Email Anda telah diubah. Silakan verifikasi ulang.');
         }
+        // ✅ Segarkan session biar data baru langsung muncul
+        Auth::setUser($user->fresh());
 
         return back()->with('success', 'Profil berhasil diperbarui.');
     }

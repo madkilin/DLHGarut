@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Article;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layout.admin.navbar', function ($view) {
             $newArticlesCount = Article::where('is_read_by_admin', false)->count();
             $newUserCount = User::where('is_read_by_admin', false)->count();
-            $newComplaintsCount = \App\Models\Complaint::whereNotIn('status',['selesai','ditolak'])->count();
+            $newComplaintsCount = \App\Models\Complaint::whereNotIn('status', ['selesai', 'ditolak'])->count();
             $newComplaintsPetugasCount = \App\Models\Complaint::where('read_by_assigned_user', false)->count();
             $newComplaintsUserCount = \App\Models\Complaint::where('read_by_user', false)->count();
 
@@ -39,8 +40,9 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
         View::composer('layout.petugas.navbar', function ($view) {
-            $newComplaintsPetugasCount = \App\Models\Complaint::where('read_by_assigned_user', false)->count();
-
+            $newComplaintsPetugasCount = \App\Models\Complaint::where('read_by_assigned_user', 0)
+                ->where('assigned_to', Auth::id())
+                ->count();
 
             $view->with([
 

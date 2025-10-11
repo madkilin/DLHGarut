@@ -125,7 +125,7 @@
                     $currentLevel = \App\Models\Level::where('level', $user->level)->first();
                     $nextLevel = \App\Models\Level::where('level', $user->level + 1)->first();
 
-                    $startExp = $currentLevel ? $currentLevel->required_exp : 0;
+                    $startExp = 0;
                     $endExp = $nextLevel ? $nextLevel->required_exp : $startExp;
 
                     $progress = $endExp > $startExp ? (($user->exp - $startExp) / ($endExp - $startExp)) * 100 : 100;
@@ -144,8 +144,11 @@
                         <td class="px-6 py-4">{{ $user->level }}</td>
                         <td class="px-6 py-4">{{ $user->exp }}</td>
                         <td class="px-6 py-4">
-                            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                                <div class="bg-[#007546] h-2 rounded-full" style="width: {{ $progress }}%;"></div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 mt-2 overflow-hidden">
+                                <div
+                                    class="progress-bar h-3 rounded-full transition-[width] duration-700 ease-out bg-gradient-to-r from-[#007546] to-[#00a96e]"
+                                    data-progress="{{ $progress }}">
+                                </div>
                             </div>
                         </td>
                     </tr>

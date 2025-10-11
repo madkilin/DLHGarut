@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DLH Garut | Login</title>
+  <link rel="icon" href="{{ asset('default_image/logo.jpg') }}" type="image/x-icon">
   @vite('resources/css/app.css')
 </head>
 
@@ -23,6 +25,13 @@
       <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white text-center">Login ke Akun Anda</h2>
 
       <div class="bg-white rounded-lg shadow-md p-6 space-y-6 text-black">
+
+        @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative max-w-md mx-auto" role="alert">
+          <strong class="font-bold">Pendaftaran Berhasil!</strong>
+          <span class="block sm">{{ session('success') }}</span>
+        </div>
+        @endif
 
         <form method="POST" action="{{ route('login') }}" class="space-y-5">
           @csrf
