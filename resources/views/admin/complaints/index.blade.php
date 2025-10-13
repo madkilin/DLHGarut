@@ -177,7 +177,7 @@
                                 </span>
                             </td>
                             <td class="px-4 py-2">
-                                <div class="flex flex-wrap gap-1 items-center justify-center">
+                                <div class="flex flex-wrap gap-1">
                                     {{-- Detail --}}
                                     <a href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}"
                                         target="_blank"
