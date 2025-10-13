@@ -42,10 +42,10 @@
                 @endforeach
 
                 {{-- Total Masyarakat with active & nonactive --}}
-                <div class="bg-yellow-100 p-6 rounded-xl shadow hover:shadow-lg transition-all duration-300">
+                <div class="bg-purple-100 p-6 rounded-xl shadow hover:shadow-lg transition-all duration-300">
                     <div class="flex items-center gap-4 mb-2">
-                        <div class="text-yellow-600">
-                            <i data-feather="file" class="w-7 h-7"></i>
+                        <div class="text-purple-600">
+                            <i data-feather="book-open" class="w-7 h-7"></i>
                         </div>
                         <div>
                             <p class="text-sm font-medium">Total Artikel</p>

@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title','Artikel')
+@section('title','Manajemen Artikel')
 @section('style')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 <style>
@@ -125,6 +125,16 @@
 <section class="py-20 bg-gradient-to-br from-green-50 via-green-100 to-green-50 min-h-screen">
     <div class="container mx-auto px-4">
         <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-10">
+            @if ($errors->any())
+            <div class="bg-red-100 text-red-700 p-3 rounded mb-3">
+                <ul class="list-disc ml-5 text-sm">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h2 class="text-3xl font-extrabold text-green-700">Manajemen Artikel</h2>
                 <a href="{{ route('admin.articles.create') }}"
@@ -225,17 +235,22 @@
                 @csrf
                 @method('PUT')
                 <label for="status-{{ $article->id }}" class="block mb-2 font-semibold">Status</label>
-                <select name="status" id="status-{{ $article->id }}" required onchange="toggleReasonField('{{ $article->id }}')">
+                <select name="status" id="status-{{ $article->id }}" onchange="toggleReasonField('{{ $article->id }}')" required>
                     <option disabled selected>-- Pilih Status --</option>
-                    <option value=" 1" @if ($article->status == '1') selected @endif>Konfirmasi</option>
+                    <option value="1" @if ($article->status == '1') selected @endif>Konfirmasi</option>
                     <option value="0" @if ($article->status == '0') selected @endif>Menunggu</option>
                     <option value="-1" @if ($article->status == '-1') selected @endif>Tolak</option>
                 </select>
-                <div id="reason-field-{{ $article->id }}" class="mt-4 hidden">
-                    <label for="reason-{{ $article->id }}" class="block mb-2 font-semibold">Alasan Penolakan</label>
+                <div id="reason-field-status-{{ $article->id }}" class="mt-4 hidden">
+                    <label for="reason-{{ $article->id }}">Alasan Penolakan</label>
                     <textarea name="reason" id="reason-{{ $article->id }}" rows="3"
-                        class="border-2 border-red-400 rounded-md w-full p-2 text-sm"></textarea>
+                        class="border-2 border-red-400 rounded-md w-full p-2 text-sm">{{ old('reason') }}</textarea>
+
+                    @error('reason')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
+
                 <div class="mt-6 flex justify-end space-x-4">
                     <button type="button" onclick="closeModal('modal-status-{{ $article->id }}')" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
                     <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Simpan</button>
@@ -289,24 +304,13 @@
 
     function toggleReasonField(id) {
         let status = document.getElementById('status-' + id).value;
-        let reasonField = document.getElementById('reason-field-' + id);
+        let reasonField = document.getElementById('reason-field-status-' + id); // ubah id target
 
         if (status == '-1') {
             reasonField.classList.remove('hidden');
         } else {
             reasonField.classList.add('hidden');
         }
-    }
-
-    function validateForm(id) {
-        let status = document.getElementById('status-' + id).value;
-        let reason = document.getElementById('reason-' + id).value.trim();
-
-        if (status == '-1' && reason === '') {
-            alert('Harap isi alasan penolakan.');
-            return false;
-        }
-        return true;
     }
 </script>
 @endsection

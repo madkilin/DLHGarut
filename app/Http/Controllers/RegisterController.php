@@ -31,15 +31,16 @@ class RegisterController extends Controller
             'phone' => $validated['phone'],
             'address' => $validated['address'],
             'email' => $validated['email'],
-            'role_id' => 2,
+            'role_id' => 3,
             'password' => bcrypt($validated['password']),
         ]);
         // Login langsung (opsional)
-        Auth::login($user);
+        // Auth::login($user);
 
         // Kirim email verifikasi
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
 
-        return redirect()->route('verification.notice');
+        // return redirect()->route('verification.notice');
+        return redirect()->route('login')->with('success', 'Silakan menunggu Admin sampai memverifikasi akun Anda.');
     }
 }

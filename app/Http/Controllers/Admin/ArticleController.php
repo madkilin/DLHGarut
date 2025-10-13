@@ -35,7 +35,7 @@ class ArticleController extends Controller
             $users = User::where('id', '!=', Auth::id())->get();
         }
 
-        return view('petugasLapangan.article.create', compact('users'));
+        return view('admin.article.create', compact('users'));
     }
 
     /**
@@ -46,17 +46,25 @@ class ArticleController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'banner' => 'required|image', //tambahkan ini untuk mengatur dimensi/ukuran yang diinginkan karena jika tidak sesuai dengan ukuran ini akan error-> |dimensions:min_width=800,min_height=400
+            'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200', // 50MB
             'description' => 'required',
         ], [
             'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
         ]);
 
-        $path = $request->file('banner')->store('banners', 'public');
+        if ($request->hasFile('banner')) {
+            $bannerPath = $request->file('banner')->store('banners', 'public');
+        }
 
+        if ($request->hasFile('video')) {
+            $videoPath = $request->file('video')->store('videos', 'public');
+        }
         Article::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'banner' => $path,
+            'banner' => $bannerPath,
+            'video' => $videoPath ?? null,
+
             'description' => $request->description,
             'user_id' => auth()->user()->id,
         ]);

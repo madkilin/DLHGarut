@@ -189,7 +189,7 @@ class ArticleController extends Controller
             'video' => $videoPath ?? null,
         ]);
 
-        return redirect()->route('')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('artikel.list')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     public function edit(Article $article)
@@ -234,36 +234,60 @@ class ArticleController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        // dd($request->all());
+        // 🧩 Validasi input terlebih dahulu
+        $request->validate([
+            'status' => 'required|in:1,0,-1',
+            'reason' => 'required_if:status,-1|nullable|string|max:500',
+        ], [
+            'reason.required_if' => 'Alasan penolakan wajib diisi jika artikel ditolak.',
+        ]);
+
         DB::beginTransaction();
-        $article = Article::find($id);
-        $user = User::where('id', $article->user_id)->first();
-        $article->is_read_by_admin = $request->status;
 
-        if ($request->status == 1) {
-            $article->confirmed_at = Carbon::now();
-            if ($user) {
-                $user->addExp(10); // Menambahkan EXP
-                ProgressLog::action($user, 10, 'exp', 'Artikel di terima');
-                $user->points += 10; // Menambahkan POINT
-                ProgressLog::action($user, 10, 'point', 'Artikel di terima');
-                $user->save();
+        try {
+            $article = Article::findOrFail($id);
+            $user = User::find($article->user_id);
+
+            $article->is_read_by_admin = $request->status;
+
+            // Jika dikonfirmasi
+            if ($request->status == 1) {
+                $article->confirmed_at = Carbon::now();
+                $article->alasan_penolakan = null; // reset alasan kalau sebelumnya pernah ditolak
+
+                if ($user) {
+                    $user->addExp(10);
+                    ProgressLog::action($user, 10, 'exp', 'Artikel diterima');
+
+                    $user->points += 10;
+                    ProgressLog::action($user, 10, 'point', 'Artikel diterima');
+
+                    $user->save();
+                }
             }
-        }
 
-        if ($request->status == -1) {
-            $article->alasan_penolakan = $request->reason;
-        }
+            // Jika ditolak
+            if ($request->status == -1) {
+                $article->alasan_penolakan = $request->reason;
+                $article->confirmed_at = null;
+            }
 
-        $data = $article->save();
-        if ($data) {
+            // Jika status dikembalikan ke menunggu
+            if ($request->status == 0) {
+                $article->alasan_penolakan = null;
+                $article->confirmed_at = null;
+            }
+
+            $article->save();
+
             DB::commit();
-            return redirect('/admin/articles')->with('success', 'Artikel berhasil dikonfirmasi.');
-        } else {
-            Db::rollBack();
-            return redirect('/admin/articles')->with('error', 'Artikel gagal dikonfirmasi.');
+            return redirect('/admin/articles')->with('success', 'Status artikel berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('/admin/articles')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
     public function detail(string $slug)
     {

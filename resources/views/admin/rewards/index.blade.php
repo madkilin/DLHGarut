@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Reward')
+@section('title', 'Hadiah')
 @section('style')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 <style>
@@ -182,21 +182,21 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
-            $('#complaintTable').DataTable({
-                pageLength: 10,
-                language: {
-                    search: "Cari:",
-                    lengthMenu: "Tampilkan _MENU_",
-                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                    paginate: {
-                        first: "Awal",
-                        last: "Akhir",
-                        next: "→",
-                        previous: "←"
-                    },
-                    zeroRecords: "Tidak ada data yang ditemukan",
-                }
-            });
+        $('#complaintTable').DataTable({
+            pageLength: 10,
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                paginate: {
+                    first: "Awal",
+                    last: "Akhir",
+                    next: "→",
+                    previous: "←"
+                },
+                zeroRecords: "Tidak ada data yang ditemukan",
+            }
         });
+    });
 </script>
 @endsection

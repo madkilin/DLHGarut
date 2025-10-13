@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Riwayat Penukaran Poin')
+@section('title', 'Penukaran Poin')
 @section('style')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 <style>
@@ -147,10 +147,28 @@
                             <td>{{ $exchange->user->name }}</td>
                             <td>{{ $exchange->reward->name }}</td>
                             <td>{{ $exchange->consume_point }}</td>
-                            <td>{{ $exchange->status }}</td>
+                            <td class="text-gray-800 px-4 py-4 text-sm text-center">
+                                @if ($exchange->status == 'menunggu')
+                                <span class="inline-block bg-gray-500 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">
+                                    Menunggu
+                                </span>
+                                @elseif ($exchange->status == 'tolak')
+                                <span class="inline-block bg-red-500 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">
+                                    Ditolak
+                                </span>
+                                @elseif ($exchange->status == 'konfirmasi')
+                                <span class="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-xs font-semibold w-30">
+                                    Dikonfirmasi
+                                </span>
+                                @else
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-semibold">
+                                    {{ ucfirst($exchange->status) }}
+                                </span>
+                                @endif
+                            </td>
                             <td>{{ $exchange->date }}</td>
                             <td>
-                                @if ($exchange->status == 'wait')
+                                @if ($exchange->status == 'menunggu')
                                 <button onclick="openModal('modal-status-{{ $exchange->id }}')" class="relative btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-300 w-20">
                                     Ubah Status
                                     <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -172,8 +190,8 @@
 
                                         <select name="status" onchange="handleStatusChange(this, {{ $exchange->id }})" class="w-full px-3 py-2 border rounded-lg">
                                             <option disabled selected>-- Pilih Status --</option>
-                                            <option value="confirmed">confirmed</option>
-                                            <option value="reject">reject</option>
+                                            <option value="konfirmasi">konfirmasi</option>
+                                            <option value="tolak">tolak</option>
                                         </select>
                                     </div>
 

@@ -77,7 +77,7 @@ class ComplaintController extends Controller
         ]);
 
         // Menghapus dd() setelah pengujian, karena ini hanya untuk debugging
-        return redirect()->back()->with('Success');
+        return redirect()->route('complaint.index')->with('Success');
     }
     public function show($id)
     {

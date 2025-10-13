@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DLH Garut | Register</title>
+    <link rel="icon" href="{{ asset('default_image/logo.jpg') }}" type="image/x-icon">
     @vite('resources/css/app.css')
 </head>
 

@@ -17,6 +17,16 @@
         <div class="space-y-2">
             <label class="block font-semibold mb-2">Status</label>
             <p class="text-red-600 text-6xl font-bold">{{ $complaint->status }}</p>
+
+            @if ($complaint->status == 'ditolak')
+            <label class="block font-semibold mb-2">Alasan penolakan :</label>
+            <p class="text-red-600 font-bold">{{ $complaint->note }}</p>
+            @else
+            <label class="block font-semibold mb-2">Pesan :</label>
+            <p class="text-black-600 font-bold">{{ $complaint->note }}</p>
+            @endif
+
+
         </div>
         <div class="space-y-2">
             <label class="block font-semibold mb-2">tanggal pengaduan</label>
@@ -121,8 +131,16 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Ambil koordinat dari Blade
-        var lat = {{ $complaint->latitude ?? 0 }};
-        var lng = {{ $complaint->longitude ?? 0 }};
+        var lat = {
+            {
+                $complaint - > latitude ?? 0
+            }
+        };
+        var lng = {
+            {
+                $complaint - > longitude ?? 0
+            }
+        };
 
         // Initialize map
         var map = L.map('map').setView([lat, lng], 16);
