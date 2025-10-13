@@ -13,7 +13,7 @@ class ComplaintController extends Controller
     public function index()
     {
         $complaints = Complaint::with('user', 'assignedUser', 'proof')->latest()->get();
-        $availableStaff = User::where('role_id', 2)->get(); // user dengan role 2
+        $availableStaff = User::where('role_id', 2)->where('status', 'active')->get(); // user dengan role 2
         return view('admin.complaints.index', compact('complaints', 'availableStaff'));
     }
 
