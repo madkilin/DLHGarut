@@ -105,29 +105,13 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize map
-        var map = L.map('map').setView([{
-            {
-                $complaint - > latitude
-            }
-        }, {
-            {
-                $complaint - > longitude
-            }
-        }], 16);
+        var map = L.map('map').setView([{{$complaint->latitude}}, {{$complaint->longitude}}], 16);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; CARTO'
         }).addTo(map);
 
         // Add marker at the complaint location
-        L.marker([{
-            {
-                $complaint - > latitude
-            }
-        }, {
-            {
-                $complaint - > longitude
-            }
-        }]).addTo(map);
+        L.marker([{{$complaint->latitude}}, {{$complaint->longitude}}]).addTo(map);
     });
 </script>
 @endsection
