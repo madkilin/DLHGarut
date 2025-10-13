@@ -156,12 +156,13 @@
                                     Detail
                                 </a>
                                 @if ($complaint->proof === null)
-                                <a href="{{ route('petugas.proof.create', $complaint->id) }}" class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
+                                <a href="{{ route('petugas.proof.create', $complaint->id) }}" class="relative inline-block btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
                                     Kirim Bukti
                                     @if (!$complaint->read_by_assigned_user)
                                     <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                                         !
                                     </span>
+
                                     @endif
                                 </a>
                                 @endif
