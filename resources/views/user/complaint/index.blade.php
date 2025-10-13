@@ -168,7 +168,7 @@
                                 </span>
                             </td>
                             <td class="px-4 py-2">
-                                <div class="flex flex-wrap gap-1 items-center justify-center">
+                                <div class="flex flex-wrap gap-1">
                                     {{-- Detail --}}
                                     <a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination={{ $complaint->latitude }},{{ $complaint->longitude }}" target="_blank" class="btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg shadow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 w-20">
                                         Lihat Lokasi
