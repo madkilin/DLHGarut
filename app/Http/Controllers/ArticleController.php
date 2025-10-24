@@ -189,7 +189,7 @@ class ArticleController extends Controller
             'video' => $videoPath ?? null,
         ]);
 
-        return redirect()->route('artikel.list')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('article.list')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     public function edit(Article $article)
