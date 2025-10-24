@@ -68,8 +68,11 @@ class ProfileController extends Controller
 
         $user->save();
         if ($emailChanged) {
-            $user->sendEmailVerificationNotification();
-            return redirect()->route('verification.notice')->with('status', 'Email Anda telah diubah. Silakan verifikasi ulang.');
+            Auth::logout(); // keluarin user dari session
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+
+            return redirect()->route('login')->with('status', 'Email Anda telah diubah. Silakan verifikasi ulang.');
         }
         // ✅ Segarkan session biar data baru langsung muncul
         Auth::setUser($user->fresh());
