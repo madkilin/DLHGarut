@@ -82,7 +82,10 @@
             <label class="block font-semibold mb-2">Kecamatan</label>
             <p>{{ $complaint->kecamatan }}</p>
         </div>
-
+        <div class="space-y-2">
+            <label class="block font-semibold mb-2">Desa</label>
+            <p>{{ $complaint->desa }}</p>
+        </div>
         <div class="space-y-2">
             <label class="block font-semibold mb-2">Alamat Lengkap</label>
             <p>{{ $complaint->full_address }}</p>
@@ -131,8 +134,16 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Ambil koordinat dari Blade
-        var lat = {{$complaint->latitude ?? 0 }};
-        var lng = {{$complaint->longitude ?? 0}};
+        var lat = {
+            {
+                $complaint - > latitude ?? 0
+            }
+        };
+        var lng = {
+            {
+                $complaint - > longitude ?? 0
+            }
+        };
 
         // Initialize map
         var map = L.map('map').setView([lat, lng], 16);

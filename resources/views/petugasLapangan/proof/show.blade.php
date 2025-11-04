@@ -26,7 +26,7 @@
                 target="_blank" class=" text-blue-600 underline">
                 {{ $proof->complaint->latitude }}, {{ $proof->complaint->longitude }}
             </a>
-                    <p>{{ $proof->complaint->kabupaten }}, {{ $proof->complaint->kecamatan }}</p>
+                    <p>{{ $proof->complaint->kabupaten }}, {{ $proof->complaint->kecamatan }} ,  {{ $proof->complaint->desa }}</p>
         <p>{{ $proof->complaint->full_address }}</p>
             <div id="map" class="w-full h-80 rounded shadow mb-3 z-0"></div>
         </div>

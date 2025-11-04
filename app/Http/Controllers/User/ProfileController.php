@@ -36,6 +36,25 @@ class ProfileController extends Controller
             'address' => 'nullable|string|max:255',
             'nik' => 'nullable|string|max:16|min:16',
             'phone' => 'nullable|string|max:13|min:10',
+        ], [
+            'name.string' => 'Nama harus berupa teks.',
+            'name.max' => 'Nama maksimal 255 karakter.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar, gunakan email lain.',
+
+            'password.min' => 'Kata sandi minimal 6 karakter.',
+
+            'address.string' => 'Alamat harus berupa teks.',
+            'address.max' => 'Alamat maksimal 255 karakter.',
+
+            'nik.size' => 'NIK harus terdiri dari tepat 16 angka.',
+            'nik.string' => 'NIK harus berupa teks atau angka.',
+
+            'phone.min' => 'Nomor telepon minimal 10 digit.',
+            'phone.max' => 'Nomor telepon maksimal 13 digit.',
+            'phone.string' => 'Nomor telepon harus berupa angka.',
         ]);
 
         $emailChanged = $request->filled('email') && $request->email !== $user->email;

@@ -45,11 +45,26 @@ class ArticleController extends Controller
     {
         $request->validate([
             'title' => 'required|max:255',
-            'banner' => 'required|image', //tambahkan ini untuk mengatur dimensi/ukuran yang diinginkan karena jika tidak sesuai dengan ukuran ini akan error-> |dimensions:min_width=800,min_height=400
-            'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200', // 50MB
+            'banner' => 'required|image|dimensions:min_width=800,min_height=400',
+            'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200', // maks 50MB
             'description' => 'required',
         ], [
+            // Pesan umum
+            'required' => ':attribute wajib diisi.',
+            'max' => ':attribute tidak boleh lebih dari :max karakter.',
+
+            // Field khusus
+            'title.required' => 'Judul wajib diisi.',
+            'title.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+
+            'banner.required' => 'Gambar banner wajib diunggah.',
+            'banner.image' => 'File banner harus berupa gambar (jpg, png, jpeg, dsb).',
             'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
+
+            'video.mimes' => 'Format video harus mp4, avi, mov, atau wmv.',
+            'video.max' => 'Ukuran video maksimal 50 MB.',
+
+            'description.required' => 'Deskripsi wajib diisi.',
         ]);
 
         if ($request->hasFile('banner')) {
@@ -105,7 +120,16 @@ class ArticleController extends Controller
             'banner' => 'nullable|image|dimensions:min_width=800,min_height=400',
             'description' => 'required',
         ], [
-            'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
+            // Pesan default
+            'required' => ':attribute wajib diisi.',
+            'max' => ':attribute tidak boleh lebih dari :max karakter.',
+            'image' => ':attribute harus berupa gambar.',
+            'dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
+        ], [
+            // Mapping nama atribut agar tampil lebih natural
+            'title' => 'Judul',
+            'banner' => 'Banner',
+            'description' => 'Deskripsi',
         ]);
 
         $data = [

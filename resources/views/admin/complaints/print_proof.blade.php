@@ -61,7 +61,7 @@
         <a href="https://www.google.com/maps?q={{ $complaint->latitude }},{{ $complaint->longitude }}" target="_blank">
             https://www.google.com/maps?q={{ $complaint->latitude }},{{ $complaint->longitude }} </a><br>
         <div>Koordinat: {{ $complaint->latitude }}, {{ $complaint->longitude }}</div>
-        <div>{{ $complaint->kabupaten }}, {{ $complaint->kecamatan }}</div>
+        <div>{{ $complaint->kabupaten }}, {{ $complaint->kecamatan }} , {{ $complaint->desa }}</div>
         <div>{{ $complaint->full_address }}</div>
     </div>
     <br>

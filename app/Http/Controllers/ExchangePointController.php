@@ -31,6 +31,13 @@ class ExchangePointController extends Controller
         $request->validate([
             'reward_id' => 'required',
             'point' => 'required'
+        ], [
+            'reward_id.required' => 'Pilih reward terlebih dahulu.',
+            'reward_id.exists'   => 'Reward yang dipilih tidak ditemukan.',
+
+            'point.required'     => 'Jumlah poin wajib diisi.',
+            'point.integer'      => 'Jumlah poin harus berupa angka.',
+            'point.min'          => 'Jumlah poin minimal 1.',
         ]);
         $check = ExchangePoint::where('user_id', auth()->id())
             ->where('reward_id', $request->reward_id)
@@ -54,6 +61,9 @@ class ExchangePointController extends Controller
     {
         $request->validate([
             'status' => 'required'
+        ], [
+            'status.required' => 'Status wajib dipilih.',
+            'status.in'       => 'Status tidak valid. Pilih antara active, nonactive, atau belum diverifikasi.',
         ]);
         $exchange = ExchangePoint::find($id);
         $exchange->update([

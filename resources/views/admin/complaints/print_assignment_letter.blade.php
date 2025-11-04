@@ -62,7 +62,7 @@
     <div class="section">
         <div class="label">Lokasi Pengaduan:</div>
         <div>Koordinat: {{ $complaint->latitude }}, {{ $complaint->longitude }}</div>
-        <div>{{ $complaint->kabupaten }}, {{ $complaint->kecamatan }}</div>
+        <div>{{ $complaint->kabupaten }}, {{ $complaint->kecamatan }} ,{{ $complaint->desa }}</div>
         <div>{{ $complaint->full_address }}</div>
     </div>
 

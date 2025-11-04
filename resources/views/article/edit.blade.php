@@ -14,14 +14,14 @@
                 <input type="text" name="title" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1" value="{{ $article->title }}" required>
             </div>
             <div class="mb-4">
-                <label for="banner" class="block text-sm font-semibold">Banner <span class="text-red-500">*</span></label>
+                <label for="banner" class="block text-sm font-semibold">Banner (dengan maks Foto: 2mb)<span class="text-red-500">*</span></label>
                 <input type="file" name="banner" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1">
             </div>
 
             <img src="{{ asset('storage/' . $article->banner) }}" alt="{{ $article->title }}" class="w-full h-80 object-cover rounded-xl shadow mb-8">
 
             <div class="mb-4">
-                <label for="video" class="block text-sm font-semibold">Video</label>
+                <label for="video" class="block text-sm font-semibold">Video (dengan maks Video: 10mb)</label>
                 <input type="file" name="video" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1">
             </div>
             @if ($article->video)

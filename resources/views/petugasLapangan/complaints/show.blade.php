@@ -53,7 +53,10 @@
                 <label class="block font-semibold mb-2">Kecamatan</label>
                 <p>{{ $complaint->kecamatan }}</p>
             </div>
-
+<div class="space-y-2">
+                <label class="block font-semibold mb-2">Desa</label>
+                <p>{{ $complaint->desa }}</p>
+            </div>
             <div class="space-y-2">
                 <label class="block font-semibold mb-2">Alamat Lengkap</label>
                 <p>{{ $complaint->full_address }}</p>

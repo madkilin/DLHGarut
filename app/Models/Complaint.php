@@ -15,6 +15,7 @@ class Complaint extends Model
         'latitude',
         'longitude',
         'kecamatan',
+        'desa',
         'kabupaten',
         'full_address',
         'photos',

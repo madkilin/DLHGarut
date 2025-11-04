@@ -45,6 +45,7 @@
                                 <tr>
                                     <th class="px-4 py-2 text-left text-sm font-semibold">Judul</th>
                                     <th class="px-4 py-2 text-left text-sm font-semibold">Kecamatan</th>
+                                    <th class="px-4 py-2 text-left text-sm font-semibold">Desa</th>
                                     <th class="px-4 py-2 text-left text-sm font-semibold">Alamat</th>
                                     <th class="px-4 py-2 text-left text-sm font-semibold">Status</th>
                                     <th class="px-4 py-2 text-left text-sm font-semibold">Tanggal</th>
@@ -56,6 +57,7 @@
                                     <tr>
                                         <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->title }}</td>
                                         <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->kecamatan }}</td>
+                                        <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->desa }}</td>
                                         <td class="px-4 py-2 text-sm text-gray-700">{{ $complaint->full_address }}</td>
                                         <td class="px-4 py-2">
                                             @switch($complaint->status)

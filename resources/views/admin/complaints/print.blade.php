@@ -99,7 +99,7 @@
                 https://www.google.com/maps?q={{ $complaint->latitude }},{{ $complaint->longitude }} </a>
         </div>
         <div>Koordinat: {{ $complaint->latitude }}, {{ $complaint->longitude }}</div>
-        <div>{{ $complaint->kabupaten }}, {{ $complaint->kecamatan }}</div>
+        <div>{{ $complaint->kabupaten }}, {{ $complaint->kecamatan }} ,{{ $complaint->desa }}</div>
         <div>{{ $complaint->full_address }}</div>
     </div>
 

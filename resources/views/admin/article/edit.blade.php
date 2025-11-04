@@ -17,7 +17,7 @@
 
 
         <div class="mb-4">
-            <label class="block mb-1 font-medium">Banner (minimal 800x400)</label>
+            <label class="block mb-1 font-medium">Banner (dengan maks Foto: 2mb)</label>
             <input type="file" name="banner" id="banner" class="w-full border px-4 py-2 rounded" accept="image/*"
                 onchange="previewBanner(event)">
             <img id="bannerPreview" src="{{ asset('storage/' . $article->banner) }}"

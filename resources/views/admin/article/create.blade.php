@@ -14,14 +14,14 @@
                     required>
             </div>
             <div class="mb-4">
-                <label for="banner" class="block text-sm font-semibold">Banner <span
+                <label for="banner" class="block text-sm font-semibold">Banner (dengan maks Foto: 2mb)<span
                         class="text-red-500">*</span></label>
                 <input type="file" name="banner" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1"
                     required>
             </div>
             @if(auth()->user()->role_id == 1)
             <div class="mb-4">
-                <label for="video" class="block text-sm font-semibold">Video</label>
+                <label for="video" class="block text-sm font-semibold">Video (dengan maks Video: 10mb)</label>
                 <input type="file" name="video" class="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1">
             </div>
             @endif

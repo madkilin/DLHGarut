@@ -223,5 +223,40 @@ $maxExp = $endExp;
                 .addClass('hidden');
         }
     });
+
+    // Batasi panjang NIK
+    document.getElementById('nik').addEventListener('input', function() {
+        let val = this.value;
+
+        // Hapus semua karakter selain angka
+        val = val.replace(/\D/g, '');
+        if (this.value.length > 16) {
+            this.value = this.value.slice(0, 16);
+        }
+    });
+
+    // Batasi panjang Nomor Telepon
+    document.getElementById('phone').addEventListener('input', function() {
+        let val = this.value;
+
+        // Hapus semua karakter selain angka
+        val = val.replace(/\D/g, '');
+
+        // Pastikan dimulai dengan "08"
+        if (!val.startsWith('08')) {
+            if (val.startsWith('8')) {
+                val = '0' + val; // kalau user ngetik 8 di awal
+            } else if (!val.startsWith('08')) {
+                val = '08'; // kalau awalnya bukan 0/8, langsung ubah jadi 08
+            }
+        }
+
+        // Batasi maksimal 13 digit
+        if (val.length > 13) {
+            val = val.slice(0, 13);
+        }
+
+        this.value = val;
+    });
 </script>
 @endsection

@@ -28,6 +28,24 @@ class ProofController extends Controller
             'amount' => 'required|integer',
             'unit' => 'required|string|max:50',
             'photos.*' => 'required|image|max:2048',
+        ], [
+            'description.required' => 'Deskripsi penyelesaian harus diisi.',
+            'description.string' => 'Deskripsi harus berupa teks yang valid.',
+
+            'officers.array' => 'Format data petugas tambahan tidak valid.',
+            'officers.*.string' => 'Nama setiap petugas harus berupa teks.',
+            'officers.*.max' => 'Nama petugas maksimal 255 karakter.',
+
+            'amount.required' => 'Jumlah sampah harus diisi.',
+            'amount.integer' => 'Jumlah sampah harus berupa angka.',
+
+            'unit.required' => 'Satuan jumlah sampah harus diisi.',
+            'unit.string' => 'Satuan harus berupa teks.',
+            'unit.max' => 'Satuan maksimal 50 karakter.',
+
+            'photos.*.required' => 'Setiap foto bukti penyelesaian wajib diunggah.',
+            'photos.*.image' => 'File yang diunggah harus berupa gambar (jpg, png, jpeg, dll).',
+            'photos.*.max' => 'Ukuran setiap foto maksimal 2MB.',
         ]);
 
         $photoPaths = [];

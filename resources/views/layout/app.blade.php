@@ -8,9 +8,38 @@
     @yield('style')
     <title>@yield('title', 'DLH Garut')</title>
     <link rel="icon" href="{{ asset('default_image/logo.jpg') }}">
-
-
 </head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // 🔥 SweetAlert dari Laravel (validasi server & pesan sukses)
+    document.addEventListener('DOMContentLoaded', function() {
+        @if ($errors->any())
+            let errorMessages = `
+                <ul style="text-align:left; list-style-type:disc; margin-left:20px;">
+                    @foreach ($errors->all() as $error)
+                        {{ $error }}
+                    @endforeach
+                </ul>
+            `;
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                html: errorMessages,
+                confirmButtonColor: '#F17025'
+            });
+        @endif
+
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#F17025'
+            });
+        @endif
+    });
+</script>
 <style>
     /* =========================
    Tier Besar (Profile Page)

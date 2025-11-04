@@ -38,11 +38,48 @@ class ComplaintController extends Controller
             'latitude'      => 'nullable|numeric',
             'longitude'     => 'nullable|numeric',
             'kecamatan'     => 'required|string|max:100',
+            'desa'     => 'required|string|max:100',
             'kabupaten'     => 'nullable|string|max:100', // Kabupatennya bisa kosong, jika perlu bisa disesuaikan
             'full_address'  => 'required|string|max:255',
             'photos'        => 'required|array|min:1|max:5',
             'photos.*'      => 'image|mimes:jpeg,png,jpg,webp|max:2048', // Maksimal 2MB
             'video'         => 'nullable|mimes:mp4,mov,avi,webm|max:10240', // Maksimal 10MB
+        ], [
+            'title.required'        => 'Judul laporan harus diisi.',
+            'title.string'          => 'Judul laporan harus berupa teks.',
+            'title.max'             => 'Judul maksimal 255 karakter.',
+
+            'description.required'  => 'Deskripsi laporan harus diisi.',
+            'description.string'    => 'Deskripsi harus berupa teks.',
+
+            'latitude.numeric'      => 'Koordinat latitude harus berupa angka.',
+            'longitude.numeric'     => 'Koordinat longitude harus berupa angka.',
+
+            'kecamatan.required'    => 'Nama kecamatan wajib diisi.',
+            'kecamatan.string'      => 'Nama kecamatan harus berupa teks.',
+            'kecamatan.max'         => 'Nama kecamatan maksimal 100 karakter.',
+
+            'desa.required'    => 'Nama desa wajib diisi.',
+            'desa.string'      => 'Nama desa harus berupa teks.',
+            'desa.max'         => 'Nama desa maksimal 100 karakter.',
+
+            'kabupaten.string'      => 'Nama kabupaten harus berupa teks.',
+            'kabupaten.max'         => 'Nama kabupaten maksimal 100 karakter.',
+
+            'full_address.required' => 'Alamat lengkap harus diisi.',
+            'full_address.string'   => 'Alamat lengkap harus berupa teks.',
+            'full_address.max'      => 'Alamat lengkap maksimal 255 karakter.',
+
+            'photos.required'       => 'Minimal 1 foto bukti harus diunggah.',
+            'photos.array'          => 'Format foto tidak valid.',
+            'photos.min'            => 'Minimal 1 foto bukti harus diunggah.',
+            'photos.max'            => 'Maksimal hanya 5 foto yang boleh diunggah.',
+            'photos.*.image'        => 'Setiap file foto harus berupa gambar.',
+            'photos.*.mimes'        => 'Format foto harus jpeg, png, jpg, atau webp.',
+            'photos.*.max'          => 'Ukuran setiap foto maksimal 2MB.',
+
+            'video.mimes'           => 'Format video harus mp4, mov, avi, atau webm.',
+            'video.max'             => 'Ukuran video maksimal 10MB.',
         ]);
 
         // Menyimpan foto
@@ -68,6 +105,7 @@ class ComplaintController extends Controller
             'latitude'      => $request->latitude,
             'longitude'     => $request->longitude,
             'kecamatan'     => $request->kecamatan,
+            'desa'     => $request->desa,
             'kabupaten'     => $request->kabupaten ?? 'Garut', // Nilai default untuk kabupaten
             'full_address'  => $request->full_address,
             'photos'        => json_encode($photoPaths), // Menyimpan path dalam format JSON

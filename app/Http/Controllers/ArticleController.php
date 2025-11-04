@@ -171,6 +171,21 @@ class ArticleController extends Controller
             'description' => 'required',
             'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video' => 'nullable|mimes:mp4,avi,mov,wmv|max:51200' // 50MB
+        ], [
+            'title.required'        => 'Judul wajib diisi.',
+            'title.string'          => 'Judul harus berupa teks.',
+            'title.max'             => 'Judul maksimal 255 karakter.',
+
+            'description.required'  => 'Deskripsi wajib diisi.',
+            'description.string'    => 'Deskripsi harus berupa teks.',
+
+            'banner.required'       => 'Banner wajib diunggah.',
+            'banner.image'          => 'File banner harus berupa gambar.',
+            'banner.mimes'          => 'Format banner harus jpeg, png, jpg, atau gif.',
+            'banner.max'            => 'Ukuran banner maksimal 2MB.',
+
+            'video.mimes'           => 'Format video harus mp4, avi, mov, atau wmv.',
+            'video.max'             => 'Ukuran video maksimal 50MB.',
         ]);
         $slug = Str::slug($request->title);
         if ($request->hasFile('banner')) {
@@ -209,7 +224,19 @@ class ArticleController extends Controller
             'description' => 'required',
             'user_id' => 'nullable|exists:users,id',
         ], [
-            'banner.dimensions' => 'Ukuran gambar minimal harus 800x400 piksel.',
+            'title.required'        => 'Judul wajib diisi.',
+            'title.string'          => 'Judul harus berupa teks.',
+            'title.max'             => 'Judul maksimal 255 karakter.',
+
+            'banner.image'          => 'File banner harus berupa gambar.',
+            'banner.mimes'          => 'Format banner harus jpeg, png, jpg, atau gif.',
+            'banner.max'            => 'Ukuran file banner maksimal 2MB.',
+            'banner.dimensions'     => 'Ukuran gambar minimal harus 800x400 piksel.',
+
+            'description.required'  => 'Deskripsi wajib diisi.',
+            'description.string'    => 'Deskripsi harus berupa teks.',
+
+            'user_id.exists'        => 'User yang dipilih tidak ditemukan.',
         ]);
 
         $data = [
@@ -239,7 +266,12 @@ class ArticleController extends Controller
             'status' => 'required|in:1,0,-1',
             'reason' => 'required_if:status,-1|nullable|string|max:500',
         ], [
+            'status.required'    => 'Status artikel wajib dipilih.',
+            'status.in'          => 'Status artikel tidak valid. Hanya bisa bernilai 1 (disetujui), 0 (menunggu), atau -1 (ditolak).',
+
             'reason.required_if' => 'Alasan penolakan wajib diisi jika artikel ditolak.',
+            'reason.string'      => 'Alasan penolakan harus berupa teks.',
+            'reason.max'         => 'Alasan penolakan maksimal 500 karakter.',
         ]);
 
         DB::beginTransaction();

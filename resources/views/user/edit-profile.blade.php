@@ -58,7 +58,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-black">Foto Profil</label>
+                <label class="block text-black">Foto Profil (dengan maks Foto: 2mb)</label>
                 <div class="flex flex-col items-center justify-center border border-gray-300 rounded p-4">
                     <!-- Preview -->
                     <img id="profileImagePreview" src="" alt="Preview"

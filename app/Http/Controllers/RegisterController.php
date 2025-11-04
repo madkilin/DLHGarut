@@ -18,11 +18,28 @@ class RegisterController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'nik' => 'required|digits:16',
+            'nik' => 'required|unique:users,nik|digits:16',
             'phone' => 'required|digits_between:10,13',
             'address' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+        ], [
+            // Pesan custom bahasa Indonesia
+            'name.required' => 'Nama wajib diisi.',
+            'nik.required' => 'NIK wajib diisi.',
+            'nik.digits' => 'NIK harus terdiri dari tepat 16 angka.',
+            'nik.unique' => 'NIK sudah terdaftar, silakan gunakan NIK lain.',
+            'phone.required' => 'Nomor telepon wajib diisi.',
+            'phone.digits_between' => 'Nomor telepon harus terdiri dari 10 hingga 13 angka.',
+            'address.required' => 'Alamat wajib diisi.',
+            'address.string' => 'Alamat harus berupa teks.',
+            'address.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar, silakan gunakan email lain.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak sesuai.',
         ]);
 
         $user = User::create([
@@ -41,6 +58,6 @@ class RegisterController extends Controller
         // $user->sendEmailVerificationNotification();
 
         // return redirect()->route('verification.notice');
-        return redirect()->route('login')->with('success', 'Silakan menunggu Admin sampai memverifikasi akun Anda.');
+        return redirect()->route('login')->with('success', 'Silakan menunggu Admin sampai memverifikasi akun Anda. Tunggu 1 x 24 jam (Senin - Jumat)');
     }
 }

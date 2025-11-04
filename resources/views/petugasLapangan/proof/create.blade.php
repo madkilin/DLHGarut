@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="mb-6">
-                    <label class="block font-semibold mb-2">Upload Foto (maks 5)</label>
+                    <label class="block font-semibold mb-2">Upload Foto (maks 5) (maks Foto: 2mb)</label>
                     <input type="file" name="photos[]" id="photoInput" accept="image/*" multiple class="hidden">
                     <label for="photoInput"
                         class="bg-green-600 text-white px-4 py-2 inline-block rounded cursor-pointer hover:bg-green-700">

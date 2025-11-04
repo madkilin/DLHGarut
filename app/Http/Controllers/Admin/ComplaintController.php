@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
+use App\Models\ProgressLog;
 use App\Models\Proof;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,7 +28,11 @@ class ComplaintController extends Controller
                     $fail('Catatan harus diisi jika status adalah diproses atau ditolak.');
                 }
             },
+        ], [
+            'status.required' => 'Status harus dipilih.',
+            'status.in' => 'Status yang dipilih tidak valid.',
         ]);
+
 
         $complaint = Complaint::findOrFail($id);
         $complaint->status = $request->status;
@@ -60,6 +65,15 @@ class ComplaintController extends Controller
                 break;
             case 'selesai':
                 $complaint->read_by_user = false;
+                if ($complaint->user) {
+                    $complaint->user->addExp(10);
+                    ProgressLog::action($complaint->user, 10, 'exp', 'Pengaduan Selesai Tertangani');
+
+                    $complaint->user->points += 10;
+                    ProgressLog::action($complaint->user, 10, 'point', 'pengaduan yang berhasil diselesaikan');
+
+                    $complaint->user->save();
+                }
                 break;
         }
 
@@ -72,6 +86,9 @@ class ComplaintController extends Controller
     {
         $request->validate([
             'assigned_to' => 'required|exists:users,id',
+        ], [
+            'assigned_to.required' => 'Petugas harus dipilih.',
+            'assigned_to.exists' => 'Petugas yang dipilih tidak valid atau tidak ditemukan.',
         ]);
 
         $complaint = Complaint::findOrFail($id);

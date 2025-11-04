@@ -40,7 +40,24 @@ class UserController extends Controller
             'nik' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-
+        ], [
+            // Pesan validasi Bahasa Indonesia
+            'required' => ':attribute wajib diisi.',
+            'string' => ':attribute harus berupa teks.',
+            'max' => ':attribute tidak boleh lebih dari :max karakter.',
+            'email' => 'Format :attribute tidak valid.',
+            'unique' => ':attribute sudah digunakan.',
+            'min' => ':attribute minimal harus terdiri dari :min karakter.',
+            'in' => 'Pilihan :attribute tidak valid.',
+        ], [
+            // Nama atribut biar tampil natural di pesan error
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Kata sandi',
+            'role_id' => 'Peran pengguna',
+            'nik' => 'NIK',
+            'phone' => 'Nomor telepon',
+            'address' => 'Alamat',
         ]);
 
         User::create([
@@ -54,7 +71,11 @@ class UserController extends Controller
             'address' => $request->address,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+        if ($user) {
+            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+        } else {
+            return back()->with('error', 'Gagal menambahkan user, silakan coba lagi.');
+        }
     }
 
 
@@ -87,6 +108,24 @@ class UserController extends Controller
             'nik' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+        ], [
+            // Pesan error Bahasa Indonesia
+            'required' => ':attribute wajib diisi.',
+            'string' => ':attribute harus berupa teks.',
+            'max' => ':attribute tidak boleh lebih dari :max karakter.',
+            'email' => 'Format :attribute tidak valid.',
+            'unique' => ':attribute sudah digunakan.',
+            'min' => ':attribute minimal harus terdiri dari :min karakter.',
+            'in' => 'Pilihan :attribute tidak valid.',
+        ], [
+            // Nama atribut biar lebih natural
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Kata sandi',
+            'status' => 'Status pengguna',
+            'nik' => 'NIK',
+            'phone' => 'Nomor telepon',
+            'address' => 'Alamat',
         ]);
 
         $user->name = $request->name;
